@@ -1,0 +1,8 @@
+.turbo-progress-bar {
+  transition:
+          width 300ms ease-out,
+          opacity 150ms 150ms ease-in;
+  transform: translate3d(0, 0, 0);
+
+  @apply fixed block top-0 left-0 h-[3px] z-[999] bg-primary-500;
+}

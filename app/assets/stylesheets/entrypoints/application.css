@@ -1,0 +1,146 @@
+@config '../configs/application.config.js';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/*
+ * Debug
+ */
+/*
+@layer components {
+  html:has(head > meta[name='environment'][content='development']) turbo-frame {
+    @apply border-2 border-red-500;
+  }
+
+  html:has(head > meta[name='environment'][content='development']) turbo-frame::before {
+    content: "Frame: #" attr(id);
+    @apply inline-block relative top-[-1.5rem] right-[-0.5rem] z-[999] px-1 text-xs bg-red-500 text-white;
+  }
+}
+*/
+
+/*
+ * Electron
+ */
+@layer components {
+  .titlebar {
+    -webkit-user-select: none;
+    -webkit-app-region: drag;
+  }
+}
+
+/*
+ * Turbo
+ */
+@layer components {
+  .turbo-progress-bar {
+    transition:
+            width 300ms ease-out,
+            opacity 150ms 150ms ease-in;
+    transform: translate3d(0, 0, 0);
+
+    @apply fixed block top-0 left-0 h-[3px] z-[999] bg-primary-500;
+  }
+}
+
+/*
+ * Inline editor form
+ */
+@layer components {
+  .inline-edit .field-label:not(.form-check-label),
+  .form .inline-action-container {
+    @apply hidden;
+  }
+
+  .field-label.required:after {
+    content: '*';
+    @apply ml-0.5
+  }
+}
+
+/*
+ * Trix editor
+ */
+@layer components {
+  trix-toolbar .trix-button-group {
+    @apply border-none mx-0 my-2;
+  }
+
+  trix-toolbar .trix-button, 
+  trix-toolbar .trix-button:not(:first-child) {
+    @apply border-none border-l-0 border-r-0;
+  }
+
+  trix-toolbar .trix-button.trix-active {
+    @apply bg-primary-100;
+  }
+
+  trix-toolbar .trix-dialog {
+    @apply bg-white shadow sm:rounded-lg py-2 px-3 border-0 hidden;
+  }
+
+  trix-toolbar .trix-dialog.trix-active {
+    @apply block;
+  }
+
+  trix-toolbar .trix-dialog .trix-input {
+    @apply mt-1 mb-1 focus:ring-primary-500 focus:border-primary-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md;
+  }
+
+  trix-editor {
+    @apply shadow-sm block w-full bg-white py-2 px-3 min-h-[12rem]
+      appearance-none focus:outline-none focus:outline-offset-2 focus:border-2
+      focus:ring-primary-500 focus:border-primary-500 sm:text-sm border border-gray-300 rounded-md;
+  }
+
+  trix-editor h1, trix-content h1, .trix-content h1 {
+    @apply text-2xl font-bold mb-1.5;
+  }
+
+  trix-editor p, trix-content p, .trix-content p {
+    @apply sm:text-sm;
+  }
+
+  trix-editor a, trix-content a, .trix-content a {
+    @apply text-primary-600 hover:text-primary-500;
+  }
+}
+
+/*
+ * Administrate Fields
+ */
+@layer components {
+  .attribute-label.attribute-label--has-one {
+    @apply hidden;
+  }
+
+  .attribute-data.attribute-data--has-one {
+    @apply sm:col-span-3;
+  }
+}
+
+/*
+ * Theme
+ */
+@layer components {
+  .disabled {
+    @apply pointer-events-none cursor-default opacity-50;
+  }
+
+  .btn-primary {
+    @apply justify-center py-2 px-4 border border-transparent shadow-sm
+      text-sm font-medium rounded-md text-white bg-primary-600 hover:bg-primary-700
+      focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500
+  }
+
+  .btn-white {
+    @apply justify-center py-2 px-4 border border-gray-300 rounded-md shadow-sm
+      text-sm font-medium text-gray-700 bg-white hover:bg-gray-50
+      focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500
+  }
+
+  mark {
+    @apply bg-primary-300 text-gray-100;
+  }
+}

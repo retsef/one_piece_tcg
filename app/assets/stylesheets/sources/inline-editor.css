@@ -1,0 +1,9 @@
+.inline-edit .field-label,
+.form .inline-action-container {
+  @apply hidden;
+}
+
+.field-label.required:after {
+  content: '*';
+  @apply ml-0.5
+}

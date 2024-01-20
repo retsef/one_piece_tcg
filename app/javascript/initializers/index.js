@@ -1,0 +1,6 @@
+import 'initializers/crash_reporter'
+import 'initializers/turbo_modal'
+import 'initializers/turbo_streams'
+import 'initializers/local_time'
+import 'initializers/trix'
+// import 'initializers/idiomorph'

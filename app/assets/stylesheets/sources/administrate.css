@@ -1,0 +1,7 @@
+.attribute-label.attribute-label--has-one {
+  @apply hidden;
+}
+
+.attribute-data.attribute-data--has-one {
+  @apply sm:col-span-3;
+}
