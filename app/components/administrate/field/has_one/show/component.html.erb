@@ -1,0 +1,51 @@
+<%#
+# HasOne Show Partial
+
+This partial renders a has_one relationship,
+to be displayed on a resource's show page.
+
+All show page attributes of has_one relationship would be rendered
+
+## Local variables:
+
+- `field`:
+  An instance of [Administrate::Field::HasOne][1].
+  A wrapper around the has_one relationship pulled from the database.
+
+[1]: http://www.rubydoc.info/gems/administrate/Administrate/Field/HasOne
+%>
+
+<fieldset class="attribute--nested border-gray-200">
+  <div class="mb-4 mt-6 <%= 'hidden' if hide_label? %>">
+    <h3 class="text-lg font-medium leading-6 text-gray-900">
+      <%= field.display_associated_resource %>
+    </h3>
+    <p class="max-w-2xl text-sm text-gray-500">
+      <%= link_to_if(field.linkable? && accessible_action?(field.data, :show),
+                     t('.label', name: field.display_associated_resource,
+                       default: t("#{namespace}.actions.show_resource", name: field.display_associated_resource)
+                     ),
+                     try_polymorphic_path([namespace, field.data])
+          ) %>
+    </p>
+  </div>
+
+  <dl class="grid grid-cols-1 gap-x-4 gap-y-4">
+    <% field.nested_show.attributes.each do |attribute| -%>
+      <div class="sm:col-span-1">
+        <dt class="text-sm font-medium text-gray-500 attribute-label" id="<%= attribute.name %>">
+          <%= t(
+            "helpers.label.#{resource_name}.#{attribute.name}",
+            default: field.nested_show.resource.class.human_attribute_name(attribute.name),
+          ) %>
+        </dt>
+
+        <dd class="mt-1 text-sm text-gray-900 flex sm:mt-0 sm:col-span-2 attribute-data attribute-data--<%=attribute.html_class%>">
+          <span class="flex-grow">
+            <%= render_field attribute, page: page %>
+          </span>
+        </dd>
+      </div>
+    <% end -%>
+  </dl>
+</fieldset>

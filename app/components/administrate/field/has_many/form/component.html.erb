@@ -1,0 +1,147 @@
+<%#
+# HasMany Form Partial
+
+This partial renders an input element for has_many relationships.
+By default, the input is a collection select box
+that displays all possible records to associate with.
+The collection select box supports multiple inputs,
+and is augmented with [Selectize].
+
+## Local variables:
+
+- `f`:
+  A Rails form generator, used to help create the appropriate input fields.
+- `field`:
+  An instance of [Administrate::Field::HasMany][1].
+  Contains helper methods for displaying a collection select box.
+
+[1]: http://www.rubydoc.info/gems/administrate/Administrate/Field/HasMany
+[Selectize]: http://brianreavis.github.io/selectize.js
+%>
+
+<div class="form-group"
+     id="<%= field_id(form.object_name, field.attribute, :container) %>"
+     data-controller="multiselect change-callback"
+     data-multiselect-hide-class="hidden"
+     data-multiselect-highlight-class="highlight"
+     data-multiselect-chose-class="chosen"
+     data-change-callback-url-value="<%= change_callback_url %>"
+     data-change-callback-param-value="<%= change_callback_param %>">
+  <%= form.label field.attribute, for: "#{form.object_name}_#{field.attribute_key}" %>
+
+  <template data-multiselect-target="template">
+    <div class="flex justify-center items-center m-1 font-medium py-1 px-2 rounded-full text-primary-700 bg-primary-50 border border-primary-300"
+         data-multiselect-target="selection"
+         data-multiselect-value="VALUE">
+      <div class="text-xs font-normal leading-none max-w-full flex-initial">LABEL</div>
+      <div class="flex flex-auto flex-row-reverse"
+           data-multiselect-value-param="VALUE"
+           data-multiselect-label-param="LABEL"
+           data-action="click->multiselect#remove">
+        <%= inline_svg_tag 'heroicons/24/solid/x-mark.svg', class: "cursor-pointer hover:text-primary-400 rounded-full w-4 h-4 ml-2" %>
+      </div>
+    </div>
+  </template>
+
+  <div class="mt-1 relative rounded-md shadow-sm">
+    <%= form.hidden_field field.attribute, value: option_value,
+                          'data-multiselect-target': 'input',
+                          'data-action': 'change->change-callback#propagate:stop:prevent' %>
+
+    <div class="w-full rounded-md group border-0 bg-white text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 group-focus:ring-2 group-focus:ring-inset group-focus:ring-primary-600 sm:text-sm sm:leading-6">
+      <div class="flex flex-auto flex-wrap" data-multiselect-target="container">
+        <% selected_resource_options.each do |(display, key)| %>
+          <div class="flex justify-center items-center m-1 font-medium py-1 px-2 rounded-full text-primary-700 bg-primary-50 border border-primary-300"
+               data-multiselect-target="selection"
+               data-multiselect-value="<%= key %>">
+            <div class="text-xs font-normal leading-none max-w-full flex-initial"><%= display %></div>
+            <div class="flex flex-auto flex-row-reverse"
+                 data-multiselect-value-param="<%= key %>"
+                 data-multiselect-label-param="<%= display %>"
+                 data-action="click->multiselect#remove">
+              <%= inline_svg_tag 'heroicons/24/solid/x-mark.svg', class: "cursor-pointer hover:text-primary-400 rounded-full w-4 h-4 ml-2" %>
+            </div>
+          </div>
+        <% end %>
+
+        <div class="flex-1"
+             data-multiselect-target="combobox_container">
+          <input type="text"
+                 id="<%= field_id(form.object_name, field.attribute, :multiselect) %>"
+                 data-controller="input-detector"
+                 data-multiselect-target="combobox"
+                 data-action="click->multiselect#show:stop:prevent
+                      input->input-detector#digest:stop:prevent
+                      input:keyboard->multiselect#filter:stop:prevent
+                      input:scanner->multiselect#fill:stop:prevent
+                      keydown.enter->multiselect#chooseCurrent:stop:prevent
+                      keydown.up->multiselect#scrollUp:prevent
+                      keydown.down->multiselect#scrollDown:prevent"
+                 class="w-full rounded-md border-0 ring-0 py-1.5 pl-3 pr-12 text-gray-900 bg-transparent"
+                 role="searchbox" aria-controls="options" aria-expanded="false">
+        </div>
+      </div>
+    </div>
+
+    <button type="button"
+            id="<%= field_id(form.object_name, field.attribute, :btn) %>"
+            data-multiselect-target="button"
+            class="absolute inset-y-0 right-0 flex items-center rounded-r-md px-2 focus:outline-none">
+      <span class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
+        <%= inline_svg_tag 'heroicons/24/solid/chevron-up-down.svg', class: 'h-5 w-5 text-gray-400' %>
+      </span>
+
+      <% if field.error? %>
+        <div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
+          <%= inline_svg_tag 'heroicons/24/solid/exclamation-circle.svg', class: 'h-5 w-5 text-red-500' %>
+        </div>
+      <% end %>
+    </button>
+
+    <ul class="hidden absolute z-20 mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm"
+        id="<%= field_id(form.object_name, field.attribute, :collection) %>"
+        data-controller="transition"
+        data-transition-leave-active="transition ease-in duration-100"
+        data-transition-leave-from="opacity-100"
+        data-transition-leave-to="opacity-0"
+        data-multiselect-target="dropdown"
+        data-action="click@window->multiselect#hide
+                      keydown.enter->multiselect#choseCurrent:prevent
+                      keydown.up->multiselect#scrollUp:prevent keydown.down->multiselect#scrollDown:prevent
+                      keydown.esc->multiselect#hide"
+        tabindex="0"
+        role="listbox">
+      <% collection.each_with_index do |option, index| %>
+        <% if option.is_a? Array %>
+          <% label, value = option %>
+        <% else %>
+          <% label = value = option.to_s %>
+        <% end %>
+
+        <% checked = resource_checked?(value) %>
+
+        <li class="<%= 'chosen' if checked %> text-gray-900 highlight:text-white highlight:bg-primary-600 relative cursor-default select-none py-2 pl-3 pr-9"
+            role="option"
+            data-selected-index="<%= index %>"
+            data-multiselect-target="option"
+            data-multiselect-index-param="<%= index %>"
+            data-multiselect-value-param="<%= value %>"
+            data-multiselect-label-param="<%= label %>"
+            data-action="click->multiselect#chose:stop:prevent">
+
+          <span class="font-normal chosen:font-semibold block truncate">
+            <%= label %>
+          </span>
+
+          <span class="hidden chosen:inline-flex highlight:text-white text-primary-600 absolute inset-y-0 right-0 items-center pr-4">
+            <%= inline_svg_tag 'heroicons/24/solid/check.svg', class: 'h-5 w-5' %>
+          </span>
+        </li>
+      <% end %>
+
+    </ul>
+  </div>
+
+  <%= form.hint field.attribute %>
+  <%= form.error_message field.attribute %>
+</div>

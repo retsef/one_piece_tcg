@@ -32,41 +32,31 @@ export default {
         '1/4': '25%',
         '1/3': '33.333333%'
       },
-      width: {
-        a4: '210mm',
-        zebra: '50.8mm'
-      },
-      height: {
-        a4: '297mm',
-        zebra: '25.4mm'
-      },
-      screens: {
-        print: { raw: 'print' }
+      transitionTimingFunction: {
+        'in-expo': 'cubic-bezier(0.95, 0.05, 0.795, 0.035)',
+        'out-expo': 'cubic-bezier(0.19, 1, 0.22, 1)',
       }
     },
   },
-  safelist: [
-    'col-auto', 'col-span-1', 'col-span-2', 'col-span-3', 'col-span-4',
-    'col-span-5', 'col-span-6', 'col-span-7', 'col-span-8', 'col-span-9',
-    'col-span-10', 'col-span-11', 'col-span-12', 'col-span-full',
-    'sm:col-auto', 'sm:col-span-1', 'sm:col-span-2', 'sm:col-span-3', 'sm:col-span-4',
-    'sm:col-span-5', 'sm:col-span-6', 'sm:col-span-7','sm:col-span-8', 'sm:col-span-9',
-    'sm:col-span-10', 'sm:col-span-11', 'sm:col-span-12', 'sm:col-span-full',
-    'md:col-auto', 'md:col-span-1', 'md:col-span-2', 'md:col-span-3', 'md:col-span-4',
-    'md:col-span-5', 'md:col-span-6', 'md:col-span-7', 'md:col-span-8', 'md:col-span-9',
-    'md:col-span-10', 'md:col-span-11', 'md:col-span-12', 'md:col-span-full'
-  ],
   plugins: [
     require('@tailwindcss/forms'),
     require('@tailwindcss/typography'),
 
     plugin(function ({ addVariant }) {
       addVariant('highlight', ['&.highlight', '.highlight &'])
-      addVariant('chosen', ['&.chosen', '.chosen &'])
-      addVariant('disabled', ['&.disabled', '.disabled &'])
-      addVariant('active', ['&.active', '.active &'])
+      addVariant('group-highlight', [':merge(.highlight) &'])
 
-      addVariant('electron', ['&.electron', '.electron &'])
+      addVariant('chosen', ['&.chosen', '.chosen &'])
+      addVariant('group-chosen', [':merge(.chosen) &'])
+
+      addVariant('checked', ['&.checked', '.checked &'])
+      addVariant('group-checked', [':merge(.checked) &'])
+
+      addVariant('disabled', ['&.disabled', '.disabled &'])
+      addVariant('group-disabled', [':merge(.disabled) &'])
+
+      addVariant('active', ['&.active', '.active &'])
+      addVariant('group-active', [':merge(.active) &'])
     })
   ]
 }

@@ -1,0 +1,98 @@
+<%#
+# Select Form Partial
+
+This partial renders a selectable text attribute,
+to be displayed on a resource's edit form page.
+
+## Local variables:
+
+- `f`:
+  A Rails form generator, used to help create the appropriate input fields.
+- `field`:
+  An instance of [Administrate::Field::Select][1].
+  A wrapper around the attribute pulled from the database.
+
+[1]: http://www.rubydoc.info/gems/administrate/Administrate/Field/Select
+%>
+
+<div class="form-group"
+     id="<%= field_id(form.object_name, field.attribute, :container) %>"
+     data-controller="select change-callback"
+     data-select-hide-class="hidden"
+     data-select-highlight-class="highlight"
+     data-select-chose-class="chosen"
+     data-select-empty-class="text-gray-500"
+     data-select-index-value="<%= option_index %>"
+     data-change-callback-url-value="<%= change_callback_url %>"
+     data-change-callback-param-value="<%= change_callback_param %>">
+  <%= form.label field.attribute %>
+
+  <div class="mt-1 relative rounded-md shadow-sm">
+    <%= form.hidden_field field.attribute, value: field.data,
+                       'data-select-target': 'input', 'data-action': 'change->change-callback#propagate:stop:prevent' %>
+
+    <button type="button"
+            id="<%= field_id(form.object_name, field.attribute, :btn) %>"
+            class="relative w-full cursor-default rounded-md border border-gray-300 bg-white py-2 pl-3 pr-10 text-left shadow-sm focus:border-primary-500 focus:outline-none focus:ring-1 focus:ring-primary-500 sm:text-sm"
+            data-select-target="button"
+            data-action="click->select#show:stop:prevent"
+            aria-haspopup="listbox">
+      <span class="block truncate <%= "text-gray-500" unless field.data %>" data-select-target="label">
+        <%= option_label %>
+      </span>
+      <span class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
+        <%= inline_svg_tag 'heroicons/24/solid/chevron-up-down.svg', class: 'h-5 w-5 text-gray-400' %>
+      </span>
+
+      <% if field.error? %>
+        <div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
+          <%= inline_svg_tag 'heroicons/24/solid/exclamation-circle.svg', class: 'h-5 w-5 text-red-500' %>
+        </div>
+      <% end %>
+    </button>
+
+    <ul class="hidden absolute z-20 mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm"
+        id="<%= field_id(form.object_name, field.attribute, :collection) %>"
+        data-controller="transition"
+        data-transition-leave-active="transition ease-in duration-100"
+        data-transition-leave-from="opacity-100"
+        data-transition-leave-to="opacity-0"
+        data-select-target="dropdown"
+        data-action="click@window->select#hide
+                      keydown.enter->select#choseCurrent:prevent keydown.space->select#chooseCurrent:prevent
+                      keydown.up->select#scrollUp:prevent keydown.down->select#scrollDown:prevent
+                      keydown.esc->select#hide"
+        tabindex="0"
+        role="listbox">
+      <% collection.each_with_index do |option, index| %>
+        <% if option.is_a? Array %>
+          <% label, value = option %>
+        <% else %>
+          <% label = value = option.to_s %>
+        <% end %>
+
+        <li class="<%= 'chosen' if value == field.data %> text-gray-900 highlight:text-white highlight:bg-primary-600 relative cursor-default select-none py-2 pl-3 pr-9"
+            role="option"
+            data-selected-index="<%= index %>"
+            data-select-target="option"
+            data-select-index-param="<%= index %>"
+            data-select-value-param="<%= value %>"
+            data-select-label-param="<%= label %>"
+            data-action="click->select#chose:stop:prevent">
+
+          <span class="font-normal chosen:font-semibold block truncate">
+            <%= label %>
+          </span>
+
+          <span class="hidden chosen:inline-flex highlight:text-white text-primary-600 absolute inset-y-0 right-0 items-center pr-4">
+            <%= inline_svg_tag 'heroicons/24/solid/check.svg', class: 'h-5 w-5' %>
+          </span>
+        </li>
+      <% end %>
+
+    </ul>
+  </div>
+  
+  <%= form.hint field.attribute %>
+  <%= form.error_message field.attribute %>
+</div>

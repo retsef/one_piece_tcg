@@ -1,0 +1,34 @@
+<%#
+# HasOne Form Partial
+
+This partial renders an input element for has_one relationships.
+
+The form will be rendered as nested_from to parent relationship.
+
+## Local variables:
+
+- `f`:
+  A Rails form generator, used to help create the appropriate input fields.
+- `field`:
+  An instance of [Administrate::Field::HasOne][1].
+  A wrapper around the has_one relationship pulled from the database.
+
+[1]: http://www.rubydoc.info/gems/administrate/Administrate/Field/HasOne
+%>
+
+<% form.fields_for field.attribute, data do |has_one_f| %>
+  <fieldset class="mt-4 mb-2 field-unit--nested">
+    <legend class="text-lg font-semibold text-gray-900">
+      <%= form.translation(field.attribute) %>
+    </legend>
+
+    <div class="mt-4 grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-12">
+      <% field.nested_fields_for_builder(has_one_f).each do |attribute| -%>
+        <div class="sm:col-span-<%= attribute.options.dig(:col_span, field.page) || 12 %>
+                    field-unit field-unit--<%= attribute.html_class %> field-unit--<%= attribute.required? ? "required" : "optional" %>">
+          <%= render_field attribute, form: has_one_f %>
+        </div>
+      <% end -%>
+    </div>
+  </fieldset>
+<% end %>

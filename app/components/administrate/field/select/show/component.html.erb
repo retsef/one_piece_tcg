@@ -1,0 +1,20 @@
+<%#
+# Select Show Partial
+
+This partial renders a selectable text attribute,
+to be displayed on a resource's show page.
+
+## Local variables:
+
+- `field`:
+  An instance of [Administrate::Field::Select][1].
+  A wrapper around the attribute pulled from the database.
+
+[1]: http://www.rubydoc.info/gems/administrate/Administrate/Field/Select
+%>
+
+<% if option_index.zero? %>
+  <span class="italic"><%= t('helpers.select.empty') %></span>
+<% else %>
+  <%= option_label %>
+<% end %>

@@ -1,0 +1,37 @@
+# card_effect_grammar.treetop
+# You can use a .tt extension instead if you wish
+class Card
+	grammar Effect
+		rule query
+			(qualifier / sentence / divider / dot)* <ShallowParsedQuery>
+		end
+
+		rule keyword
+			[a-zA-Z]+ space? <TermNode>
+		end
+
+		rule integer
+			[0-9]+ <IntegerNode>
+		end
+
+		rule space
+			[ \t]+
+		end
+
+		rule divider
+			[ \:]+
+		end
+
+		rule dot
+			'.'+
+		end
+
+		rule qualifier
+			space? '[' (keyword / keyword divider space? keyword) ']' space? <QualifierNode>
+		end
+
+		rule sentence
+			(keyword / integer)+ <SentenceNode>
+		end
+	end
+end

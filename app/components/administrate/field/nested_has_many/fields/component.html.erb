@@ -1,0 +1,25 @@
+<div class="nested-fields sm:col-span-6" data-new-record=<%= form.object.new_record?%>>
+  <div class="grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-12">
+    <% field.nested_fields_for_builder(form).each do |attribute| -%>
+      <% col_span = attribute.options.dig(:col_span, field.page) || 12 %>
+      <div class="sm:col-span-<%= col_span %>
+                  <%= 'hidden' if col_span == 0 || attribute.hidden? %>
+                  field-unit field-unit--<%= attribute.html_class %> field-unit--<%= attribute.required? ? "required" : "optional" %>">
+        <%= render_field attribute, form: form %>
+      </div>
+    <% end -%>
+  </div>
+
+  <% if field.allow_destroy? %>
+    <%= link_to("#",
+                class: 'text-sm font-medium text-red-600 hover:text-red-500',
+                data: { action: "click->nested-form#remove_association:prevent" }) do %>
+      <span aria-hidden="true">
+        <%= inline_svg 'heroicons/24/solid/trash.svg', class: 'h-4 w-4 inline-block' %>
+      </span>
+      <%= I18n.t("#{namespace}.fields.nested_has_many.remove",
+               resource: field.associated_class.model_name.human) %>
+    <% end %>
+    <%= form.hidden_field :_destroy %>
+  <% end %>
+</div>

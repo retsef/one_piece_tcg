@@ -1,0 +1,60 @@
+<%#
+# HasMany Show Partial
+
+This partial renders a has_many relationship,
+to be displayed on a resource's show page.
+
+By default, the relationship is rendered
+as a table of the first few associated resources.
+The columns of the table are taken
+from the associated resource class's dashboard.
+
+## Local variables:
+
+- `field`:
+  An instance of [Administrate::Field::HasMany][1].
+  Contains methods to help display a table of associated resources.
+
+[1]: http://www.rubydoc.info/gems/administrate/Administrate/Field/HasMany
+%>
+
+<section class="inline-block min-w-full">
+  <div class="mb-4 mt-6 <%= 'hidden' if hide_label? %>">
+    <% display_associated_resource = field.human_name %>
+
+    <h3 class="text-lg font-medium leading-6 text-gray-900">
+      <%= display_associated_resource %>
+    </h3>
+    <p class="max-w-2xl text-sm text-gray-500">
+      <%= t('.label', name: display_associated_resource,
+            default: t("#{namespace}.actions.index_resources", name: display_associated_resource)
+          ) %>
+    </p>
+  </div>
+
+  <turbo-frame id="index_<%= field.name %>" class="overflow-hidden">
+    <% if field.resources.empty? %>
+      <!-- Collection Empty -->
+      <%= render Administrate::Field::HasMany::CollectionEmpty::Component.new(
+        collection_presenter: field.associated_collection(order),
+        collection_field_name: field.name,
+        page: page,
+        resources: field.resources(page_number, order),
+        table_title: field.name
+      ) %>
+    <% else %>
+      <!-- Collection Body -->
+      <%= render(
+        "collection",
+        collection_presenter: field.associated_collection(order),
+        collection_field_name: field.name,
+        page: page,
+        resources: field.resources(page_number, order),
+        table_title: field.name
+      ) %>
+
+      <!-- Collection Footer -->
+      <%= render Admin::Field::HasMany::Collection::Pagination::Component.new(paginate_info: field.paginate_info) if field.more_than_limit? %>
+    <% end %>
+  </turbo-frame>
+</section>

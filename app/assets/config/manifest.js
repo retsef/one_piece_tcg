@@ -5,4 +5,4 @@
 //= link_tree ../../../vendor/javascript .js
 //= link_tree ../builds
 
-//= link_tree ../../node_modules/heroicons/24
+//= link_tree ../../node_modules

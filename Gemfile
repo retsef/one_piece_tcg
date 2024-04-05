@@ -57,19 +57,9 @@ group :search, :default do
   gem 'ransack'
 end
 
-group :admin, :default do
-  gem 'administrate', github: 'retsef/administrate'
-  gem 'administrate_batch_actions'
-  # gem 'administrate_exportable'
-  # gem 'administrate_ransack'
-
-  # gem 'administrate-field-active_storage'
-  # gem 'administrate-field-hidden'
-end
-
 group :auth, :default do
   gem 'sorcery'
-  gem 'sorcery-jwt'
+  # gem 'sorcery-jwt'
 
   gem 'pwned'
   gem 'rotp'
@@ -83,6 +73,8 @@ end
 gem 'downstream', '~> 1.0'
 
 gem 'clowne'
+
+gem 'treetop'
 
 group :tenant, :default do
   # gem 'acts_as_tenant'
@@ -102,6 +94,8 @@ group :utils, :default do
   gem 'local_time'
   gem 'carmen'
   gem 'barby'
+
+  gem 'nokogiri'
 end
 
 # Use Active Storage variants [https://guides.rubyonrails.org/active_storage_overview.html#transforming-images]

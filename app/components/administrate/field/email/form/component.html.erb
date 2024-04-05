@@ -1,0 +1,39 @@
+<%#
+# String Form Partial
+
+This partial renders an input element for a string attribute.
+By default, the input is a text field.
+
+## Local variables:
+
+- `f`:
+  A Rails form generator, used to help create the appropriate input fields.
+- `field`:
+  An instance of [Administrate::Field::String][1].
+  A wrapper around the String pulled from the database.
+
+[1]: http://www.rubydoc.info/gems/administrate/Administrate/Field/String
+%>
+
+<div class="form-group" data-controller="change-callback"
+     data-change-callback-url-value="<%= change_callback_url %>"
+     data-change-callback-param-value="<%= change_callback_param %>">
+  <%= form.label field.attribute %>
+
+  <div class="mt-1 relative rounded-md shadow-sm">
+    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+      <%= inline_svg_tag 'heroicons/24/outline/envelope.svg', class: 'h-5 w-5 text-gray-400' %>
+    </div>
+
+    <%= form.email_field field.attribute, class: 'pl-10', 'data-action': 'change-callback#propagate:stop:prevent' %>
+
+    <% if field.error? %>
+      <div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
+        <%= inline_svg_tag 'heroicons/24/solid/exclamation-circle.svg', class: 'h-5 w-5 text-red-500' %>
+      </div>
+    <% end %>
+  </div>
+
+  <%= form.hint field.attribute %>
+  <%= form.error_message field.attribute %>
+</div>

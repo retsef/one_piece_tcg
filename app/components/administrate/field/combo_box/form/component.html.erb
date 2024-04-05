@@ -1,0 +1,108 @@
+<%#
+# Select Form Partial
+
+This partial renders a selectable text attribute,
+to be displayed on a resource's edit form page.
+
+## Local variables:
+
+- `f`:
+  A Rails form generator, used to help create the appropriate input fields.
+- `field`:
+  An instance of [Administrate::Field::Select][1].
+  A wrapper around the attribute pulled from the database.
+
+[1]: http://www.rubydoc.info/gems/administrate/Administrate/Field/Select
+%>
+
+<div class="form-group"
+     id="<%= field_id(form.object_name, field.attribute, :container) %>"
+     data-controller="combobox change-callback"
+     data-combobox-hide-class="hidden"
+     data-combobox-highlight-class="highlight"
+     data-combobox-chose-class="chosen"
+     data-combobox-index-value="<%= option_index %>"
+     data-change-callback-url-value="<%= change_callback_url %>"
+     data-change-callback-param-value="<%= change_callback_param %>">
+  <%= form.label field.attribute %>
+
+  <div class="mt-1 relative rounded-md shadow-sm">
+    <%= form.hidden_field field.attribute, value: field.data,
+                          'data-combobox-target': 'input',
+                          'data-action': 'change->change-callback#propagate:stop:prevent' %>
+
+    <input type="text"
+           id="<%= field_id(form.object_name, field.attribute, :combobox) %>"
+           value="<%= option_label %>"
+           data-controller="input-detector"
+           data-combobox-target="combobox"
+           data-action="click->combobox#show:stop:prevent
+                      input->input-detector#digest:stop:prevent
+                      input:keyboard->combobox#filter:stop:prevent
+                      input:scanner->combobox#fill:stop:prevent
+                      keydown.enter->combobox#chooseCurrent:stop:prevent
+                      keydown.up->combobox#scrollUp:prevent
+                      keydown.down->combobox#scrollDown:prevent"
+           class="w-full rounded-md border-0 bg-white py-1.5 pl-3 pr-12 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-primary-600 sm:text-sm sm:leading-6"
+           role="combobox" aria-controls="options" aria-expanded="false">
+
+    <button type="button"
+            id="<%= field_id(form.object_name, field.attribute, :btn) %>"
+            data-combobox-target="button"
+            class="absolute inset-y-0 right-0 flex items-center rounded-r-md px-2 focus:outline-none">
+      <span class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
+        <%= inline_svg_tag 'heroicons/24/solid/chevron-up-down.svg', class: 'h-5 w-5 text-gray-400' %>
+      </span>
+
+      <% if field.error? %>
+        <div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
+          <%= inline_svg_tag 'heroicons/24/solid/exclamation-circle.svg', class: 'h-5 w-5 text-red-500' %>
+        </div>
+      <% end %>
+    </button>
+
+    <ul class="hidden absolute z-20 mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm"
+        id="<%= field_id(form.object_name, field.attribute, :collection) %>"
+        data-controller="transition"
+        data-transition-leave-active="transition ease-in duration-100"
+        data-transition-leave-from="opacity-100"
+        data-transition-leave-to="opacity-0"
+        data-combobox-target="dropdown"
+        data-action="click@window->combobox#hide
+                      keydown.enter->combobox#choseCurrent:prevent
+                      keydown.up->combobox#scrollUp:prevent keydown.down->combobox#scrollDown:prevent
+                      keydown.esc->combobox#hide"
+        tabindex="0"
+        role="listbox">
+      <% collection.each_with_index do |option, index| %>
+        <% if option.is_a? Array %>
+          <% label, value = option %>
+        <% else %>
+          <% label = value = option.to_s %>
+        <% end %>
+
+        <li class="<%= 'chosen' if value == field.data %> text-gray-900 highlight:text-white highlight:bg-primary-600 relative cursor-default select-none py-2 pl-3 pr-9"
+            role="option"
+            data-selected-index="<%= index %>"
+            data-combobox-target="option"
+            data-combobox-index-param="<%= index %>"
+            data-combobox-value-param="<%= value %>"
+            data-combobox-label-param="<%= label %>"
+            data-action="click->combobox#chose:stop:prevent">
+
+          <span class="font-normal chosen:font-semibold block truncate">
+            <%= label %>
+          </span>
+
+          <span class="hidden chosen:inline-flex highlight:text-white text-primary-600 absolute inset-y-0 right-0 items-center pr-4">
+            <%= inline_svg_tag 'heroicons/24/solid/check.svg', class: 'h-5 w-5' %>
+          </span>
+        </li>
+      <% end %>
+
+    </ul>
+  </div>
+  
+  <%= form.hint field.attribute %>
+  <%= form.error_message field.attribute %>
+</div>

@@ -1,0 +1,50 @@
+<%#
+# HasOne Form Partial
+
+This partial renders an input element for has_one relationships.
+
+The form will be rendered as nested_from to parent relationship.
+
+## Local variables:
+
+- `f`:
+  A Rails form generator, used to help create the appropriate input fields.
+- `field`:
+  An instance of [Administrate::Field::HasOne][1].
+  A wrapper around the has_one relationship pulled from the database.
+
+[1]: http://www.rubydoc.info/gems/administrate/Administrate/Field/HasOne
+%>
+
+<% form.fields_for field.attribute, data do |has_one_f| %>
+  <fieldset class="mt-4 mb-2 field-unit--nested">
+    <legend class="text-lg font-semibold text-gray-900 <%= hide_label? ? 'hidden' : 'mb-4' %>">
+      <%= form.translation(field.attribute) %>
+    </legend>
+
+    <div class="grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-12">
+      <% field.nested_fields_for_builder(has_one_f).each do |attribute| %>
+        <%- attr_id = :"#{field.name}_#{attribute.name}_attribute" %>
+
+        <div class="sm:col-span-<%= attribute.options.dig(:col_span, field.page) || 12 %>
+                    field-unit field-unit--<%= attribute.html_class %>
+                    field-unit--<%= attribute.required? ? "required" : "optional" %>">
+
+          <!-- Content -->
+          <% content_for(attr_id) do %>
+            <%= render_field attribute, form: has_one_f %>
+          <% end %>
+
+          <% editable = attribute.editable_inline? && authorized_action?(field.resource) %>
+          <%= content_for(attr_id) unless editable %>
+
+          <%= render Admin::Field::Inline::Show::Component.new(form: has_one_f, attribute: attribute.name, frame_prefix: field.name) do |component| %>
+            <% component.with_body do %>
+              <%= content_for(attr_id) %>
+            <% end %>
+          <% end if editable %>
+        </div>
+      <% end %>
+    </div>
+  </fieldset>
+<% end %>

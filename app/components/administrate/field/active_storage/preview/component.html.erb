@@ -1,0 +1,37 @@
+<div class="as-field as-field-<%= action_name %>" id="as-field-<%= attachment.id %>">
+  <% if attachment.image? %>
+    <% if attachment.variable? %>
+      <%= image_tag(field.variant(attachment, preview_options),
+                    class: "as-field-image") %>
+    <% else %>
+      <%= image_tag(field.url(attachment),
+                    class: "as-field-image") %>
+    <% end %>
+
+  <% elsif attachment.video? %>
+    <% if attachment.previewable? %>
+      <%= video_tag(field.url(attachment),
+                    poster: field.preview(attachment, preview_options),
+                    controls: true, autobuffer: true,
+                    class: "as-field-video",
+                    id: "as-field-video-#{attachment.id}") %>
+    <% else %>
+      <%= video_tag(field.url(attachment),
+                    controls: true, autobuffer: true,
+                    class: "as-field-video",
+                    id: "as-field-video-#{attachment.id}") %>
+    <% end %>
+
+  <% elsif attachment.audio? %>
+    <%= audio_tag(field.url(attachment),
+                  autoplay: false, controls: true,
+                  class: "as-field-audio") %>
+
+  <% elsif attachment.previewable? %>
+    <%= image_tag(field.preview(attachment, preview_options),
+                  class: "as-field-audio") %>
+
+  <% else %>
+    <%= attachment.filename %>
+  <% end %>
+</div>

@@ -1,0 +1,26 @@
+<%#
+# Image Show Partial
+
+This partial renders an image attribute,
+to be displayed on a resource's show page.
+
+By default, the attribute is rendered as an image tag.
+
+## Local variables:
+
+- `field`:
+  An instance of [Administrate::Field::Image][1].
+  A wrapper around the image url pulled from the database.
+
+[1]: http://www.rubydoc.info/gems/administrate/Administrate/Field/Image
+%>
+
+<% if field.attached? %>
+  <% field.attachments.each do |attachment| %>
+    <div class="attachments-listing">
+      <%= render Administrate::Field::ActiveStorage::Item::Component.new(field:, attachment:, preview_options: field.show_preview_options) %>
+    </div>
+  <% end %>
+<% else %>
+  <%= I18n.t("fields.active_storage.no_attachment", default: 'No attachment') %>
+<% end %>

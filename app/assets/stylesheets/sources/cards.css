@@ -1,0 +1,205 @@
+/** https://codepen.io/jackrugile/pen/WZGeGM/ */
+
+.cards {
+  @apply bottom-0 flex h-[150px] justify-center fixed left-0 right-0;
+}
+
+.card {
+  @apply h-[150px] m-0 -m-[25px] relative w-[100px];
+}
+
+.card:after {
+  @apply absolute bg-white bottom-0 content-[''] left-[-60px] right-[-60px] top-[0px] z-[10];
+}
+
+.card-face {
+  @apply absolute bg-white bottom-0 left-0 right-0 top-0 transform duration-[800ms] out-expo;
+}
+
+.card-face:after {
+  @apply absolute bg-white bottom-0 content-[''] left-0 right-0 top-0 opacity-0 animate-none;
+}
+
+.card-label {
+  @apply font-bold pt-[15px] pl-[15px];
+  font-family: 'helvetica neue', helvetica, arial, sans-serif;
+  font-size: 24px;
+  letter-spacing: -0.025em;
+}
+
+/* Hover */
+.card:hover .card-face {
+  @apply z-[5] duration-0 translate-y-[-100px] rotate-0 scale-[2];
+}
+
+.card:hover .card-face:after {
+  @apply animate-fade duration-250ms ease-out forwards;
+}
+
+.card:hover:after {
+  @apply top-[-175px];
+}
+
+/* First card */
+.card:nth-child(1) .card-face {
+  background: linear-gradient(-135deg, #f99, #da0b0b);
+  box-shadow: -5px 5px 5px rgba(0, 0, 0, 0.15), inset 0 0 0 2px rgba(255, 153, 153, 0.75);
+  transform: translateY(45px) rotate(-28.125deg);
+}
+
+.card:nth-child(1) .card-face .card-label {
+  color: #db0000;
+  text-shadow: -0.025em 0.025em 0 #ff8080;
+}
+
+.card:nth-child(1):hover .card-face {
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4), inset 0 0 0 2px rgba(255, 153, 153, 0.75);
+  transform: translateY(-100px) rotate(0deg) scale(2);
+}
+
+/* Second card */
+.card:nth-child(2) .card-face {
+  background: linear-gradient(-135deg, #ff99d6, #da0b87);
+  box-shadow: -5px 5px 5px rgba(0, 0, 0, 0.15), inset 0 0 0 2px rgba(255, 153, 214, 0.75);
+  transform: translateY(35px) rotate(-21.875deg);
+}
+
+.card:nth-child(2) .card-face .card-label {
+  color: #db0084;
+  text-shadow: -0.025em 0.025em 0 #ff80cc;
+}
+
+.card:nth-child(2):hover .card-face {
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4), inset 0 0 0 2px rgba(255, 153, 214, 0.75);
+}
+
+.card:nth-child(3) .card-face {
+  background: linear-gradient(-135deg, #eb99ff, #b10bda);
+  box-shadow: -5px 5px 5px rgba(0, 0, 0, 0.15), inset 0 0 0 2px rgba(235, 153, 255, 0.75);
+  transform: translateY(25px) rotate(-15.625deg);
+}
+
+.card:nth-child(3) .card-face .card-label {
+  color: #af00db;
+  text-shadow: -0.025em 0.025em 0 #e680ff;
+}
+
+.card:nth-child(3):hover .card-face {
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4), inset 0 0 0 2px rgba(235, 153, 255, 0.75);
+}
+
+.card:nth-child(4) .card-face {
+  background: linear-gradient(-135deg, #ad99ff, #350bda);
+  box-shadow: -5px 5px 5px rgba(0, 0, 0, 0.15), inset 0 0 0 2px rgba(173, 153, 255, 0.75);
+  transform: translateY(15px) rotate(-9.375deg);
+}
+
+.card:nth-child(4) .card-face .card-label {
+  color: #2c00db;
+  text-shadow: -0.025em 0.025em 0 #9980ff;
+}
+
+.card:nth-child(4):hover .card-face {
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4), inset 0 0 0 2px rgba(173, 153, 255, 0.75);
+}
+
+.card:nth-child(5) .card-face {
+  background: linear-gradient(-135deg, #99c2ff, #0b5eda);
+  box-shadow: -5px 5px 5px rgba(0, 0, 0, 0.15), inset 0 0 0 2px rgba(153, 194, 255, 0.75);
+  transform: translateY(5px) rotate(-3.125deg);
+}
+
+.card:nth-child(5) .card-face .card-label {
+  color: #0058db;
+  text-shadow: -0.025em 0.025em 0 #80b3ff;
+}
+
+.card:nth-child(5):hover .card-face {
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4), inset 0 0 0 2px rgba(153, 194, 255, 0.75);
+}
+
+.card:nth-child(6) .card-face {
+  background: linear-gradient(-135deg, #9ff, #0bdada);
+  box-shadow: -5px 5px 5px rgba(0, 0, 0, 0.15), inset 0 0 0 2px rgba(153, 255, 255, 0.75);
+  transform: translateY(5px) rotate(3.125deg);
+}
+
+.card:nth-child(6) .card-face .card-label {
+  color: #00dbdb;
+  text-shadow: -0.025em 0.025em 0 #80ffff;
+}
+
+.card:nth-child(6):hover .card-face {
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4), inset 0 0 0 2px rgba(153, 255, 255, 0.75);
+}
+
+.card:nth-child(7) .card-face {
+  background: linear-gradient(-135deg, #99ffc2, #0bda5e);
+  box-shadow: -5px 5px 5px rgba(0, 0, 0, 0.15), inset 0 0 0 2px rgba(153, 255, 194, 0.75);
+  transform: translateY(15px) rotate(9.375deg);
+}
+
+.card:nth-child(7) .card-face .card-label {
+  color: #00db58;
+  text-shadow: -0.025em 0.025em 0 #80ffb3;
+}
+
+.card:nth-child(7):hover .card-face {
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4), inset 0 0 0 2px rgba(153, 255, 194, 0.75);
+}
+
+.card:nth-child(8) .card-face {
+  background: linear-gradient(-135deg, #acff99, #31da0b);
+  box-shadow: -5px 5px 5px rgba(0, 0, 0, 0.15), inset 0 0 0 2px rgba(172, 255, 153, 0.75);
+  transform: translateY(25px) rotate(15.625deg);
+}
+
+.card:nth-child(8) .card-face .card-label {
+  color: #28db00;
+  text-shadow: -0.025em 0.025em 0 #97ff80;
+}
+
+.card:nth-child(8):hover .card-face {
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4), inset 0 0 0 2px rgba(172, 255, 153, 0.75);
+}
+
+.card:nth-child(9) .card-face {
+  background: linear-gradient(-135deg, #ebff99, #b1da0b);
+  box-shadow: -5px 5px 5px rgba(0, 0, 0, 0.15), inset 0 0 0 2px rgba(235, 255, 153, 0.75);
+  transform: translateY(35px) rotate(21.875deg);
+}
+
+.card:nth-child(9) .card-face .card-label {
+  color: #afdb00;
+  text-shadow: -0.025em 0.025em 0 #e6ff80;
+}
+
+.card:nth-child(9):hover .card-face {
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4), inset 0 0 0 2px rgba(235, 255, 153, 0.75);
+}
+
+.card:nth-child(10) .card-face {
+  background: linear-gradient(-135deg, #ffd699, #da870b);
+  box-shadow: -5px 5px 5px rgba(0, 0, 0, 0.15), inset 0 0 0 2px rgba(255, 214, 153, 0.75);
+  transform: translateY(45px) rotate(28.125deg);
+}
+
+.card:nth-child(10) .card-face .card-label {
+  color: #db8400;
+  text-shadow: -0.025em 0.025em 0 #ffcc80;
+}
+
+.card:nth-child(10):hover .card-face {
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4), inset 0 0 0 2px rgba(255, 214, 153, 0.75);
+}
+
+@keyframes fade {
+  0% {
+    opacity: 0.9;
+    transform: scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1.15);
+  }
+}

@@ -1,0 +1,65 @@
+<%#
+# HasOne Show Partial
+
+This partial renders a has_one relationship,
+to be displayed on a resource's show page.
+
+All show page attributes of has_one relationship would be rendered
+
+## Local variables:
+
+- `field`:
+  An instance of [Administrate::Field::HasOne][1].
+  A wrapper around the has_one relationship pulled from the database.
+
+[1]: http://www.rubydoc.info/gems/administrate/Administrate/Field/HasOne
+%>
+
+<fieldset class="attribute--nested border-gray-200">
+  <div class="mb-4 mt-6 <%= 'hidden' if hide_label? %>">
+    <% display_associated_resource = field.human_name %>
+
+    <h3 class="text-lg font-medium leading-6 text-gray-900">
+      <%= display_associated_resource %>
+    </h3>
+    <p class="max-w-2xl text-sm text-gray-500">
+      <%= link_to_if(field.linkable? && accessible_action?(field.data, :show),
+                     t('.label', name: display_associated_resource,
+                       default: t("#{namespace}.actions.show_resource", name: display_associated_resource)
+                     ),
+                     try_polymorphic_path([namespace, field.data])
+          ) %>
+    </p>
+  </div>
+
+  <dl class="grid grid-cols-1 sm:grid-cols-12 gap-x-4 gap-y-6">
+    <% field.nested_show.attributes.each do |attribute| %>
+      <%- attr_id = "#{field.name}_#{attribute.name}_attribute".to_sym %>
+
+      <div class="sm:col-span-<%= attribute.options.dig(:col_span, :show) || 12 %> sm:px-0">
+        <dt class="text-sm font-medium text-gray-500 attribute-label" id="<%= attribute.name %>">
+          <%= t(
+            "helpers.label.#{resource_name}.#{attribute.name}",
+            default: field.nested_show.resource.class.human_attribute_name(attribute.name),
+          ) %>
+        </dt>
+
+        <!-- Content -->
+        <%- content_for(attr_id) do %>
+          <span class="flex-grow"><%= render_field attribute, page: page %></span>
+        <% end %>
+
+        <dd class="mt-1 text-sm text-gray-900 flex sm:mt-0 attribute-data attribute-data--<%=attribute.html_class%>">
+          <% editable = attribute.editable_inline? && authorized_action?(page.resource) %>
+          <%= content_for(attr_id) unless editable %>
+
+          <%= render Admin::Field::Inline::Edit::Component.new(resource: page.resource, attribute: attribute.name, frame_prefix: field.name) do |component| %>
+            <% component.with_body do %>
+              <%= content_for(attr_id) %>
+            <% end %>
+          <% end if editable %>
+        </dd>
+      </div>
+    <% end -%>
+  </dl>
+</fieldset>

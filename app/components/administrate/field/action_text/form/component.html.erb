@@ -1,0 +1,24 @@
+<%#
+# Text Form Partial
+
+This partial renders an input element for text attributes.
+By default, the input is a text field for the image's URL.
+
+## Local variables:
+
+- `f`:
+  A Rails form generator, used to help create the appropriate input fields.
+- `field`:
+  An instance of [Administrate::Field::Text][1].
+  A wrapper around the text url pulled from the database.
+
+[1]: http://www.rubydoc.info/gems/administrate/Administrate/Field/Text
+%>
+
+
+<div class="form-group">
+  <%= form.label field.attribute %>
+  <%= form.hint field.attribute %>
+  <%= form.rich_text_area field.attribute %>
+  <%= form.error_message field.attribute %>
+</div>

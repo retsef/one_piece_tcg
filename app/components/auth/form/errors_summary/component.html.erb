@@ -1,0 +1,21 @@
+<div id="error_explanation" class="rounded-md bg-red-50 p-4 mt-4" role="alert">
+  <div class="flex">
+    <div class="flex-shrink-0">
+      <%= inline_svg_tag 'heroicons/24/solid/x-circle.svg', class: 'h-5 w-5 text-red-400' %>
+    </div>
+    <div class="ml-3">
+      <h3 class="text-sm font-medium text-red-800 error_heading">
+        <%= t('admin.form.errors.header', count: errors_count, resource_name: resource_name) %>
+      </h3>
+      <div class="mt-2 text-sm text-red-700">
+        <ul role="list" class="list-disc pl-5 space-y-1">
+          <% messages.each do |message| %>
+            <li class="error-message">
+              <%= message %>
+            </li>
+          <% end %>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>

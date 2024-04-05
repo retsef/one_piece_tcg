@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_01_20_171954) do
+ActiveRecord::Schema[7.1].define(version: 2024_03_31_134213) do
   create_table "action_text_rich_texts", force: :cascade do |t|
     t.string "name", null: false
     t.text "body"
@@ -49,6 +49,57 @@ ActiveRecord::Schema[7.1].define(version: 2024_01_20_171954) do
     t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
   end
 
+  create_table "card_decks", force: :cascade do |t|
+    t.integer "card_id", null: false
+    t.integer "deck_id", null: false
+    t.integer "quantity", default: 1, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["card_id"], name: "index_card_decks_on_card_id"
+    t.index ["deck_id"], name: "index_card_decks_on_deck_id"
+  end
+
+  create_table "card_families", force: :cascade do |t|
+    t.integer "card_id", null: false
+    t.integer "family_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["card_id"], name: "index_card_families_on_card_id"
+    t.index ["family_id"], name: "index_card_families_on_family_id"
+  end
+
+  create_table "cards", force: :cascade do |t|
+    t.string "name"
+    t.string "type"
+    t.string "code"
+    t.string "rarity"
+    t.text "colors"
+    t.integer "cost", default: 0
+    t.integer "power", default: 0
+    t.integer "counter", default: 0
+    t.text "elements"
+    t.text "effect"
+    t.text "trigger"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "decks", force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "families", force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "card_decks", "cards"
+  add_foreign_key "card_decks", "decks"
+  add_foreign_key "card_families", "cards"
+  add_foreign_key "card_families", "families"
 end
