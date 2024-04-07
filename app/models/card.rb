@@ -14,11 +14,15 @@ class Card < ApplicationRecord
     promo: 'P'
   }
 
-  has_one_attached :front
-  has_one_attached :back
-
   validates :name, :colors, :attributes, presence: true
 
+  scope :with_trigger, -> { where.not(trigger: nil) }
+  scope :with_effect, -> { where.not(effect: nil) }
+
+  # has_one_attached :front
+  # has_one_attached :back
+
+  # TODO: maybe download the images from the official website to optimize the load
   def image_url
     "https://en.onepiece-cardgame.com/images/cardlist/card/#{code}.png"
   end
@@ -26,4 +30,7 @@ class Card < ApplicationRecord
   def effect_graph
     Card::Effect.parse(effect)
   end
+
+  searchable_by :name, :code, :rarity
+  searchable_along :families
 end

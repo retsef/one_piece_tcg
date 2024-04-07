@@ -4,7 +4,25 @@ Rails.application.routes.draw do
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
   # Can be used by load balancers and uptime monitors to verify that the app is live.
   get "up" => "rails/health#show", as: :rails_health_check
+  mount ActionCable.server => '/cable'
+
+  draw :auth
 
   # Defines the root path route ("/")
   # root "posts#index"
+
+  get 'manifest', to: 'pwa#manifest'
+
+  with_options via: :all do
+    match '/404', to: 'errors#not_found'
+    match '/422', to: 'errors#unprocessable'
+    match '/426', to: 'errors#upgrade_required'
+    match '/500', to: 'errors#internal_server_error'
+    match '/503', to: 'errors#service_unavailable'
+  end
+
+  resources :user_feedbacks, only: %i[new create]
+  post '/crash_report', to: 'errors#crash_report'
+
+  direct(:producer) { 'https://en.onepiece-cardgame.com' }
 end

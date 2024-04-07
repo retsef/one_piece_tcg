@@ -9,5 +9,5 @@ Rails.application.config.permissions_policy do |policy|
   policy.microphone  :none
   policy.usb         :self
   policy.fullscreen  :self
-#   policy.payment     :self, "https://app.tenutobene.it"
+#   policy.payment     :self, "https://app.onepiecetcg-live.it"
 end

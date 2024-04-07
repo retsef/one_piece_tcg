@@ -1,0 +1,22 @@
+<div>
+  <%= inline_svg_tag 'brand_logo.svg', class: 'h-20 w-auto text-primary-500', alt: I18n.t('app.name') %>
+  <h2 class="mt-6 text-3xl font-bold tracking-tight text-gray-900">Recupera la tua password</h2>
+  <p class="mt-2 text-sm text-gray-600">
+    Hai un account? <%= link_to 'Accedi', login_path, class: 'font-medium text-primary-600 hover:text-primary-500' %>
+  </p>
+</div>
+
+<div class="mt-8">
+  <%= form_with url: password_resets_path, method: :post, html: { class: 'space-y-6', 'data-turbo-action': "replace" } do |f| %>
+    <div>
+      <%= f.label :email %>
+      <div class="mt-1">
+        <%= f.text_field :email, type: "email", required: true %>
+      </div>
+    </div>
+
+    <div>
+      <%= f.submit 'Reimposta la mia password', id: :login, 'data-turbo-submits-with': 'Recupero in corso' %>
+    </div>
+  <% end %>
+</div>

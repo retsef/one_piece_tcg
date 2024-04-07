@@ -4,12 +4,13 @@
   <meta charset="utf-8">
     <title><%= application_title %></title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="environment" content="<%= Rails.env %>">
 
     <%= action_cable_meta_tag %>
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
 
-    <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+    <%= stylesheet_link_tag 'application', media: 'all', 'data-turbo-track': 'reload' %>
     <%= javascript_importmap_tags %>
   </head>
 

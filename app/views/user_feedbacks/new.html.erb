@@ -1,0 +1,45 @@
+<%= turbo_frame_tag "form_modal" do %>
+  <div class="relative z-10" role="dialog" aria-modal="true"
+       data-controller="modal-form"
+       data-modal-form-hide-class="hidden"
+       data-modal-form-target="container"
+       data-action="keydown.esc->modal-form#closee:stop:prevent">
+
+    <!-- Background backdrop -->
+    <div class="hidden fixed inset-0 bg-gray-500 bg-opacity-25"
+         id="form_modal_backdrop"
+         data-controller="transition"
+         data-modal-form-target="backdrop"
+         data-transition-initial-value
+         data-transition-enter-active="transition-opacity ease-out duration-300"
+         data-transition-enter-from="opacity-0"
+         data-transition-enter-to="opacity-100"
+         data-transition-leave-active="transition-opacity ease-in duration-200"
+         data-transition-leave-from="opacity-100"
+         data-transition-leave-to="opacity-0"
+         data-action="transition:end-leave->modal-form#remove click->modal-form#close:stop:prevent"></div>
+
+    <!-- Dialog -->
+    <div class="fixed inset-0 z-10 overflow-y-auto"
+         data-action="transition:end-leave->modal-form#hide_container click->modal-form#close:stop:prevent">
+      <div class="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
+
+        <div class="hidden relative transform overflow-hidden rounded-lg bg-white px-4 pb-4 pt-5 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg sm:p-6"
+             id="form_modal_dialog" tabindex="0"
+             data-controller="transition"
+             data-modal-form-target="dialog"
+             data-transition-initial-value
+             data-transition-enter-active="ease-out duration-300"
+             data-transition-enter-from="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+             data-transition-enter-to="opacity-100 translate-y-0 sm:scale-100"
+             data-transition-leave-active="ease-in duration-200"
+             data-transition-leave-from="opacity-100 translate-y-0 sm:scale-100"
+             data-transition-leave-to="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+             data-action="click->modal-form#focus:stop">
+
+          <%= render 'form' %>
+        </div>
+      </div>
+    </div>
+  </div>
+<% end %>

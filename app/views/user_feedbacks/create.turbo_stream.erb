@@ -1,0 +1,7 @@
+<span>&#8203;</span>
+
+<%= render 'admin/base/flashes' %>
+
+<%# turbo_stream.update 'form_modal' %>
+<%= turbo_stream_action_tag :add_css_class, target: "form_modal_dialog", classes: "hidden" %>
+<%= turbo_stream_action_tag :add_css_class, target: "form_modal_backdrop", classes: "hidden" %>

@@ -9,4 +9,6 @@ class Family < ApplicationRecord
   end
 
   validates :name, presence: true, uniqueness: true
+
+  searchable_by :name
 end

@@ -6,5 +6,5 @@ Sentry.init({
   environment: getMetaValue('environment'),
   integrations: [new Sentry.BrowserTracing()],
   tunnel: '/crash_report',
-  tracePropagationTargets: ['localhost', /^https:\/\/tenutobene\.it/]
+  tracePropagationTargets: ['localhost', /^https:\/\/onepiecetcg-live\.it/]
 })
