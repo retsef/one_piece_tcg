@@ -35,8 +35,16 @@ module Card::Trigger
 
   # Main parsed nodes
   class ShallowParsedQuery < GroupNode
+    def cost_node
+      elements[0]
+    end
+
+    def main_node
+      elements[1]
+    end
+
     def actions
-      elements.select { |e| e.class.to_s.include? 'Effect' }
+      (main_node&.elements || []).select { |e| e.class.to_s.include? 'Effect' }
     end
   end
 
@@ -48,6 +56,16 @@ module Card::Trigger
   end
 
   class DrawEffect < GroupNode
+    def count
+      elements.find { |e| e.class.to_s.include? 'Integer' }&.parse
+    end
+
+    def rule
+      return :up_to if elements.any? { |e| e.class.to_s.include? 'UpTo' }
+      return :or_less if elements.any? { |e| e.class.to_s.include? 'OrLess' }
+
+      :exact
+    end
   end
 
   class KOEffect < GroupNode
@@ -85,6 +103,12 @@ module Card::Trigger
     end
   end
 
+  class UpToLiteral < Literal
+  end
+
+  class OrLessLiteral < Literal
+  end
+
   # Parser
   Treetop.load Rails.root.join('lib/card_trigger.treetop').to_s
   @@parser = Card::TriggerParser.new
@@ -97,7 +121,7 @@ module Card::Trigger
     # we need to report a simple error message to help the user
     raise StandardError, "Parse error at index #{@@parser.index}" if tree.nil?
 
-    clean_tree(tree)
+    # clean_tree(tree)
 
     tree
   end

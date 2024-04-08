@@ -39,13 +39,13 @@ class Card::TriggerTest < ActiveSupport::TestCase
   test "parse simple draw trigger effect" do
     parsed = Card::Trigger.parse("Draw 2 cards.")
 
-    assert_not_nil parsed
+    assert_equal 1, parsed.actions.size
   end
 
   test "parse advance draw trigger effect" do
     parsed = Card::Trigger.parse("Draw 2 cards and trash 1 card from your hand.")
 
-    assert_not_nil parsed
+    assert_equal 2, parsed.actions.size
   end
 
   test "parse simple activate trigger effect" do

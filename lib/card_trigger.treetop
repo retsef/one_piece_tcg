@@ -5,7 +5,7 @@ class Card
 	  rule body
 	    activation_cost? (
 				play_sentence /
-				draw_sentence /
+				draw_sentence and_clause? trash_sentence? /
 				activate_sentence /
 				ko_sentence /
 				give_sentence /
@@ -101,11 +101,11 @@ class Card
 		end
 
 		rule owner
-			('owner' / "owner's") space? <TermLiteral>
+			("owner's" / 'owner') space? <TermLiteral>
 		end
 
 		rule card
-			('card' / 'cards' / "card's") space? <TermLiteral>
+			('cards' / "card's" / "card") space? <TermLiteral>
 		end
 
 		rule your_hand
@@ -117,11 +117,11 @@ class Card
 		end
 
 	  rule up_to
-	    'up to' space? <TermLiteral>
+	    'up to' space? <UpToLiteral>
 		end
 
 		rule or_less
-			'or less' space? <TermLiteral>
+			'or less' space? <OrLessLiteral>
 		end
 
 		rule trait
@@ -133,7 +133,7 @@ class Card
 		end
 
 		rule integer
-			[0-9]+ space? <IntegerLiteral>
+			('+' / '-')? [0-9]+ space? <IntegerLiteral>
 		end
 
 		rule dot
