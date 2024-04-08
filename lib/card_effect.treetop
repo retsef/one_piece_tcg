@@ -2,36 +2,87 @@
 # You can use a .tt extension instead if you wish
 class Card
 	grammar Effect
-		rule query
-			(qualifier / sentence / divider / dot)* <ShallowParsedQuery>
-		end
-
-		rule keyword
-			[a-zA-Z]+ space? <TermNode>
-		end
-
-		rule integer
-			[0-9]+ <IntegerNode>
-		end
-
-		rule space
-			[ \t]+
-		end
-
-		rule divider
-			[ \:]+
-		end
-
-		rule dot
-			'.'+
+		rule body
+			'hello'
 		end
 
 		rule qualifier
-			space? '[' (keyword / keyword divider space? keyword) ']' space? <QualifierNode>
+			( trait space trait_description / action space once_per_turn ) space? <QualifierNode>
 		end
 
 		rule sentence
-			(keyword / integer)+ <SentenceNode>
+			( keyword / integer )+ space? <SentenceNode>
+		end
+
+		rule action
+			('[Main]' / '[Activates: Main]' /
+			'[Your Turn]' / '[Opponent\'s Turn]' / '[End of Your Turn]' /
+			'[On Your Opponent\'s Attack]' / '[When Attacking]' /
+			'[On Play]' / '[Counter]') <IdentifierLiteral>
+		end
+
+		rule once_per_turn
+			'[Once Per Turn]' <OncePerTurnLiteral>
+		end
+
+		rule trait
+			('[Blocker]' / '[Rush]' / '[Banish]' / '[Double Attack]') <TraitLiteral>
+		end
+
+		rule trait_description
+			'(' (
+				'This card can attack on the turn in which it is played.' /
+				'After your opponent declares an attack, you may rest this card to make it the new target of the attack.' /
+				'When this card deals damage, the target card is trashed without activating its Trigger.' /
+				'This attack deals 2 damage.'
+			) ')'
+		end
+
+		rule trigger
+		 ( don / sentence )
+		end
+
+		rule don
+			'DON!!' <DonLiteral>
+		end
+
+		rule don_cost
+			'[' ( don 'x' integer ) ']' <DonCostLiteral>
+		end
+
+		rule don_cost_description
+			'(' (
+				'You may rest the specified number of DON!! cards in your cost area.' /
+				'You may return the specified number of DON!! cards from your field to your DON!! deck.'
+			) ')'
+		end
+
+		rule identifier
+			'[' ( keyword ) ']' <IdentifierLiteral>
+		end
+
+		rule target
+			'{' ( keyword ) '}' <TargetLiteral>
+		end
+
+		rule keyword
+			[a-zA-Z]+ <TermLiteral>
+		end
+
+		rule integer
+			('+' / '-')? [0-9]+ <IntegerLiteral>
+		end
+
+		rule dot
+			'.' <TermLiteral>
+		end
+
+		rule none
+			'-' <TermLiteral>
+		end
+
+		rule space
+			[ \t\n\r]* <TermLiteral>
 		end
 	end
 end

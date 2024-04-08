@@ -1,7 +1,7 @@
 require 'polyglot'
 require 'treetop'
 
-module Card::Effect
+module Card::Trigger
   class BaseNode < Treetop::Runtime::SyntaxNode
   end
 
@@ -33,20 +33,34 @@ module Card::Effect
     end
   end
 
-  # Parser nodes
+  # Main parsed nodes
   class ShallowParsedQuery < GroupNode
+    def actions
+      elements.select { |e| e.class.to_s.include? 'Effect' }
+    end
   end
 
-  class SentenceNode < GroupNode
+  # Effects
+  class PlayEffect < GroupNode
   end
 
-  class QualifierNode < Literal
+  class ActivateEffect < GroupNode
   end
 
-  class TraitNode < Literal
+  class DrawEffect < GroupNode
   end
 
-  class OncePerTurnLiteral < Literal
+  class KOEffect < GroupNode
+  end
+
+  class TrashEffect < GroupNode
+  end
+
+  class GiveEffect < GroupNode
+  end
+
+  # Literals
+  class TraitLiteral < Literal
   end
 
   class TermLiteral < Literal
@@ -72,8 +86,8 @@ module Card::Effect
   end
 
   # Parser
-  Treetop.load Rails.root.join('lib/card_effect.treetop').to_s
-  @@parser = Card::EffectParser.new
+  Treetop.load Rails.root.join('lib/card_trigger.treetop').to_s
+  @@parser = Card::TriggerParser.new
 
   def self.parse(data)
     # Pass the data over to the parser instance
@@ -81,7 +95,7 @@ module Card::Effect
 
     # If the AST is nil then there was an error during parsing
     # we need to report a simple error message to help the user
-    raise StandardError, "Parse error near: \"#{data.slice(@@parser.index - 10, 10)}\"" if tree.nil?
+    raise StandardError, "Parse error at index #{@@parser.index}" if tree.nil?
 
     clean_tree(tree)
 
@@ -91,7 +105,7 @@ module Card::Effect
   def self.clean_tree(root_node)
     return if root_node.elements.nil?
 
-    root_node.elements.delete_if { |node| node.class.name == "Treetop::Runtime::SyntaxNode" }
+    root_node.elements.delete_if { |node| node.instance_of?(::Treetop::Runtime::SyntaxNode) }
     root_node.elements.each { |node| clean_tree(node) }
   end
 end

@@ -128,6 +128,10 @@ module Codeable
       to_s
     end
 
+    def to_yaml
+      to_s
+    end
+
     def series
       SERIES[prefix.to_sym]
     end
