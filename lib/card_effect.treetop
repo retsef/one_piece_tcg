@@ -3,7 +3,7 @@
 class Card
 	grammar Effect
 		rule body
-			'hello'
+			(qualifier / sentence / divider / dot)* <ShallowParsedQuery>
 		end
 
 		rule qualifier
@@ -15,9 +15,9 @@ class Card
 		end
 
 		rule action
-			('[Main]' / '[Activates: Main]' /
-			'[Your Turn]' / '[Opponent\'s Turn]' / '[End of Your Turn]' /
-			'[On Your Opponent\'s Attack]' / '[When Attacking]' /
+			('[Main]' / '[Activate: Main]' /
+			'[Your Turn]' / "[Opponent's Turn]" / '[End of Your Turn]' /
+			"[On Your Opponent's Attack]" / '[When Attacking]' /
 			'[On Play]' / '[Counter]') <IdentifierLiteral>
 		end
 
@@ -43,7 +43,7 @@ class Card
 		end
 
 		rule don
-			'DON!!' <DonLiteral>
+			'DON!!' space? <DonLiteral>
 		end
 
 		rule don_cost

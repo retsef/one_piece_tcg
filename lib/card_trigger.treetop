@@ -4,8 +4,8 @@ class Card
 	grammar Trigger
 	  rule body
 	    (
-	    activation_cost /
-	    life_condition
+				activation_cost /
+				life_condition
 	    )?
 	    (
 				play_sentence /
