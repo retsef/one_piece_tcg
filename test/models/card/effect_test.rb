@@ -40,7 +40,7 @@ class Card::EffectTest < ActiveSupport::TestCase
 
   CHARACTER.each do |effect|
     test "parse character effect: #{effect}" do
-      parsed = Card::Trigger.parse(effect)
+      parsed = Card::Effect.parse(effect)
 
       assert_not_nil parsed
     end
@@ -48,7 +48,7 @@ class Card::EffectTest < ActiveSupport::TestCase
 
   EVENT.each do |effect|
     test "parse event effect: #{effect}" do
-      parsed = Card::Trigger.parse(effect)
+      parsed = Card::Effect.parse(effect)
 
       assert_not_nil parsed
     end

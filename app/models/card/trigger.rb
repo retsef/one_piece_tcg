@@ -77,8 +77,24 @@ module Card::Trigger
   class GiveEffect < GroupNode
   end
 
+  # Conditions
+  class DonCostCondition < GroupNode
+  end
+
+  class LifeCondition < GroupNode
+  end
+
   # Literals
   class TraitLiteral < Literal
+  end
+
+  class LifeLiteral < Literal
+  end
+
+  class SelfLiteral < Literal
+  end
+
+  class OpponentLiteral < Literal
   end
 
   class TermLiteral < Literal

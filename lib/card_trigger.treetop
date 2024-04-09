@@ -3,7 +3,11 @@
 class Card
 	grammar Trigger
 	  rule body
-	    activation_cost? (
+	    (
+	    activation_cost /
+	    life_condition
+	    )?
+	    (
 				play_sentence /
 				draw_sentence and_clause? trash_sentence? /
 				activate_sentence /
@@ -53,8 +57,20 @@ class Card
 	   'your leader ' ('has the ' type 'type,' / 'is [' keyword '],') space? <ShallowParsedQuery>
 		end
 
+		rule life_condition
+			if_clause (you_have / your_opponent_has) space? integer (up_to / or_less)? space? life ',' space? <LifeCondition>
+		end
+
+		rule you_have
+			('You have' / 'you have') space? <SelfLiteral>
+		end
+
+		rule your_opponent_has
+			('Your opponent has' / 'your opponent has') space? <OpponentLiteral>
+		end
+
 		rule activation_cost
-		  don integer don_cost_description ':' <TermLiteral>
+		  don integer don_cost_description? divider <DonCostCondition>
 		end
 
 		rule don_cost_description
@@ -69,7 +85,11 @@ class Card
 		end
 
 		rule don
-			'DON!!' space? <TermLiteral>
+			"DON!!" space? <DonLiteral>
+		end
+
+		rule life
+			('life' / 'Life') space? card? space? <LifeLiteral>
 		end
 
 		rule place
@@ -133,11 +153,11 @@ class Card
 		end
 
 		rule integer
-			('+' / '-')? [0-9]+ space? <IntegerLiteral>
+			('+' / '-' / '−')? [0-9]+ space? <IntegerLiteral>
 		end
 
 		rule dot
-			'.' <TermLiteral>
+			'.' space? <TermLiteral>
 		end
 
 		rule none

@@ -48,8 +48,26 @@ class Card::TriggerTest < ActiveSupport::TestCase
     assert_equal 2, parsed.actions.size
   end
 
+  test "parse cost conditional draw trigger effect" do
+    parsed = Card::Trigger.parse("DON!! -1: Draw 2 cards.")
+
+    assert_not_nil parsed
+  end
+
   test "parse simple activate trigger effect" do
     parsed = Card::Trigger.parse("Activate this card's [Main] effect.")
+
+    assert_not_nil parsed
+  end
+
+  test "parse simple opponent life conditional play trigger effect" do
+    parsed = Card::Trigger.parse("If your opponent has 3 or less Life cards, play this card.")
+
+    assert_not_nil parsed
+  end
+
+  test "parse simple own life conditional play trigger effect" do
+    parsed = Card::Trigger.parse("If you have 2 or less Life cards, play this card.")
 
     assert_not_nil parsed
   end
