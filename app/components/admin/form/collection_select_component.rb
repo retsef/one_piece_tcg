@@ -1,0 +1,21 @@
+# frozen_string_literal: true
+
+class Admin::Form::CollectionSelectComponent < ViewComponent::Form::CollectionSelectComponent
+  self.tag_klass = ActionView::Helpers::Tags::CollectionSelect
+
+  include ViewComponentContrib::StyleVariants
+
+  style do
+    base { %w[block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none sm:text-sm rounded-md] }
+    variants do
+      field do
+        normal { %w[border-gray-300 focus:ring-primary-500 focus:border-primary-500] }
+        error { %w[pr-10 border-red-300 text-red-900 placeholder-red-300 focus:outline-none focus:ring-red-500 focus:border-red-500] }
+      end
+    end
+  end
+
+  def html_class
+    style(field: method_errors? ? :error : :normal)
+  end
+end

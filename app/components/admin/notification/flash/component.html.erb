@@ -1,0 +1,34 @@
+<div role="alert"
+    data-controller="transition alert"
+    data-alert-hide-class="hidden"
+    data-transition-initial-value
+    data-transition-enter-active="transform ease-out duration-300 transition"
+    data-transition-enter-from="translate-y-2 opacity-0 sm:translate-y-0 sm:translate-x-2"
+    data-transition-enter-to="translate-y-0 opacity-100 sm:translate-x-0"
+    data-transition-leave-active="transition ease-in duration-100"
+    data-transition-leave-from="opacity-100"
+    data-transition-leave-to="opacity-0"
+    data-action="transition:end-leave->alert#remove mouseover->alert#stop mouseout->alert#restart"
+    class="alert pointer-events-auto w-full max-w-sm overflow-hidden rounded-lg bg-white shadow-lg ring-1 ring-black ring-opacity-5">
+    <div class="p-4 flex items-start">
+      <div class="flex-shrink-0">
+        <%= inline_svg_tag icon, class: "h-6 w-6 #{style(color: type)}" %>
+      </div>
+
+      <div class="ml-3 w-0 flex-1 pt-0.5">
+        <p class="text-sm font-medium text-gray-900"><%= value.html_safe %></p>
+        <!-- <p class="mt-1 text-sm text-gray-500">Anyone with a link can now view this file.</p> -->
+      </div>
+
+      <div class="ml-auto pl-3">
+        <div class="-mx-1.5 -my-1.5">
+          <button type="button"
+                  class="inline-flex rounded-md bg-white text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                  data-action="click->alert#hide:prevent:stop">
+            <span class="sr-only">Close</span>
+            <%= inline_svg_tag 'heroicons/24/solid/x-mark.svg', class: 'h-5 w-5' %>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>

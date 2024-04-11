@@ -1,0 +1,42 @@
+<div class="relative z-10" role="dialog" aria-modal="true"
+     data-controller="modal-form"
+     data-modal-form-hide-class="hidden"
+     data-action="keydown.esc->modal-form#close">
+
+  <!-- Background backdrop, show/hide based on slide-over state. -->
+  <div class="<%= 'hidden' unless forced %> fixed inset-0 bg-gray-500 bg-opacity-25"
+       id="form_modal_backdrop"
+       data-controller="transition"
+       data-modal-form-target="backdrop"
+       data-action="transition:end-leave->modal-form#remove click->modal-form#close:stop:prevent"
+       <%= 'data-transition-initial-value' unless forced %>
+       data-transition-enter-active="transition-opacity ease-out duration-300"
+       data-transition-enter-from="opacity-0"
+       data-transition-enter-to="opacity-100"
+       data-transition-leave-active="transition-opacity ease-in duration-200"
+       data-transition-leave-from="opacity-100"
+       data-transition-leave-to="opacity-0"></div>
+
+  <div class="fixed inset-0 overflow-hidden">
+    <div class="absolute inset-0 overflow-hidden">
+      <div class="pointer-events-none fixed inset-y-0 right-0 flex max-w-full pl-10 sm:pl-16">
+
+        <!-- Slide-over panel, show/hide based on slide-over state. -->
+        <div class="<%= 'hidden' unless forced %> pointer-events-auto w-screen max-w-2xl transform transition"
+             id="form_modal_dialog"
+             data-controller="transition"
+             data-modal-form-target="dialog"
+             <%= 'data-transition-initial-value' unless forced %>
+             data-transition-enter-active="ease-in-out duration-300 sm:duration-400"
+             data-transition-enter-from="translate-x-full"
+             data-transition-enter-to="translate-x-0"
+             data-transition-leave-active="ease-in-out duration-300 sm:duration-400"
+             data-transition-leave-from="translate-x-0"
+             data-transition-leave-to="translate-x-full">
+
+          <%= body %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

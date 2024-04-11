@@ -1,0 +1,12 @@
+<div class="rounded-md <%= style(bg: type) %> p-4">
+  <div class="flex">
+    <div class="flex-shrink-0">
+      <%= inline_svg_tag icon, class: "h-5 w-5 #{style(color: type)}" %>
+    </div>
+    <div class="ml-3">
+      <div class="text-sm <%= style(text: type) %>">
+        <p><%= value.html_safe %></p>
+      </div>
+    </div>
+  </div>
+</div>

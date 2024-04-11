@@ -1,0 +1,15 @@
+<div class="hidden border-l-4 border-yellow-400 bg-yellow-50 p-4 -mt-4 mb-6"
+     data-controller="network-detector"
+     data-network-detector-hide-class="hidden"
+     data-action="online@window->network-detector#hide offline@window->network-detector#show">
+  <div class="flex">
+    <div class="flex-shrink-0">
+      <%= inline_svg_tag 'heroicons/24/solid/exclamation-triangle.svg', class: 'h-5 w-5 text-yellow-400' %>
+    </div>
+    <div class="ml-3">
+      <p class="text-sm text-yellow-700">
+        Sembra che tu non sia connesso alla rete. Per favore, controlla la tua connessione per non perdere i dati inseriti.
+      </p>
+    </div>
+  </div>
+</div>
