@@ -2,31 +2,19 @@
 # You can use a .tt extension instead if you wish
 class Card
 	grammar Effect
-		rule body
-			(qualifier / sentence / divider / dot)* <ShallowParsedQuery>
-		end
-
-		rule qualifier
-			( trait space trait_description / action space once_per_turn ) space? <QualifierNode>
-		end
-
-		rule sentence
-			( keyword / integer )+ space? <SentenceNode>
-		end
-
 		rule action
 			('[Main]' / '[Activate: Main]' /
 			'[Your Turn]' / "[Opponent's Turn]" / '[End of Your Turn]' /
 			"[On Your Opponent's Attack]" / '[When Attacking]' /
-			'[On Play]' / '[Counter]') <IdentifierLiteral>
+			'[On Play]' / '[Counter]') space? <ActionLiteral>
 		end
 
 		rule once_per_turn
-			'[Once Per Turn]' <OncePerTurnLiteral>
+			'[Once Per Turn]' space? <OncePerTurnLiteral>
 		end
 
 		rule trait
-			('[Blocker]' / '[Rush]' / '[Banish]' / '[Double Attack]') <TraitLiteral>
+			('[Blocker]' / '[Rush]' / '[Banish]' / '[Double Attack]') space? <TraitLiteral>
 		end
 
 		rule trait_description
@@ -36,10 +24,6 @@ class Card
 				'When this card deals damage, the target card is trashed without activating its Trigger.' /
 				'This attack deals 2 damage.'
 			) ')'
-		end
-
-		rule trigger
-		 ( don / sentence )
 		end
 
 		rule don
@@ -57,28 +41,135 @@ class Card
 			) ')'
 		end
 
-		rule identifier
-			'[' ( keyword ) ']' <IdentifierLiteral>
+		rule has_type
+			'[' ( keyword ) ']' space? <TermLiteral>
+	  end
+
+		rule is_multicolor
+		  'is multicolored' space? <TermLiteral>
+	  end
+
+	  rule is_specific
+	    'is [' keyword ']' <TermLiteral>
+	  end
+
+		rule if_clause
+			('If' / 'if') space? <TermLiteral>
 		end
 
-		rule target
-			'{' ( keyword ) '}' <TargetLiteral>
+		rule and_clause
+			'and' space? <TermLiteral>
+		end
+
+		rule may_clause
+		 	('You may' / 'you may') space? <TermLiteral>
+		end
+
+		rule leader
+			('Your Leader' / 'your Leader') space? <LeaderLiteral>
+		end
+
+		rule you_have
+			('You have' / 'you have') space? <SelfLiteral>
+		end
+
+		rule your_opponent_has
+			('Your opponent has' / 'your opponent has') space? <OpponentLiteral>
+		end
+
+		rule don_cost_description
+			'(' (
+				'You may rest the specified number of DON!! cards in your cost area.' /
+				'You may return the specified number of DON!! cards from your field to your DON!! deck.'
+			) ')' space?
+		end
+
+		rule ko
+			'K.O.' space? <TermLiteral>
+		end
+
+		rule don
+			"DON!!" space? <DonLiteral>
+		end
+
+		rule life
+			('life' / 'Life') space? card? space? <LifeLiteral>
+		end
+
+		rule place
+			('Place' / 'place') space? <TermLiteral>
+		end
+
+		rule play
+			('Play' / 'play') space? <TermLiteral>
+		end
+
+		rule draw
+			('Draw' / 'draw') space? <TermLiteral>
+		end
+
+		rule trash
+			('Trash' / 'trash') space? <TermLiteral>
+		end
+
+		rule give
+			('Give' / 'give') space? <TermLiteral>
+		end
+
+		rule activate
+			'Activate this ' card space? <TermLiteral>
+		end
+
+		rule bottom_deck
+			'at the bottom of the ' owner 'deck' space? <TermLiteral>
+		end
+
+		rule owner
+			("owner's" / 'owner') space? <TermLiteral>
+		end
+
+		rule card
+			('cards' / "card's" / "card") space? <TermLiteral>
+		end
+
+		rule your_hand
+			'from your hand' space? <TermLiteral>
+		end
+
+		rule any_order
+			'in any order' space? <TermLiteral>
+		end
+
+		rule up_to
+			'up to' space? <UpToLiteral>
+		end
+
+		rule or_less
+			'or less' space? <OrLessLiteral>
 		end
 
 		rule keyword
-			[a-zA-Z]+ <TermLiteral>
+			[a-zA-Z]+ space? <TermLiteral>
 		end
 
 		rule integer
-			('+' / '-')? [0-9]+ <IntegerLiteral>
+			('+' / '-' / '−')? [0-9]+ space? <IntegerLiteral>
 		end
 
 		rule dot
-			'.' <TermLiteral>
+			'.' space? <TermLiteral>
 		end
 
 		rule none
 			'-' <TermLiteral>
+		end
+
+		rule divider
+			(':' / ',' / dot? 'Then') space? <TermLiteral>
+		end
+
+		rule empty
+			'' <TermLiteral>
 		end
 
 		rule space

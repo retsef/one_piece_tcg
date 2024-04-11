@@ -9,4 +9,8 @@ class ApplicationRecord < ActiveRecord::Base
     random_offset = rand(count)
     offset(random_offset).first
   end
+
+  def self.random
+    order(Arel.sql('RANDOM()'))
+  end
 end

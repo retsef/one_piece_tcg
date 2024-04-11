@@ -2,23 +2,29 @@
 # You can use a .tt extension instead if you wish
 class Card
 	grammar Trigger
+		include Card::Effect
+
 	  rule body
 	    (
 				activation_cost /
-				life_condition
+				life_condition /
+				trash_condition /
+				leader_condition
 	    )?
 	    (
 				play_sentence /
+				search_sentence /
 				draw_sentence and_clause? trash_sentence? /
 				activate_sentence /
 				ko_sentence /
 				give_sentence /
+				rest_sentence /
 				none / empty
 	    ) dot? <ShallowParsedQuery>
 	  end
 
 	  rule activate_sentence
-	    activate trait 'effect' space? <ActivateEffect>
+	    activate action 'effect' space? <ActivateEffect>
 	  end
 
 	  rule ko_sentence
@@ -28,6 +34,10 @@ class Card
 	  rule play_sentence
 	    play ('this ' card / up_to? integer) space? <PlayEffect>
 	  end
+
+	  rule search_sentence
+	   	'search' <SearchEffect>
+		end
 
 	  rule draw_sentence
 	    draw up_to? integer card space? <DrawEffect>
@@ -41,139 +51,24 @@ class Card
 	    trash up_to? integer card your_hand space? <TrashEffect>
 	  end
 
-	  rule if_clause
-	    ('If' / 'if') space? <TermLiteral>
+	  rule rest_sentence
+	    rest up_to? integer card space? <RestEffect>
 	  end
-
-	  rule and_clause
-	    'and' space? <TermLiteral>
-	  end
-
-	  rule may_clause
-	   ('You may' / 'you may') space? <TermLiteral>
-		end
-
-	  rule condition
-	   'your leader ' ('has the ' type 'type,' / 'is [' keyword '],') space? <ShallowParsedQuery>
-		end
-
-		rule life_condition
-			if_clause (you_have / your_opponent_has) space? integer (up_to / or_less)? space? life ',' space? <LifeCondition>
-		end
-
-		rule you_have
-			('You have' / 'you have') space? <SelfLiteral>
-		end
-
-		rule your_opponent_has
-			('Your opponent has' / 'your opponent has') space? <OpponentLiteral>
-		end
 
 		rule activation_cost
 		  don integer don_cost_description? divider <DonCostCondition>
 		end
 
-		rule don_cost_description
-			'(' (
-				'You may rest the specified number of DON!! cards in your cost area.' /
-				'You may return the specified number of DON!! cards from your field to your DON!! deck.'
-			) ')' space?
+		rule life_condition
+			if_clause (you_have / your_opponent_has) integer (up_to / or_less)? space? life divider space? <LifeCondition>
 		end
 
-		rule ko
-			'K.O.' space? <TermLiteral>
+		rule leader_condition
+			if_clause leader (has_type / is_multicolor / is_specific) divider space? <LeaderCondition>
 		end
 
-		rule don
-			"DON!!" space? <DonLiteral>
-		end
-
-		rule life
-			('life' / 'Life') space? card? space? <LifeLiteral>
-		end
-
-		rule place
-			('Place' / 'place') space? <TermLiteral>
-		end
-
-		rule play
-			('Play' / 'play') space? <TermLiteral>
-		end
-
-		rule draw
-			('Draw' / 'draw') space? <TermLiteral>
-		end
-
-		rule trash
-			('Trash' / 'trash') space? <TermLiteral>
-		end
-
-		rule give
-			('Give' / 'give') space? <TermLiteral>
-		end
-
-		rule activate
-			'Activate this ' card space? <TermLiteral>
-		end
-
-		rule bottom_deck
-			'at the bottom of the ' owner 'deck' space? <TermLiteral>
-		end
-
-		rule owner
-			("owner's" / 'owner') space? <TermLiteral>
-		end
-
-		rule card
-			('cards' / "card's" / "card") space? <TermLiteral>
-		end
-
-		rule your_hand
-			'from your hand' space? <TermLiteral>
-		end
-
-		rule any_order
-			'in any order' space? <TermLiteral>
-		end
-
-	  rule up_to
-	    'up to' space? <UpToLiteral>
-		end
-
-		rule or_less
-			'or less' space? <OrLessLiteral>
-		end
-
-		rule trait
-			("[Main]" / "[On Play]" / "[Counter]") space? <TraitLiteral>
-		end
-
-		rule keyword
-			[a-zA-Z]+ space? <TermLiteral>
-		end
-
-		rule integer
-			('+' / '-' / '−')? [0-9]+ space? <IntegerLiteral>
-		end
-
-		rule dot
-			'.' space? <TermLiteral>
-		end
-
-		rule none
-			'-' <TermLiteral>
-		end
-
-		rule divider
-			':' space? <TermLiteral>
-		end
-
-		rule empty
-			'' <TermLiteral>
-		end
-
-		rule space
-			[ \t\n\r]* <TermLiteral>
+		rule trash_condition
+			(if_clause / may_clause) trash up_to? integer card (your_hand / 'top or bottom of your ' life card) divider <TrashCondition>
 		end
 	end
 end

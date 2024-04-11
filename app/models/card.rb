@@ -16,8 +16,8 @@ class Card < ApplicationRecord
 
   validates :name, :colors, :attributes, presence: true
 
-  scope :with_trigger, -> { where.not(trigger: nil) }
-  scope :with_effect, -> { where.not(effect: nil) }
+  scope :with_trigger, -> { where.not(trigger: [nil, ""]) }
+  scope :with_effect, -> { where.not(effect: [nil, ""]) }
 
   # has_one_attached :front
   # has_one_attached :back

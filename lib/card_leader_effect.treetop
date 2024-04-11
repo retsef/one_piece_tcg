@@ -1,0 +1,11 @@
+# card_leader_effect_grammar.treetop
+# You can use a .tt extension instead if you wish
+module Card::Leader
+	grammar Effect
+		include Card::Effect
+
+		rule body
+			dot? <ShallowParsedQuery>
+		end
+	end
+end

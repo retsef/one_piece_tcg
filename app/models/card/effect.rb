@@ -35,24 +35,62 @@ module Card::Effect
 
   # Parser nodes
   class ShallowParsedQuery < GroupNode
+    def cost_node
+      return nil unless elements.size >= 2
+
+      elements[0]
+    end
+
+    def main_node
+      return elements.first unless elements.size >= 2
+
+      elements[1]
+    end
+
+    def effects
+      (main_node&.elements || []).select { |e| e.class.name.demodulize.to_s.include? 'Effect' }
+    end
+
+    def actions
+      (main_node&.elements || []).select { |e| e.class.name.demodulize.to_s.include? 'Action' }
+    end
   end
 
   class SentenceNode < GroupNode
   end
 
-  class QualifierNode < Literal
+  # Literals
+  class TraitLiteral < Literal
+  end
+
+  class LifeLiteral < Literal
+  end
+
+  class SelfLiteral < Literal
+  end
+
+  class OpponentLiteral < Literal
+  end
+
+  class TargetLiteral < Literal
+  end
+
+  class DonLiteral < Literal
+  end
+
+  class LeaderLiteral < Literal
+  end
+
+  class UpToLiteral < Literal
+  end
+
+  class OrLessLiteral < Literal
   end
 
   class TraitNode < Literal
   end
 
-  class OncePerTurnLiteral < Literal
-  end
-
-  class TermLiteral < Literal
-  end
-
-  class IdentifierLiteral < Literal
+  class ActionLiteral < Literal
     def parse
       case text_value.strip
       when '[Main]' then :main
@@ -69,10 +107,10 @@ module Card::Effect
     end
   end
 
-  class TargetLiteral < Literal
+  class OncePerTurnLiteral < Literal
   end
 
-  class DonLiteral < Literal
+  class TermLiteral < Literal
   end
 
   class IntegerLiteral < Literal

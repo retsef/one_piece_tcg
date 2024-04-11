@@ -2,60 +2,16 @@ require 'polyglot'
 require 'treetop'
 
 module Card::Trigger
-  class BaseNode < Treetop::Runtime::SyntaxNode
-  end
-
-  class Literal < BaseNode
-    def parse
-      text_value.strip
-    end
-
-    def to_array
-      text_value.strip
-    end
-
-    def inspect
-      to_array
-    end
-  end
-
-  class GroupNode < BaseNode
-    def parse
-      elements.map(&:parse)
-    end
-
-    def to_array
-      elements.map(&:to_array)
-    end
-
-    def inspect
-      to_array
-    end
-  end
-
-  # Main parsed nodes
-  class ShallowParsedQuery < GroupNode
-    def cost_node
-      elements[0]
-    end
-
-    def main_node
-      elements[1]
-    end
-
-    def actions
-      (main_node&.elements || []).select { |e| e.class.to_s.include? 'Effect' }
-    end
-  end
+  extend Card::Effect
 
   # Effects
-  class PlayEffect < GroupNode
+  class PlayEffect < Card::Effect::GroupNode
   end
 
-  class ActivateEffect < GroupNode
+  class ActivateEffect < Card::Effect::GroupNode
   end
 
-  class DrawEffect < GroupNode
+  class DrawEffect < Card::Effect::GroupNode
     def count
       elements.find { |e| e.class.to_s.include? 'Integer' }&.parse
     end
@@ -68,61 +24,29 @@ module Card::Trigger
     end
   end
 
-  class KOEffect < GroupNode
+  class KOEffect < Card::Effect::GroupNode
   end
 
-  class TrashEffect < GroupNode
+  class TrashEffect < Card::Effect::GroupNode
   end
 
-  class GiveEffect < GroupNode
+  class GiveEffect < Card::Effect::GroupNode
+  end
+
+  class RestEffect < Card::Effect::GroupNode
+  end
+
+  class SearchEffect < Card::Effect::GroupNode
   end
 
   # Conditions
-  class DonCostCondition < GroupNode
+  class DonCostCondition < Card::Effect::GroupNode
   end
 
-  class LifeCondition < GroupNode
+  class LifeCondition < Card::Effect::GroupNode
   end
 
-  # Literals
-  class TraitLiteral < Literal
-  end
-
-  class LifeLiteral < Literal
-  end
-
-  class SelfLiteral < Literal
-  end
-
-  class OpponentLiteral < Literal
-  end
-
-  class TermLiteral < Literal
-  end
-
-  class IdentifierLiteral < Literal
-  end
-
-  class TargetLiteral < Literal
-  end
-
-  class DonLiteral < Literal
-  end
-
-  class IntegerLiteral < Literal
-    def parse
-      text_value.to_i
-    end
-
-    def to_array
-      text_value.to_i
-    end
-  end
-
-  class UpToLiteral < Literal
-  end
-
-  class OrLessLiteral < Literal
+  class LeaderCondition < Card::Effect::GroupNode
   end
 
   # Parser
