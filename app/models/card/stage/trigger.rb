@@ -1,12 +1,12 @@
 require 'polyglot'
 require 'treetop'
 
-module Card::Leader::Effect
-  include Card::Effect
+module Card::Stage::Trigger
+  include Card::Trigger
 
   # Parser
-  Treetop.load Rails.root.join('lib/card_leader_effect.treetop').to_s
-  @@parser = Card::Leader::EffectParser.new
+  Treetop.load Rails.root.join('lib/card_stage_trigger.treetop').to_s
+  @@parser = Card::Stage::TriggerParser.new
 
   def self.parse(data)
     # Pass the data over to the parser instance

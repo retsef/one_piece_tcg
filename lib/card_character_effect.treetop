@@ -5,7 +5,57 @@ module Card::Character
 		include Card::Effect
 
 		rule body
+			(
+				trait trait_description
+			)*
+			( activation_cost )?
+			(
+				action once_per_turn? divider? /
+				once_per_turn
+			)*
+			( don_investment divider? )*
+			( trait trait_description )*
+			(
+				life_condition /
+				ko_effect_condition
+			)*
+			(
+				draw_sentence and_clause? trash_sentence? /
+				power_gain_sentence /
+				prevent_ko_sentence /
+        none / empty
+			)
 			dot? <ShallowParsedQuery>
+		end
+
+	  rule draw_sentence
+	    draw up_to? integer card space? <DrawEffect>
+	  end
+
+	  rule trash_sentence
+	    trash up_to? integer ( card / event or? / stage or? )+ your_hand? space? <TrashEffect>
+	  end
+
+		rule power_gain_sentence
+			( this / up_to? integer your colored? / up_to? integer opponent / up_to? integer )
+			( character / leader / leader or character) ( cost integer )?
+			gain integer power ( battle / turn )?
+		end
+
+		rule prevent_ko_sentence
+			may_clause? trash_sentence 'instead' space? <PreventKOEffect>
+		end
+
+		rule activation_cost
+		  don_cost space? <DonCostCondition>
+		end
+
+		rule life_condition
+			if_clause (you_have / your_opponent_has) integer (up_to / or_less)? space? life divider space? <LifeCondition>
+		end
+
+		rule ko_effect_condition
+			if_clause this character would_clause ( ko ) ( by_effect / by_battle ) divider? <KOEffectCondition>
 		end
 	end
 end

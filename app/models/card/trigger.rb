@@ -24,16 +24,46 @@ module Card::Trigger
     end
   end
 
-  class KOEffect < Card::Effect::GroupNode
-  end
-
   class TrashEffect < Card::Effect::GroupNode
+    def count
+      elements.find { |e| e.class.to_s.include? 'Integer' }&.parse
+    end
+
+    def rule
+      return :up_to if elements.any? { |e| e.class.to_s.include? 'UpTo' }
+      return :or_less if elements.any? { |e| e.class.to_s.include? 'OrLess' }
+
+      :exact
+    end
   end
 
   class GiveEffect < Card::Effect::GroupNode
+    def count
+      elements.find { |e| e.class.to_s.include? 'Integer' }&.parse
+    end
+
+    def rule
+      return :up_to if elements.any? { |e| e.class.to_s.include? 'UpTo' }
+      return :or_less if elements.any? { |e| e.class.to_s.include? 'OrLess' }
+
+      :exact
+    end
   end
 
   class RestEffect < Card::Effect::GroupNode
+    def count
+      elements.find { |e| e.class.to_s.include? 'Integer' }&.parse
+    end
+
+    def rule
+      return :up_to if elements.any? { |e| e.class.to_s.include? 'UpTo' }
+      return :or_less if elements.any? { |e| e.class.to_s.include? 'OrLess' }
+
+      :exact
+    end
+  end
+
+  class KOEffect < Card::Effect::GroupNode
   end
 
   class SearchEffect < Card::Effect::GroupNode
@@ -59,7 +89,7 @@ module Card::Trigger
 
     # If the AST is nil then there was an error during parsing
     # we need to report a simple error message to help the user
-    raise StandardError, "Parse error at index #{@@parser.index}" if tree.nil?
+    throw ParsingError.new(data, @@parser) if tree.nil?
 
     # clean_tree(tree)
 

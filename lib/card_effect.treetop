@@ -2,6 +2,7 @@
 # You can use a .tt extension instead if you wish
 class Card
 	grammar Effect
+		# Action
 		rule action
 			('[Main]' / '[Activate: Main]' /
 			'[Your Turn]' / "[Opponent's Turn]" / '[End of Your Turn]' /
@@ -13,6 +14,7 @@ class Card
 			'[Once Per Turn]' space? <OncePerTurnLiteral>
 		end
 
+		# Trait
 		rule trait
 			('[Blocker]' / '[Rush]' / '[Banish]' / '[Double Attack]') space? <TraitLiteral>
 		end
@@ -26,12 +28,17 @@ class Card
 			) ')'
 		end
 
+		# Don
 		rule don
 			'DON!!' space? <DonLiteral>
 		end
 
 		rule don_cost
-			'[' ( don 'x' integer ) ']' <DonCostLiteral>
+			'[' ( don 'x' integer ) ']' <DonCostCondition>
+		end
+
+		rule don_investment
+		  ( '①' / '②' / '③' / '④' ) space? don_cost_description? <DonInvestmentCondition>
 		end
 
 		rule don_cost_description
@@ -41,10 +48,20 @@ class Card
 			) ')'
 		end
 
+		# Types
 		rule has_type
 			'[' ( keyword ) ']' space? <TermLiteral>
 	  end
 
+	  rule of_type
+	  	'{' ( keyword ) '}' space? <TermLiteral>
+	  end
+
+	  rule sub_type
+	  	'"' ( keyword ) '"' space? <TermLiteral>
+	  end
+
+	  # Specs
 		rule is_multicolor
 		  'is multicolored' space? <TermLiteral>
 	  end
@@ -53,6 +70,7 @@ class Card
 	    'is [' keyword ']' <TermLiteral>
 	  end
 
+		# Clauses
 		rule if_clause
 			('If' / 'if') space? <TermLiteral>
 		end
@@ -61,10 +79,19 @@ class Card
 			'and' space? <TermLiteral>
 		end
 
+		rule or_clause
+			'or' space? <TermLiteral>
+		end
+
+		rule would_clause
+			('would be' / 'Would be') space? <TermLiteral>
+		end
+
 		rule may_clause
 		 	('You may' / 'you may') space? <TermLiteral>
 		end
 
+		# Target
 		rule leader
 			('Your Leader' / 'your Leader') space? <LeaderLiteral>
 		end
@@ -77,19 +104,24 @@ class Card
 			('Your opponent has' / 'your opponent has') space? <OpponentLiteral>
 		end
 
-		rule don_cost_description
-			'(' (
-				'You may rest the specified number of DON!! cards in your cost area.' /
-				'You may return the specified number of DON!! cards from your field to your DON!! deck.'
-			) ')' space?
-		end
-
 		rule ko
 			'K.O.' space? <TermLiteral>
 		end
 
 		rule don
 			"DON!!" space? <DonLiteral>
+		end
+
+		rule this
+			('this' / 'This') space? <TermLiteral>
+		end
+
+		rule your
+			('your' / 'Your' / 'of your') space? <TermLiteral>
+		end
+
+		rule opponent
+			("your opponent's" / 'your opponent' / 'Your opponent') space? <TermLiteral>
 		end
 
 		rule life
@@ -116,6 +148,18 @@ class Card
 			('Give' / 'give') space? <TermLiteral>
 		end
 
+		rule return
+			('Return' / 'return') space? <TermLiteral>
+		end
+
+		rule rest
+			('Rest' / 'rest') space? <TermLiteral>
+		end
+
+		rule gain
+			('Gains' / 'gains' / 'Gain' / 'gain') space? <TermLiteral>
+		end
+
 		rule activate
 			'Activate this ' card space? <TermLiteral>
 		end
@@ -132,20 +176,67 @@ class Card
 			('cards' / "card's" / "card") space? <TermLiteral>
 		end
 
+		rule stage
+			('stage' / 'Stage') space? <TermLiteral>
+		end
+
+		rule event
+			('event' / 'Event') space? <TermLiteral>
+		end
+
+		rule character
+			('characters' / 'Characters' / 'character' / 'Character') space? <TermLiteral>
+		end
+
+		rule power
+			('power' / 'Power') space? <TermLiteral>
+		end
+
+		rule colored
+		  ('red' / 'green' / 'blue' / 'yellow' / 'black' / 'purple') space? <TermLiteral>
+		end
+
+		rule cost
+			('with a cost of' / 'with cost' / 'of cost') space? <TermLiteral>
+		end
+
+		# From
 		rule your_hand
 			'from your hand' space? <TermLiteral>
+		end
+
+		rule from_trash
+			'from trash' space? <TermLiteral>
 		end
 
 		rule any_order
 			'in any order' space? <TermLiteral>
 		end
 
+		# In Occasion
+		rule battle
+			('during ')? this 'battle' space? <TermLiteral>
+		end
+
+		rule turn
+			('during ')? this 'turn' space? <TermLiteral>
+		end
+
+		# Effect occurred
+		rule by_effect
+			'by an effect' space? <TermLiteral>
+		end
+
+		rule by_battle
+			'by battle' space? <TermLiteral>
+		end
+
 		rule up_to
-			'up to' space? <UpToLiteral>
+			('Up to' / 'up to') space? <UpToLiteral>
 		end
 
 		rule or_less
-			'or less' space? <OrLessLiteral>
+			( 'or less' ) space? <OrLessLiteral>
 		end
 
 		rule keyword
@@ -153,7 +244,7 @@ class Card
 		end
 
 		rule integer
-			('+' / '-' / '−')? [0-9]+ space? <IntegerLiteral>
+			('+' / '−')? [0-9]+ space? <IntegerLiteral>
 		end
 
 		rule dot
@@ -165,7 +256,7 @@ class Card
 		end
 
 		rule divider
-			(':' / ',' / dot? 'Then') space? <TermLiteral>
+			(':' / ',' / "/" / dot? 'Then') space? <TermLiteral>
 		end
 
 		rule empty

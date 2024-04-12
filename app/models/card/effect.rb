@@ -2,6 +2,16 @@ require 'polyglot'
 require 'treetop'
 
 module Card::Effect
+  class ParsingError < StandardError
+    def initialize(data = '', parser = nil, chunk_offset = 3)
+      error_index = parser.max_terminal_failure_index # parser.index
+      sliced_data = data.slice([0, error_index - chunk_offset].max, [data.size, chunk_offset * 2].min)
+      message = "Parse error at index #{error_index} near: \"#{sliced_data}\""
+
+      super(message)
+    end
+  end
+
   class BaseNode < Treetop::Runtime::SyntaxNode
   end
 
@@ -48,11 +58,15 @@ module Card::Effect
     end
 
     def effects
-      (main_node&.elements || []).select { |e| e.class.name.demodulize.to_s.include? 'Effect' }
+      (main_node&.elements || []).select { |e| e.class.name&.demodulize.to_s.include? 'Effect' }
     end
 
     def actions
-      (main_node&.elements || []).select { |e| e.class.name.demodulize.to_s.include? 'Action' }
+      (main_node&.elements || []).select { |e| e.class.name&.demodulize.to_s.include? 'Action' }
+    end
+
+    def conditions
+      (main_node&.elements || []).select { |e| e.class.name&.demodulize.to_s.include? 'Condition' }
     end
   end
 
@@ -110,6 +124,24 @@ module Card::Effect
   class OncePerTurnLiteral < Literal
   end
 
+  # Conditions
+  class DonCostCondition < GroupNode
+  end
+
+  class DonInvestmentCondition < GroupNode
+    VALUES = %w[① ② ③ ④].freeze
+
+    def parse
+      return 0 unless VALUES.include?(text_value.strip)
+
+      VALUES.index_of(text_value.strip)
+    end
+
+    def to_array
+      parse
+    end
+  end
+
   class TermLiteral < Literal
   end
 
@@ -133,9 +165,9 @@ module Card::Effect
 
     # If the AST is nil then there was an error during parsing
     # we need to report a simple error message to help the user
-    raise StandardError, "Parse error near: \"#{data.slice(@@parser.index - 10, 10)}\"" if tree.nil?
+    throw ParsingError.new(data, @@parser) if tree.nil?
 
-    clean_tree(tree)
+    # clean_tree(tree)
 
     tree
   end

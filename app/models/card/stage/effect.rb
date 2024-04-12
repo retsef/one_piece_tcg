@@ -14,9 +14,9 @@ module Card::Stage::Effect
 
     # If the AST is nil then there was an error during parsing
     # we need to report a simple error message to help the user
-    raise StandardError, "Parse error near: \"#{data.slice(@@parser.index - 10, 10)}\"" if tree.nil?
+    throw ParsingError.new(data, @@parser) if tree.nil?
 
-    clean_tree(tree)
+    # clean_tree(tree)
 
     tree
   end
