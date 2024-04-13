@@ -1,10 +1,10 @@
-json.name 'TenutoBene'
-json.short_name 'TenutoBene'
+json.name application_title
+json.short_name application_title
 json.start_url root_url
 json.display 'standalone'
 json.background_color '#ffffff'
 json.theme_color '#ffffff'
-json.description 'TenutoBene ti aiuta a gestire al meglio il tuo mercatino.'
+json.description application_description
 
 icons = []
 icons << { src: image_path('favicon-16x16.png'), sizes: '16x16', type: 'image/png' }
