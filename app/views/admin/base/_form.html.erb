@@ -1,0 +1,44 @@
+<%#
+# Form Partial
+
+This partial is rendered on a resource's `new` and `edit` pages,
+and renders all form fields for a resource's editable attributes.
+
+## Local variables:
+
+- `page`:
+  An instance of [Administrate::Page::Form][1].
+  Contains helper methods to display a form,
+  and knows which attributes should be displayed in the resource's form.
+
+[1]: http://www.rubydoc.info/gems/administrate/Administrate/Page/Form
+%>
+
+<%= form_for([namespace, page.resource], html: { class: "form #{action_name}", 'data-turbo-action': "replace", autocomplete: "off"}) do |f| %>
+  <%= render Admin::Form::ErrorsSummary::Component.new(resource: page.resource) %>
+
+  <!-- Form Content -->
+  <div class="mt-6 grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-12">
+    <% page.attributes(controller.action_name).each do |attribute| -%>
+      <div class="sm:col-span-<%= attribute.options.dig(:col_span, :form) || 12 %>
+                  field-unit field-unit--<%= attribute.html_class %> field-unit--<%= attribute.required? ? "required" : "optional" %>">
+        <% editable = attribute.editable_inline? && authorized_action?(page.resource, attribute.name) %>
+        <%= render_field attribute, form: f unless editable %>
+
+        <%= render Admin::Field::Inline::Show::Component.new(form: f, attribute: attribute.name, frame_prefix: page.resource_name) do |component| %>
+          <% component.with_body do %>
+            <%= render_field attribute, form: f %>
+          <% end %>
+        <% end if editable %>
+      </div>
+    <% end -%>
+  </div>
+
+  <!-- Form Actions -->
+  <footer class="form-actions pt-5">
+    <div class="flex justify-end">
+      <%= link_to t('helpers.cancel'), :back, class: 'btn-white', 'data-turbo-action': 'restore' %>
+      <%= f.submit 'data-turbo-submits-with': t("#{namespace}.form.saving"), class: 'ml-3' %>
+    </div>
+  </footer>
+<% end %>

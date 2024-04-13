@@ -1,0 +1,13 @@
+<%# locals: (page:, param_name:, paginate_info:) -%>
+
+<div class="bg-white px-4 py-3 flex items-center justify-between border-t border-gray-200 md:px-0">
+  <div class="sm:flex-1 sm:flex sm:items-center sm:justify-between">
+    <div class="hidden sm:flex sm:flex-1">
+      <p class="text-sm text-gray-700">
+        <%= render Admin::Collection::PageInfo::Component.new(paginate_info: paginate_info) %>
+      </p>
+    </div>
+
+    <%= render Admin::Collection::Pagination::Component.new(paginate_info: paginate_info) %>
+  </div>
+</div>

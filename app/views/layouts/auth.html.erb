@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="<%= I18n.locale %>" class="h-full bg-white <%= 'electron' if request_electron? %>">
+  <head>
+    <meta charset="utf-8">
+    <meta name="ROBOTS" content="NOODP">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="environment" content="<%= Rails.env %>">
+    <meta name="release" content="<%= Rails.application.release %>">
+
+    <title><%= application_title %></title>
+    <meta name="description" content="<%= application_description %>">
+
+    <%= render 'admin/base/favicon' %>
+
+    <%= action_cable_meta_tag %>
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <%= stylesheet_link_tag 'application', media: 'all', 'data-turbo-track': 'reload' %>
+    <%= javascript_importmap_tags %>
+
+    <link rel="manifest" href="<%= manifest_url %>">
+    <meta name="turbo-root" content="/login">
+    <meta name="turbo-refresh-method" content="morph">
+    <meta name="turbo-refresh-scroll" content="preserve">
+
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag if defined?(csp_meta_tag) %>
+  </head>
+  <body class="h-full">
+    <div class="flex min-h-full">
+      <div class="flex flex-1 flex-col justify-center py-12 px-4 sm:px-6 lg:flex-none lg:px-20 xl:px-24">
+        <div class="mx-auto w-full max-w-sm lg:w-96">
+          <%= yield %>
+        </div>
+      </div>
+      <div class="relative hidden w-0 flex-1 lg:block">
+
+        <img class="absolute inset-0 h-full w-full object-cover"
+             src="<%= image_path('auth/photo-1623503664086-475867ec20b3.jpeg') %>"
+             alt="<%= application_title %>">
+      </div>
+    </div>
+
+    <!-- Electron titlebar -->
+    <div class="titlebar h-8 z-[999] absolute top-0 w-full hidden electron:block bg-transparent"></div>
+  </body>
+</html>

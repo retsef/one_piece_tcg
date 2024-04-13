@@ -1,0 +1,40 @@
+<%#
+# Edit
+
+This view is the template for the edit page.
+
+It displays a header, and renders the `_form` partial to do the heavy lifting.
+
+## Local variables:
+
+- `page`:
+  An instance of [Administrate::Page::Form][1].
+  Contains helper methods to help display a form,
+  and knows which attributes should be displayed in the resource's form.
+
+[1]: http://www.rubydoc.info/gems/administrate/Administrate/Page/Form
+%>
+
+<div class="max-w-7xl mx-auto py-2 sm:py-8 px-4 sm:px-6 lg:px-8">
+  <div class="max-w-3xl mx-auto">
+    <!-- Header -->
+    <%=
+      render("edit_header",
+        resource: page.resource,
+        page: page
+      )
+    %>
+
+    <section class="main-content__body space-y-8" id="form_body"
+             data-controller="transition"
+             data-transition-initial-value
+             data-transition-enter-active="transition-opacity ease-out duration-300"
+             data-transition-enter-from="opacity-0"
+             data-transition-enter-to="opacity-100"
+             data-transition-leave-active="transition-opacity ease-in duration-200"
+             data-transition-leave-from="opacity-100"
+             data-transition-leave-to="opacity-0">
+      <%= render "form", page: page %>
+    </section>
+  </div>
+</div>

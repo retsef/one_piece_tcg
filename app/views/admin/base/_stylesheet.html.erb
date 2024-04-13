@@ -1,0 +1,18 @@
+<%#
+# Stylesheet Partial
+
+This partial imports the necessary stylesheets on each page.
+By default, it includes the application CSS,
+but each page can define additional CSS sources
+by providing a `content_for(:stylesheet)` block.
+%>
+
+<!-- TODO: move inside application css -->
+<%= stylesheet_link_tag 'trix.css', media: 'all', 'data-turbo-track': 'reload' %>
+<%= stylesheet_link_tag 'application', media: 'all', 'data-turbo-track': 'reload' %>
+
+<%# Administrate::Engine.stylesheets.each do |css_path|
+  <%=# stylesheet_link_tag css_path
+#%>
+
+<%= yield :stylesheet %>

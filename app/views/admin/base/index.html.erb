@@ -1,0 +1,102 @@
+<%#
+# Index
+
+This view is the template for the index page.
+It is responsible for rendering the search bar, header and pagination.
+It renders the `_table` partial to display details about the resources.
+
+## Local variables:
+
+- `page`:
+  An instance of [Administrate::Page::Collection][1].
+  Contains helper methods to help display a table,
+  and knows which attributes should be displayed in the resource's table.
+- `resources`:
+  An instance of `ActiveRecord::Relation` containing the resources
+  that match the user's search criteria.
+  By default, these resources are passed to the table partial to be displayed.
+- `search_term`:
+  A string containing the term the user has searched for, if any.
+
+[1]: http://www.rubydoc.info/gems/administrate/Administrate/Page/Collection
+%>
+
+<%# locals: (page:, resources:, search_term: '', param_name: '_page') -%>
+
+<div class="px-4 sm:px-6 lg:px-8">
+  <%= render(
+    "index_header",
+    resources: resources,
+    page: page
+  ) %>
+
+  <div class="mt-8 flex flex-col"
+       data-controller="transition"
+       data-transition-initial-value
+       data-transition-enter-active="transition-opacity ease-out duration-300"
+       data-transition-enter-from="opacity-0"
+       data-transition-enter-to="opacity-100"
+       data-transition-leave-active="transition-opacity ease-in duration-200"
+       data-transition-leave-from="opacity-100"
+       data-transition-leave-to="opacity-0">
+    <div class="-my-2 -mx-4 overflow-x-auto sm:-mx-6 lg:-mx-8">
+      <div class="inline-block min-w-full py-2 align-middle <%= 'px-6' if resources.empty? %> md:px-6 lg:px-8">
+
+        <%= render('filter_alerts', dashboard: dashboard, page: page) if show_filters? %>
+
+        <% if resources.empty? %>
+          <%= render(
+            "collection_empty",
+            collection_presenter: page,
+            collection_field_name: resource_name,
+            page: page,
+            resources: resources,
+            table_title: "page-title"
+          ) %>
+        <% end %>
+
+        <% if resources.any? %>
+          <!-- Search Form -->
+          <%# render(
+            "search",
+            search_term: search_term,
+            resource_name: display_resource_name(page.resource_name)
+          ) if show_search_bar? %>
+
+          <div class="overflow-hidden">
+            <!-- Collection Body -->
+            <turbo-frame id="index_<%= page.resource_name %>">
+              <%= render(
+                "collection",
+                collection_presenter: page,
+                collection_field_name: resource_name,
+                page: page,
+                resources: resources,
+                table_title: "page-title"
+              ) %>
+
+              <!-- Collection Footer -->
+              <%= render(
+                "pagination",
+                page: page,
+                param_name: param_name,
+                paginate_info: @paginate_info
+              ) %>
+            </turbo-frame>
+          </div>
+
+        <% end %>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<%= render(
+  'filters',
+  resource_title: display_resource_name(page.resource_name),
+  dashboard: dashboard,
+  page: page
+) if show_filters? %>
+
+<%= turbo_stream_from "index_#{page.resource_name}" %>

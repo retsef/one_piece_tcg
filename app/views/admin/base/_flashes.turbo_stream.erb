@@ -1,0 +1,22 @@
+<%#
+# Flash Partial
+
+This partial renders flash messages on every page.
+
+## Relevant Helpers:
+
+- `flash`:
+  Returns a hash,
+  where the keys are the type of flash (alert, error, notice, etc)
+  and the values are the message to be displayed.
+%>
+
+<span>&#8203;</span>
+
+<%= turbo_stream.append 'flashes' do %>
+  <% flash.each do |type, value| %>
+    <% next unless value.respond_to?(:html_safe) %>
+
+    <%= render Admin::Notification::Flash::Component.new(type, value) %>
+  <% end %>
+<% end %>

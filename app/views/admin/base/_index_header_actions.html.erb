@@ -1,0 +1,28 @@
+<% if show_filters? %>
+	<button class="ml-3 inline-flex items-center btn-white"
+					data-action="click->filters#open:prevent:stop">
+		<%= inline_svg_tag 'heroicons/24/outline/adjustments-horizontal.svg', class: 'h-5 w-5' %>
+		<span class="ml-2"><%= t("#{namespace}.actions.filters") %></span>
+		<% if filtered? %>
+			<span class="ml-2 inline-flex items-center rounded-full bg-gray-100 px-2.5 py-0.5 text-xs font-medium text-gray-800"><%= filter_count %></span>
+		<% end %>
+	</button>
+<% end %>
+
+<%= link_to(
+	t(
+		"#{namespace}.actions.export",
+		name: display_resource_name(page.resource_name, singular: true).downcase
+	),
+	[:export, namespace, page.resource_path.pluralize.to_sym, sanitized_order_params(page, :id).to_h.merge(format: :csv)],
+	class: "ml-3 inline-flex items-center btn-white",
+) if accessible_action?(page.resource_name, :export) && resources.any? %>
+
+<%= link_to(
+	t(
+		"#{namespace}.actions.new_resource",
+		name: display_resource_name(page.resource_name, singular: true).downcase
+	),
+	[:new, namespace, page.resource_path.to_sym],
+	class: 'ml-3 inline-flex items-center btn-primary'
+) if accessible_action?(new_resource, :new) %>

@@ -1,0 +1,74 @@
+<%#
+# Show
+
+This view is the template for the show page.
+It renders the attributes of a resource,
+as well as a link to its edit page.
+
+## Local variables:
+
+- `page`:
+  An instance of [Administrate::Page::Show][1].
+  Contains methods for accessing the resource to be displayed on the page,
+  as well as helpers for describing how each attribute of the resource
+  should be displayed.
+
+[1]: http://www.rubydoc.info/gems/administrate/Administrate/Page/Show
+%>
+
+<div class="max-w-7xl mx-auto py-2 electron:py-0 sm:py-8 px-4 sm:px-6 lg:px-8">
+  <div class="max-w-3xl mx-auto">
+    <!-- Header -->
+    <%=
+      render("show_header",
+        resource: page.resource,
+        page: page
+      )
+    %>
+
+    <section class="main-content__body mt-6 py-6 border-t border-gray-200"
+             data-controller="transition"
+             data-transition-initial-value
+             data-transition-enter-active="transition-opacity ease-out duration-300"
+             data-transition-enter-from="opacity-0"
+             data-transition-enter-to="opacity-100"
+             data-transition-leave-active="transition-opacity ease-in duration-200"
+             data-transition-leave-from="opacity-100"
+             data-transition-leave-to="opacity-0">
+      <dl class="grid grid-cols-1 sm:grid-cols-12 gap-x-4 gap-y-6">
+        <% page.attributes.each do |attribute| %>
+          <div class="sm:col-span-<%= attribute.options.dig(:col_span, :show) || 12 %> sm:px-0">
+            <%- attr_id = "#{attribute.name}_attribute".to_sym %>
+
+            <!-- Label for <%= attribute.name %> -->
+            <dt id="<%= attr_id %>_label"
+              class="text-sm font-medium text-gray-500
+                attribute-label attribute-label--<%= attribute.html_class %> <%= 'hidden' if attribute.options.dig(:hide_label, :show) %>">
+              <%= t( "helpers.label.#{resource_name}.#{attribute.name}",
+                  default: page.resource.class.human_attribute_name(attribute.name)) %>
+            </dt>
+
+            <!-- Content -->
+            <%- content_for(attr_id) do %>
+              <span class="flex-grow"><%= render_field attribute, page: page %></span>
+            <% end %>
+
+            <dd id="<%= attr_id %>_value"
+                class="mt-1 text-sm text-gray-900 sm:mt-0 attribute-data attribute-data--<%=attribute.html_class%>">
+              <% editable = attribute.editable_inline? && authorized_action?(page.resource, attribute.name) %>
+              <%= content_for(attr_id) unless editable %>
+
+              <%= render Admin::Field::Inline::Edit::Component.new(resource: page.resource, attribute: attribute.name, frame_prefix: page.resource_name) do |component| %>
+                <% component.with_body do %>
+                  <%= content_for(attr_id) %>
+                <% end %>
+              <% end if editable %>
+            </dd>
+          </div>
+        <% end %>
+      </dl>
+    </section>
+  </div>
+</div>
+
+<%= turbo_stream_from page.resource %>

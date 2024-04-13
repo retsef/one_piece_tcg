@@ -25,4 +25,6 @@ Rails.application.routes.draw do
   post '/crash_report', to: 'errors#crash_report'
 
   direct(:producer) { 'https://en.onepiece-cardgame.com' }
+
+  mount Lookbook::Engine, at: '/lookbook' if Rails.env.development?
 end

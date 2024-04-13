@@ -1,0 +1,25 @@
+<% content_for(:title) do %>
+  <%= display_resource_name(page.resource_name) %>
+<% end %>
+
+<!-- Header -->
+<header class="sm:flex sm:items-center" role="banner">
+  <div class="sm:flex-auto">
+    <h1 class="text-xl font-semibold text-gray-900">
+      <%= t("#{namespace}.collection.title.#{page.resource_name}",
+            default: content_for(:title)) %>
+    </h1>
+    <p class="mt-1 text-sm text-gray-400">
+      <%= t("#{namespace}.collection.hint.#{page.resource_name}",
+            default: "A list of all #{display_resource_name(page.resource_name)}") %>
+    </p>
+  </div>
+  <div class="mt-4 sm:mt-0 sm:ml-16 sm:flex-none align-middle flex">
+    <!-- Actions -->
+    <%= render(
+      "index_header_actions",
+      page: page,
+      resources: resources
+    ) %>
+  </div>
+</header>

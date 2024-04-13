@@ -1,0 +1,75 @@
+<%#
+# Collection
+
+This partial is used on the `index` and `show` pages
+to display a collection of resources in an HTML table.
+
+## Local variables:
+
+- `collection_presenter`:
+  An instance of [Administrate::Page::Collection][1].
+  The table presenter uses `ResourceDashboard::COLLECTION_ATTRIBUTES` to determine
+  the columns displayed in the table
+- `resources`:
+  An ActiveModel::Relation collection of resources to be displayed in the table.
+  By default, the number of resources is limited by pagination
+  or by a hard limit to prevent excessive page load times
+
+[1]: http://www.rubydoc.info/gems/administrate/Administrate/Page/Collection
+%>
+
+<%# locals: (collection_presenter:, collection_field_name:, page:, resources:, table_title: "page-title") -%>
+
+<table id="collection" class="table-auto min-w-full divide-y divide-gray-200" aria-labelledby="<%= table_title %>">
+  <thead>
+    <tr>
+      <% collection_presenter.attribute_types.each_with_index do |(attr_name, attr_type), index| %>
+        <%= render(
+          "collection_header_item",
+          page: page,
+          collection_presenter: collection_presenter,
+          collection_field_name: collection_field_name,
+          attribute: attr_name,
+          field_type: attr_type,
+          position: index) %>
+      <% end %>
+
+      <%= render(
+        "collection_header_actions",
+        page: page,
+        resources: resources,
+        collection_presenter: collection_presenter,
+      ) %>
+    </tr>
+  </thead>
+
+  <tbody class="divide-y divide-gray-100">
+    <% resources.each do |resource| %>
+      <tr class="table-row" id="<%= dom_id(resource, 'cell-data') %>">
+        <% collection_presenter.attributes_for(resource).each_with_index do |attribute, index| %>
+
+          <td class="whitespace-nowrap text-sm
+            <%= ('py-4 pl-4 pr-3 md:pl-0 font-medium text-gray-900' if index.zero?) || 'py-4 px-3 text-gray-500' %>
+            cell-data cell-data--<%= attribute.html_class %>"
+            data-label="<%= attribute.name %>">
+
+            <%= link_to_if accessible_action?(resource, :show),
+                           try_polymorphic_path([namespace, resource]),
+                           tabindex: -1, class: "action-show", target: '_top' do %>
+              <% cache_if attribute.options.fetch(:cached, false), cache_key_for_field(attribute) do %>
+                <%= render_field attribute %>
+              <% end %>
+            <% end %>
+          </td>
+
+        <% end %>
+
+        <%= render(
+          "collection_item_actions",
+          page: page,
+          resource: resource
+        ) %>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

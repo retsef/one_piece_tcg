@@ -1,0 +1,9 @@
+<%= turbo_frame_tag 'form_modal', target: '_top' %>
+
+<template id="modal-confirm-template">
+  <%= render Admin::Notification::Modal::Component.new(
+    modal_id: 'MODAL_ID', color: 'MODAL_COLOR',
+    title: 'MODAL_TITLE', body: 'MODAL_BODY',
+    commit: 'MODAL_COMMIT', cancel: 'MODAL_CANCEL'
+  ) %>
+</template>

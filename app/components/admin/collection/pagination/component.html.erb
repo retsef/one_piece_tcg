@@ -1,0 +1,30 @@
+<nav class="pagy-nav pagination relative z-0 inline-flex rounded-md shadow-sm -space-x-px" aria-label="Pagination" role="navigation">
+  <%= link_to page_url(page_prev), rel: 'prev', disabled: !page_prev?,
+              class: "relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 #{'disabled' unless page_prev?}" do %>
+    <span class="sr-only"><%= t('views.pagination.previous') %></span>
+    <%= inline_svg_tag 'heroicons/24/solid/chevron-left.svg', class: 'h-5 w-5' %>
+  <% end %>
+
+  <% page_series.each do |item| %>
+    <% if item.is_a? Integer %>
+      <%= link_to page_label_for(item), page_url(item), {
+        rel: rel_for_page(item),
+        class: "bg-white border-gray-300 text-gray-500 hover:bg-gray-50 relative inline-flex items-center px-4 py-2 border text-sm font-medium"
+      } %>
+    <% elsif item.is_a? String %>
+      <span aria-current="page" class="z-10 bg-primary-50 border-primary-500 text-primary-600 relative inline-flex items-center px-4 py-2 border text-sm font-medium">
+        <%= page_label_for(item) %>
+      </span>
+    <% else %>
+      <span class="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-700">
+        <%== t('views.pagination.truncate') %>
+      </span>
+    <% end %>
+  <% end %>
+
+  <%= link_to page_url(page_next), rel: 'next', disabled: !page_next?,
+              class: "relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 #{'disabled' unless page_next?}" do %>
+    <span class="sr-only"><%= t('views.pagination.next') %></span>
+    <%= inline_svg_tag 'heroicons/24/solid/chevron-right.svg', class: 'h-5 w-5' %>
+  <% end %>
+</nav>

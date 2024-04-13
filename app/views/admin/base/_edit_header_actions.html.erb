@@ -1,0 +1,28 @@
+<span class="block ml-3">
+  <%= render Admin::Actions::Group::Component.new do |component| %>
+    <% component.with_item(
+      url: [namespace, page.resource],
+      icon: 'heroicons/24/solid/eye.svg',
+      title: t("#{namespace}.actions.show", name: page.page_title)
+    ) if accessible_action?(page.resource, :show) && false %>
+
+    <% component.with_item(
+      url: [namespace, page.resource],
+      icon: 'heroicons/24/solid/trash.svg',
+      title: t("#{namespace}.actions.destroy", name: page.page_title),
+      style: { body: :error },
+      data: {
+        turbo_frame: :_top,
+        turbo_method: :delete,
+        turbo_action: :replace,
+        turbo_confirm: {
+          title: t("#{namespace}.actions.destroy_confirm.title"),
+          body: t("#{namespace}.actions.destroy_confirm.body"),
+          commit: t("#{namespace}.actions.destroy_confirm.commit"),
+          cancel: t("#{namespace}.actions.destroy_confirm.cancel"),
+          color: "red"
+        }
+      }
+    ) if accessible_action?(page.resource, :destroy) %>
+  <% end %>
+</span>

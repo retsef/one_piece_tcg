@@ -1,0 +1,88 @@
+<%
+  form_options = { class: 'mb-4', builder: Admin::SearchBuilder }
+  if local_assigns.has_key?(:search_path)
+    form_path = @ransack_results
+    form_options[:url] = search_path
+    clear_filters_path = search_path
+  else
+    form_path = [namespace, @ransack_results]
+    clear_filters_path = url_for([namespace, @ransack_results.klass])
+  end
+%>
+
+<!-- Filters -->
+<!-- https://github.com/activerecord-hackery/ransack/blob/master/lib/ransack/helpers/form_builder.rb -->
+<div class="hidden relative z-10" aria-labelledby="filters_title" role="dialog" aria-modal="true"
+  data-filters-target="container"
+  data-action="keydown.esc->filters#close:stop:prevent">
+
+	<div class="hidden fixed inset-0 bg-gray-500 bg-opacity-25"
+			 data-filters-target="backdrop"
+			 data-action="transition:end-leave->filters#hide_container click->filters#close:stop:prevent"
+			 data-controller="transition"
+			 data-transition-enter-active="transition-opacity ease-out duration-300"
+			 data-transition-enter-from="opacity-0"
+			 data-transition-enter-to="opacity-100"
+			 data-transition-leave-active="transition-opacity ease-in duration-200"
+			 data-transition-leave-from="opacity-100"
+			 data-transition-leave-to="opacity-0"></div>
+
+  <div class="fixed inset-0 overflow-hidden">
+    <div class="absolute inset-0 overflow-hidden">
+      <div class="pointer-events-none fixed inset-y-0 right-0 flex max-w-full pl-10">
+        <div class="hidden pointer-events-auto w-screen max-w-md"
+					data-filters-target="panel"
+					data-controller="transition"
+					data-transition-enter-active="transform transition ease-in-out duration-300 sm:duration-500"
+					data-transition-enter-from="translate-x-full"
+					data-transition-enter-to="translate-x-0"
+					data-transition-leave-active="transform transition ease-in-out duration-300 sm:duration-500"
+					data-transition-leave-from="translate-x-0"
+					data-transition-leave-to="translate-x-full">
+          <div class="flex h-full flex-col overflow-y-scroll bg-white py-6 shadow-xl">
+						<%= search_form_for form_path, form_options do |f| %>
+							<!-- Header -->
+							<div class="px-4 sm:px-6">
+								<header class="flex items-start justify-between">
+									<h2 class="text-lg font-medium text-gray-900" id="filters_title">
+										<%= t("#{namespace}.filters.label", resource: resource_title) %>
+									</h2>
+
+									<%= link_to clear_filters_path, class: 'hidden btn-clear-filters' do %>
+										<i class="icon ti ti-clear-all"></i>
+										<%= t("#{namespace}.filters.clear") %>
+									<% end %>
+
+									<div class="ml-3 flex h-7 items-center">
+										<button type="button" class="rounded-md bg-white text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2"
+														data-action="click->filters#close:stop:prevent">
+											<span class="sr-only">Close panel</span>
+											<%= inline_svg_tag 'heroicons/24/solid/x-mark.svg', class: 'h-6 w-6' %>
+										</button>
+									</div>
+								</header>
+							</div>
+
+							<!-- Panel -->
+							<section class="relative mt-6 flex-1 px-4 sm:px-6">
+								<div class="grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-6">
+									<% page.filterable_attributes.each do |attribute| %>
+
+										<div class="sm:col-span-6 filter-unit field-unit--<%= attribute.html_class %>">
+											<%= render_field attribute, page: page, form: f %>
+										</div>
+									<% end %>
+								</div>
+							</section>
+
+							<footer class="flex flex-shrink-0 justify-end px-4 py-4">
+								<%= link_to t("#{namespace}.filters.clear"), clear_filters_path, class: 'rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:ring-gray-400' %>
+								<%= f.submit t("#{namespace}.filters.search"), name: nil, class: 'ml-4 inline-flex justify-center rounded-md bg-primary-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-primary-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-500' %>
+							</footer>
+						<% end %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

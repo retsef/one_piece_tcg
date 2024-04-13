@@ -1,0 +1,61 @@
+<%#
+# Application Layout
+
+This view template is used as the layout
+for every page that Administrate generates.
+
+By default, it renders:
+- Navigation
+- Content for a search bar
+  (if provided by a `content_for` block in a nested page)
+- Flashes
+- Links to stylesheets and JavaScripts
+%>
+
+<!DOCTYPE html>
+<html lang="<%= I18n.locale %>" class="h-full bg-white">
+<head>
+  <meta charset="utf-8">
+  <meta name="ROBOTS" content="NOODP">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="environment" content="<%= Rails.env %>">
+  <meta name="release" content="<%= Rails.application.release %>">
+
+  <title><%= application_title %></title>
+  <meta name="description" content="<%= application_description %>">
+
+  <%= render 'favicon' %>
+  <%= render "stylesheet" %>
+  <%= render "javascript" %>
+
+  <link rel="manifest" href="<%= manifest_url %>">
+  <meta name="turbo-refresh-method" content="morph">
+  <meta name="turbo-refresh-scroll" content="preserve">
+
+  <%= action_cable_meta_tag %>
+  <%= csrf_meta_tags %>
+  <%= csp_meta_tag if defined?(csp_meta_tag) %>
+</head>
+<body class="h-full" data-controller="navigation-sidebar command-palette filters">
+  <!-- Electron titlebar -->
+  <div class="titlebar h-8 z-8 sticky hidden electron:block bg-gray-100 md:bg-transparent"></div>
+
+  <%= render 'navigation' %>
+
+  <div class="flex flex-1 flex-col md:pl-64 print:pl-0">
+    <!-- Mobile toolbar -->
+    <%= render 'navbar' %>
+
+    <!-- Main Content -->
+    <main class="main-content flex-1 pb-6 py-4 sm:py-6 print:p-0" role="main">
+      <%= render Admin::Notification::NetworkStatus::Component.new %>
+      <%= render 'flashes' %>
+
+      <%= content_for?(:content) ? yield(:content) : yield %>
+    </main>
+  </div>
+
+  <%= render 'modals' %>
+  <%= render 'commands' %>
+</body>
+</html>

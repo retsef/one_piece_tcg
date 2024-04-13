@@ -1,0 +1,13 @@
+<%
+  collection_resource_class = collection_presenter.resource_class
+  actions = [
+    accessible_action?(collection_resource_class, :edit),
+    accessible_action?(collection_resource_class, :destroy)
+  ]
+%>
+
+<% if actions.include?(true) %>
+  <th scope="col" class="relative py-3.5 pl-3 pr-4 md:pr-0">
+    <span class="sr-only">Actions</span>
+  </th>
+<% end %>

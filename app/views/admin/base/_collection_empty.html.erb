@@ -1,0 +1,39 @@
+<%
+	collection_resource_name = collection_presenter.resource_name
+	i18n_namespace = filtered? ? 'no_match' : 'empty'
+
+	clear_filters_path = local_assigns.has_key?(:search_path) ? search_path : url_for([namespace, @ransack_results.klass])
+%>
+
+<div class="flex justify-center">
+	<div class="min-h-80 flex w-full flex-col items-center justify-center rounded-md border border-dashed p-7 lg:p-20">
+		<%= inline_svg_tag t("#{namespace}.collection.#{i18n_namespace}.#{collection_resource_name}.icon"), class: 'mx-auto h-12 w-12 text-gray-400 mb-9' %>
+
+		<h3 class="mt-2 text-sm font-semibold text-gray-900">
+			<%= t("#{namespace}.collection.#{i18n_namespace}.#{collection_resource_name}.title") %>
+		</h3>
+
+		<p class="mt-1 text-sm text-gray-500">
+			<%= t("#{namespace}.collection.#{i18n_namespace}.#{collection_resource_name}.body") %>
+		</p>
+
+		<div class="mt-6">
+			<%= link_to([:new, namespace, page.resource_path.to_sym],
+				class: "inline-flex items-center btn-primary"
+			) do %>
+				<%= inline_svg_tag 'heroicons/24/solid/plus.svg', class: '-ml-1 mr-2 h-5 w-5' %>
+
+				<%= t("#{namespace}.collection.empty.#{collection_resource_name}.new",
+							default: t(
+								"#{namespace}.actions.new_resource",
+								name: display_resource_name(page.resource_name, singular: true).downcase
+							)
+						) %>
+			<% end if accessible_action?(new_resource, :new) && !filtered? %>
+
+			<%= link_to t("#{namespace}.filters.clear"), clear_filters_path,
+									class: 'rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm
+													ring-1 ring-inset ring-gray-300 hover:ring-gray-400' if filtered? %>
+		</div>
+	</div>
+</div>

@@ -1,0 +1,5 @@
+<%= link_to(url, class: html_class, role: :menuitem,
+            tabindex: -1, **options) do %>
+  <%= inline_svg_tag icon, class: '-ml-1 mr-2 h-5 w-5' if icon? %>
+  <%= title %>
+<% end %>
