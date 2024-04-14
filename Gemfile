@@ -15,8 +15,8 @@ gem "pg", "~> 1.4"
 # Use Redis adapter to run Action Cable in production
 gem "redis", "~> 5.0"
 
-# gem "solid_cache", "~> 0.3"
-# gem "solid_queue", "~> 0.1"
+gem "solid_cache", "~> 0.6"
+gem "solid_queue", "~> 0.3"
 
 # Use the Puma web server [https://github.com/puma/puma]
 gem "puma", "~> 6.4"

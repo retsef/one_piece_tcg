@@ -10,7 +10,7 @@
     <title><%= application_title %></title>
     <meta name="description" content="<%= application_description %>">
 
-    <%= render 'admin/base/favicon' %>
+    <%# render 'admin/base/favicon' %>
 
     <%= action_cable_meta_tag %>
     <%= csrf_meta_tags %>
@@ -33,12 +33,6 @@
         <div class="mx-auto w-full max-w-sm lg:w-96">
           <%= yield %>
         </div>
-      </div>
-      <div class="relative hidden w-0 flex-1 lg:block">
-
-        <img class="absolute inset-0 h-full w-full object-cover"
-             src="<%= image_path('auth/photo-1623503664086-475867ec20b3.jpeg') %>"
-             alt="<%= application_title %>">
       </div>
     </div>
 

@@ -1,10 +1,18 @@
 <% actions = [
+  accessible_action?(resource, :show),
   accessible_action?(resource, :edit),
   accessible_action?(resource, :destroy)
 ] %>
 
 <% if actions.include?(true) %>
   <td class="cell-action whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium md:pr-0">
+
+    <%= link_to(
+          t("#{namespace}.actions.show"),
+          [:edit, namespace, resource],
+          class: 'text-primary-600 hover:text-primary-500',
+          target: '_top'
+        ) if accessible_action? resource, :show %>
 
     <%= link_to(
         t("#{namespace}.actions.edit"),

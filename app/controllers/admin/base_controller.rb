@@ -12,7 +12,7 @@ class Admin::BaseController < Administrate::ApplicationController
   include Admin::Namespaced
   include Admin::Resourced
   include Admin::Authorizable
-  include Admin::Authenticated
+  # include Admin::Authenticated
 
   include Admin::FeatureSet
 

@@ -127,10 +127,10 @@
  */
 @layer components {
   .cards {
-    @apply flex h-[150px] justify-center fixed px-[50px] py-0 bottom-0 inset-x-0;
+    @apply flex h-[135px] justify-center fixed px-[50px] py-0 bottom-0 inset-x-0;
   }
   .card {
-    @apply h-[150px] mr-[-25px] ml-[-25px] relative w-[100px] my-0
+    @apply h-[135px] mr-[-25px] ml-[-25px] relative w-[100px] my-0
   }
   .card:after {
     @apply content-[""] z-10 inset-y-0 hover:top-[-175px]
@@ -142,16 +142,18 @@
     @apply bg-white;
     -webkit-animation: none;
   }
-  .card-label {
-    @apply text-2xl font-[bold] pl-[15px] pr-0 pt-[15px] pb-0;
-  }
   .card:hover .card-face {
-    @apply rotate-0 duration-[0ms] z-[5] scale-[2] after:animate-[fade_250ms_ease-out_forwards];
+    @apply rotate-0 duration-[0ms] z-[5] scale-[2] mb-[-150px] after:animate-[fade_250ms_ease-out_forwards];
   }
   .card:hover .card-face:after {
     -webkit-animation: fade 250ms ease-out forwards;
   }
 
+  .card .card-face {
+    @apply shadow-2xl rounded object-cover object-center;
+  }
+
+  /*
   .card .card-face {
     background: linear-gradient(-135deg, #ff9999, #da0b0b);
     box-shadow: -5px 5px 5px rgba(0, 0, 0, 0.15), inset 0 0 0 2px rgba(255, 153, 153, 0.75);
@@ -163,4 +165,5 @@
   .card:hover .card-face {
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4), inset 0 0 0 2px rgba(255, 153, 153, 0.75);
   }
+  */
 }

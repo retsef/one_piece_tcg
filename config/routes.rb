@@ -8,6 +8,9 @@ Rails.application.routes.draw do
 
   draw :auth
 
+  draw :admin
+  draw :api
+
   # Defines the root path route ("/")
   # root "posts#index"
 

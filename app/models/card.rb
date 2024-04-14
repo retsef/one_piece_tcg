@@ -4,6 +4,8 @@ class Card < ApplicationRecord
   has_many :card_families, class_name: 'Card::Family', dependent: :destroy
   has_many :families, through: :card_families
 
+  has_many :artworks, class_name: 'Card::Artwork', dependent: :destroy
+
   enum :rarity, {
     leader: 'L',
     common: 'C',
@@ -14,7 +16,7 @@ class Card < ApplicationRecord
     promo: 'P'
   }
 
-  validates :name, :colors, :attributes, presence: true
+  validates :name, :rarity, :colors, :attributes, presence: true
 
   scope :with_trigger, -> { where.not(trigger: [nil, ""]) }
   scope :with_effect, -> { where.not(effect: [nil, ""]) }

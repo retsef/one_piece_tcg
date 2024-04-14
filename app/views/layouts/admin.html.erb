@@ -24,7 +24,7 @@ By default, it renders:
   <title><%= application_title %></title>
   <meta name="description" content="<%= application_description %>">
 
-  <%= render 'favicon' %>
+  <%# render 'favicon' %>
   <%= render "stylesheet" %>
   <%= render "javascript" %>
 
@@ -40,7 +40,7 @@ By default, it renders:
   <!-- Electron titlebar -->
   <div class="titlebar h-8 z-8 sticky hidden electron:block bg-gray-100 md:bg-transparent"></div>
 
-  <%= render 'navigation' %>
+  <%# render 'navigation' %>
 
   <div class="flex flex-1 flex-col md:pl-64 print:pl-0">
     <!-- Mobile toolbar -->
@@ -56,6 +56,6 @@ By default, it renders:
   </div>
 
   <%= render 'modals' %>
-  <%= render 'commands' %>
+  <%# render 'commands' %>
 </body>
 </html>
