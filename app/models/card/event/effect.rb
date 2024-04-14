@@ -2,7 +2,7 @@ require 'polyglot'
 require 'treetop'
 
 module Card::Event::Effect
-  include Card::Effect
+  extend Card::Effect
 
   # Parser
   Treetop.load Rails.root.join('lib/card_event_effect.treetop').to_s

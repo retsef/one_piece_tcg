@@ -21,16 +21,6 @@
 */
 
 /*
- * Electron
- */
-@layer components {
-  .titlebar {
-    -webkit-user-select: none;
-    -webkit-app-region: drag;
-  }
-}
-
-/*
  * Turbo
  */
 @layer components {
@@ -108,19 +98,6 @@
 }
 
 /*
- * Administrate Fields
- */
-@layer components {
-  .attribute-label.attribute-label--has-one {
-    @apply hidden;
-  }
-
-  .attribute-data.attribute-data--has-one {
-    @apply sm:col-span-3;
-  }
-}
-
-/*
  * Theme
  */
 @layer components {
@@ -142,5 +119,48 @@
 
   mark {
     @apply bg-primary-300 text-gray-100;
+  }
+}
+
+/*
+ * Arena
+ */
+@layer components {
+  .cards {
+    @apply flex h-[150px] justify-center fixed px-[50px] py-0 bottom-0 inset-x-0;
+  }
+  .card {
+    @apply h-[150px] mr-[-25px] ml-[-25px] relative w-[100px] my-0
+  }
+  .card:after {
+    @apply content-[""] z-10 inset-y-0 hover:top-[-175px]
+  }
+  .card-face {
+    @apply content-[""] pointer-events-none absolute inset-0 after:animate-none after:content-[""] after:opacity-0 after:absolute after:inset-0;
+  }
+  .card-face:after {
+    @apply bg-white;
+    -webkit-animation: none;
+  }
+  .card-label {
+    @apply text-2xl font-[bold] pl-[15px] pr-0 pt-[15px] pb-0;
+  }
+  .card:hover .card-face {
+    @apply rotate-0 duration-[0ms] z-[5] scale-[2] after:animate-[fade_250ms_ease-out_forwards];
+  }
+  .card:hover .card-face:after {
+    -webkit-animation: fade 250ms ease-out forwards;
+  }
+
+  .card .card-face {
+    background: linear-gradient(-135deg, #ff9999, #da0b0b);
+    box-shadow: -5px 5px 5px rgba(0, 0, 0, 0.15), inset 0 0 0 2px rgba(255, 153, 153, 0.75);
+  }
+  .card .card-face .card-label {
+    color: #db0000;
+    text-shadow: -0.025em 0.025em 0 #ff8080;
+  }
+  .card:hover .card-face {
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4), inset 0 0 0 2px rgba(255, 153, 153, 0.75);
   }
 }

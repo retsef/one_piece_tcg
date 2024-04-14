@@ -1,0 +1,11 @@
+<div class="card"
+     data-controller="audio-effect"
+     data-audio-effect-src-value="<%= audio_path('flipcard.wav') %>"
+     data-audio-effect-volume-value="0.1"
+     data-action="mouseenter->audio-effect#play mouseleave->audio-effect#stop">
+  <div class="card-face">
+    <div class="card-label">
+      <%= label %>
+    </div>
+  </div>
+</div>

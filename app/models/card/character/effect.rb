@@ -2,7 +2,7 @@ require 'polyglot'
 require 'treetop'
 
 module Card::Character::Effect
-  include Card::Effect
+  extend Card::Effect
 
   # Effects
   class ActivateEffect < Card::Effect::GroupNode

@@ -2,7 +2,7 @@ require 'polyglot'
 require 'treetop'
 
 module Card::Stage::Trigger
-  include Card::Trigger
+  extend Card::Trigger
 
   # Parser
   Treetop.load Rails.root.join('lib/card_stage_trigger.treetop').to_s

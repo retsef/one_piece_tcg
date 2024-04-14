@@ -5,6 +5,7 @@ export default class extends ApplicationController {
   static targets = []
   static values = {
     src: String,
+    volume: { type: Number, default: 0.5 },
     initial: Boolean
   }
 
@@ -21,7 +22,7 @@ export default class extends ApplicationController {
       src: [this.srcValue],
       autoplay: true,
       loop: false,
-      volume: 0.5,
+      volume: this.volumeValue,
       onplay: this.onPlay.bind(this),
       onend: this.onEnd.bind(this),
     })
