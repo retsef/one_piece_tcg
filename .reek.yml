@@ -1,0 +1,14 @@
+---
+detectors:
+  IrresponsibleModule:
+    enabled: false
+
+  DuplicateMethodCall:
+    max_calls: 3
+
+# Directories and files below will not be scanned at all
+exclude_paths:
+  - db
+  - config
+  - lib
+  - test

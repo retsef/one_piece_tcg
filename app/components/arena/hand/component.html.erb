@@ -1,0 +1,30 @@
+<div role="cards"
+     class="flex h-[150px] justify-center fixed px-[50px] py-0 bottom-0 inset-x-0">
+  <%
+    total = 6
+    rotation_range = 50
+    offset_range = 80
+  %>
+  <% total.times do |i| %>
+    <%
+      rotation = (i - (total - 1).to_f / 2) / (total - 2) * rotation_range
+      offset = ((i - (total - 1).to_f / 2) / (total - 2) * offset_range).abs
+    %>
+
+    <div role="card"
+         class="group h-[150px] mr-[-25px] ml-[-25px] relative w-[100px] my-0
+               after:content-[''] after:left-[-60px] after:absolute after:right-[-60px] after:z-10 after:inset-y-0
+               hover:after:top-[-175px]">
+      <div role="card-face"
+           class="content-[''] bg-gray-500 pointer-events-none absolute transition-[800ms] duration-[cubic-bezier(0.19,1,0.22,1)] ease-[transform] inset-0
+                  after:bg-white after:animate-none after:content-[''] after:opacity-0 after:absolute after:inset-0
+                  group-hover:translate-y-[-100px] group-hover:rotate-0 group-hover:duration-[0ms] group-hover:z-[5] group-hover:scale-[2]"
+           style="transform: translateY(<%= offset.to_i %>px) rotate(<%= rotation %>deg);">
+        <div role="card-label"
+             class="text-2xl font-[bold] -tracking-wide pl-[15px] pr-0 pt-[15px] pb-0 bg-gray-500">
+          <%= i %>
+        </div>
+      </div>
+    </div>
+  <% end %>
+</div>
