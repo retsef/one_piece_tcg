@@ -1,4 +1,4 @@
-module Colored
+module Card::Colored
   extend ActiveSupport::Concern
 
   COLORS = %w[red green blue purple yellow black].freeze
@@ -14,6 +14,18 @@ module Colored
 
     def color
       colors.first
+    end
+
+    def multicolor?
+      colors.size > 1
+    end
+
+    COLORS.each do |color|
+      define_method :"#{color}?" do
+        colors.include?(color)
+      end
+
+      scope color, -> { where('colors LIKE ?', "%#{color}%") }
     end
   end
 end

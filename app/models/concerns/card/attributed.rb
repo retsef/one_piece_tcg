@@ -1,4 +1,4 @@
-module Attributed
+module Card::Attributed
   extend ActiveSupport::Concern
 
   ELEMENTS = %w[strike special wisdom slash ranged shoot].freeze
@@ -12,6 +12,18 @@ module Attributed
 
     def element
       elements.first
+    end
+
+    def multielement?
+      elements.size > 1
+    end
+
+    ELEMENTS.each do |element|
+      define_method :"#{element}?" do
+        elements.include?(element)
+      end
+
+      scope element, -> { where('elements LIKE ?', "%#{element}%") }
     end
   end
 

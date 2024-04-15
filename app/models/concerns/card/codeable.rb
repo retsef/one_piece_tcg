@@ -1,4 +1,4 @@
-module Codeable
+module Card::Codeable
   extend ActiveSupport::Concern
 
   SERIES = {
