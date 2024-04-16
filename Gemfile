@@ -13,7 +13,7 @@ gem "sqlite3", "~> 1.7"
 gem "pg", "~> 1.4"
 
 # Use Redis adapter to run Action Cable in production
-gem "redis", "~> 5.0"
+gem "redis", "~> 5.2"
 
 gem "solid_cache", "~> 0.6"
 gem "solid_queue", "~> 0.3"
