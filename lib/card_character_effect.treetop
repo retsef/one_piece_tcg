@@ -6,26 +6,44 @@ module Card::Character
 
 		rule body
 			(
+				name_override /
+				unlimited_copy_override
+			)*
+			(
 				trait trait_description
 			)*
+			effect dot?
+			<ShallowParsedQuery>
+		end
+
+		rule effect
 			( activation_cost )?
 			(
 				action once_per_turn? divider? /
 				once_per_turn
 			)*
-			( don_investment divider? )*
-			( trait trait_description )*
+			(
+				don_investment divider? /
+				trash_investment divider? /
+				power_investment divider?
+			)*
 			(
 				life_condition /
-				ko_effect_condition
+				ko_effect_condition /
+				leader_condition /
+				card_hand_condition
 			)*
 			(
 				draw_sentence and_clause? trash_sentence? /
 				power_gain_sentence /
+				power_give_sentence /
 				prevent_ko_sentence /
-        none / empty
-			)
-			dot? <ShallowParsedQuery>
+				rest_opponent_sentence /
+				restand_sentence /
+				apply_don_sentence /
+				add_don_sentence /
+				none / empty
+			) <ShallowParsedQuery>
 		end
 
 	  rule draw_sentence
@@ -33,29 +51,76 @@ module Card::Character
 	  end
 
 	  rule trash_sentence
-	    trash up_to? integer ( card / event or? / stage or? )+ your_hand? space? <TrashEffect>
+	    trash ( up_to? integer / this ) ( card / event or? / stage or? / character )+ your_hand? space? <TrashEffect>
 	  end
 
 		rule power_gain_sentence
 			( this / up_to? integer your colored? / up_to? integer opponent / up_to? integer )
 			( character / leader / leader or character) ( cost integer )?
-			gain integer power ( battle / turn )?
+			gain integer power ( 'for every ' integer your rested don card )? ( battle / turn )?
+		end
+
+		rule power_give_sentence
+			give
+			( this / up_to? integer opponent / up_to? integer your colored? / up_to? integer )
+			( character / leader / leader or character) ( cost integer )?
+			integer power ( battle / turn )?
 		end
 
 		rule prevent_ko_sentence
 			may_clause? trash_sentence 'instead' space? <PreventKOEffect>
 		end
 
+		rule rest_opponent_sentence
+			rest ( up_to? integer / all) ( opponent / your ) character space? <RestEffect>
+		end
+
+		rule restand_sentence
+			'Set ' this character 'as ' active space?
+		end
+
+		rule apply_don_sentence
+			give up_to? integer ( rested don card ) 'to ' ( leader or_clause? / integer your character )*
+		end
+
+		rule add_don_sentence
+			'Add ' up_to? integer ( rested / active ) don card 'from your ' don 'deck' ( 'as active' / 'and rest it')
+		end
+
 		rule activation_cost
 		  don_cost space? <DonCostCondition>
+		end
+
+		rule trash_investment
+			may_clause? trash ( this / up_to? integer ) ( card / character or_clause? / event or_clause? / stage or_clause? )+ your_hand? space?
+		end
+
+		rule power_investment
+			may_clause? give ( 'your ' integer 'active Leader' space? ) integer power turn
 		end
 
 		rule life_condition
 			if_clause (you_have / your_opponent_has) integer (up_to / or_less)? space? life divider space? <LifeCondition>
 		end
 
+		rule card_hand_condition
+			if_clause (you_have / your_opponent_has) integer (up_to / or_less)? space? card (in / from) your_hand? divider space? <CardHandCondition>
+		end
+
 		rule ko_effect_condition
-			if_clause this character would_clause ( ko ) ( by_effect / by_battle ) divider? <KOEffectCondition>
+			if_clause this character would_clause ko ( by_effect / by_battle )? divider? <KOCondition>
+		end
+
+		rule leader_condition
+			if_clause (you_have / your_opponent_has) integer (up_to / or_less)? space? leader divider space? <LeaderCondition>
+		end
+
+		rule name_override
+			'Also treat ' this card 'name as ' has_name 'according to the rules' dot?
+		end
+
+		rule unlimited_copy_override
+			'Under the rules of this game,' space? may_clause 'have any number of ' this card 'in your deck' dot?
 		end
 	end
 end

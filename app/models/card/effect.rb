@@ -98,6 +98,9 @@ module Card::Effect
   class UpToLiteral < Literal
   end
 
+  class AllLiteral < Literal
+  end
+
   class OrLessLiteral < Literal
   end
 

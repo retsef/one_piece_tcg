@@ -5,10 +5,7 @@ module Card::Character::Effect
   extend Card::Effect
 
   # Effects
-  class ActivateEffect < Card::Effect::GroupNode
-  end
-
-  class DrawEffect < Card::Effect::GroupNode
+  class BaseEffect < Card::Effect::GroupNode
     def count
       elements.find { |e| e.class.to_s.include? 'Integer' }&.parse
     end
@@ -16,64 +13,61 @@ module Card::Character::Effect
     def rule
       return :up_to if elements.any? { |e| e.class.to_s.include? 'UpTo' }
       return :or_less if elements.any? { |e| e.class.to_s.include? 'OrLess' }
+      return :all if elements.any? { |e| e.class.to_s.include? 'All' }
 
       :exact
     end
   end
 
-  class TrashEffect < Card::Effect::GroupNode
-    def count
-      elements.find { |e| e.class.to_s.include? 'Integer' }&.parse
-    end
-
-    def rule
-      return :up_to if elements.any? { |e| e.class.to_s.include? 'UpTo' }
-      return :or_less if elements.any? { |e| e.class.to_s.include? 'OrLess' }
-
-      :exact
-    end
+  class ActivateEffect < BaseEffect
   end
 
-  class GiveEffect < Card::Effect::GroupNode
-    def count
-      elements.find { |e| e.class.to_s.include? 'Integer' }&.parse
-    end
-
-    def rule
-      return :up_to if elements.any? { |e| e.class.to_s.include? 'UpTo' }
-      return :or_less if elements.any? { |e| e.class.to_s.include? 'OrLess' }
-
-      :exact
-    end
+  class DrawEffect < BaseEffect
   end
 
-  class RestEffect < Card::Effect::GroupNode
-    def count
-      elements.find { |e| e.class.to_s.include? 'Integer' }&.parse
-    end
-
-    def rule
-      return :up_to if elements.any? { |e| e.class.to_s.include? 'UpTo' }
-      return :or_less if elements.any? { |e| e.class.to_s.include? 'OrLess' }
-
-      :exact
-    end
+  class TrashEffect < BaseEffect
   end
 
-  class KOEffect < Card::Effect::GroupNode
+  class GiveEffect < BaseEffect
   end
 
-  class SearchEffect < Card::Effect::GroupNode
+  class RestEffect < BaseEffect
+  end
+
+  class KOEffect < BaseEffect
+  end
+
+  class SearchEffect < BaseEffect
   end
 
   # Conditions
-  class DonCostCondition < Card::Effect::GroupNode
+  class BaseCondition < Card::Effect::GroupNode
+    def count
+      elements.find { |e| e.class.to_s.include? 'Integer' }&.parse
+    end
+
+    def rule
+      return :up_to if elements.any? { |e| e.class.to_s.include? 'UpTo' }
+      return :or_less if elements.any? { |e| e.class.to_s.include? 'OrLess' }
+      return :all if elements.any? { |e| e.class.to_s.include? 'All' }
+
+      :exact
+    end
   end
 
-  class LifeCondition < Card::Effect::GroupNode
+  class DonCostCondition < BaseCondition
   end
 
-  class LeaderCondition < Card::Effect::GroupNode
+  class LifeCondition < BaseCondition
+  end
+
+  class CardHandCondition < BaseCondition
+  end
+
+  class LeaderCondition < BaseCondition
+  end
+
+  class KOCondition < BaseCondition
   end
 
   # Parser

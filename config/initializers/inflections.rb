@@ -16,4 +16,24 @@ ActiveSupport::Inflector.inflections(:en) do |inflect|
   # inflect.acronym "RESTful"
 
   inflect.acronym 'KO'
+
+  inflect.acronym 'DON'
+  inflect.acronym 'ST'
+  inflect.acronym 'OP'
+
+  ST = 13
+  OP = 6
+  EB = 1
+
+  (1..ST).each do |st|
+    inflect.acronym "ST#{format '%02d', st}"
+  end
+
+  (1..OP).each do |op|
+    inflect.acronym "OP#{format '%02d', op}"
+  end
+
+  (1..EB).each do |eb|
+    inflect.acronym "EB#{format '%02d', eb}"
+  end
 end

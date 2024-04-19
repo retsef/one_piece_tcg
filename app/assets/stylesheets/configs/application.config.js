@@ -15,17 +15,35 @@ export default {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        'roboto': ['Roboto', 'sans-serif']
+      },
       colors: {
-        'primary-50': '#f6eae9',
-        'primary-100': '#eed5d3',
-        'primary-200': '#ddaca7',
-        'primary-300': '#cc837c',
-        'primary-400': '#bb5a50',
-        'primary-500': '#aa3125',
-        'primary-600': '#992c21',
-        'primary-700': '#88271d',
-        'primary-800': '#762219',
-        'primary-900': '#661d16'
+        white: '#F5F3F3',
+        primary: {
+          50: '#f6eae9',
+          100: '#eed5d3',
+          200: '#ddaca7',
+          300: '#cc837c',
+          400: '#bb5a50',
+          500: '#aa3125',
+          600: '#992c21',
+          700: '#88271d',
+          800: '#762219',
+          900: '#661d16'
+        },
+        red: {
+          50: '#FFEBEE',
+          100: '#FFCDD2',
+          200: '#EF9A9A',
+          300: '#E57373',
+          400: '#EF5350',
+          500: '#B92E25',
+          600: '#A61B1B',
+          700: '#911111',
+          800: '#7D0808',
+          900: '#690000',
+        }
       },
       maxWidth: {
         '1/2': '50%',

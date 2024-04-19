@@ -5,7 +5,88 @@ module Card::Leader
 		include Card::Effect
 
 		rule body
-			dot? <ShallowParsedQuery>
+			(
+				trait trait_description
+			)*
+			effect dot?
+			<ShallowParsedQuery>
+		end
+
+		rule effect
+			( activation_cost )?
+			(
+				action once_per_turn? divider? /
+				once_per_turn
+			)*
+			(
+				don_investment divider? /
+				trash_investment divider? /
+				power_investment divider?
+			)*
+			(
+				draw_sentence and_clause? trash_sentence? /
+				power_gain_sentence /
+				power_give_sentence /
+				prevent_ko_sentence /
+				rest_opponent_sentence /
+				restand_sentence /
+				apply_don_sentence /
+				add_don_sentence /
+				none / empty
+			) <ShallowParsedQuery>
+		end
+
+		rule draw_sentence
+			draw up_to? integer card space? <DrawEffect>
+		end
+
+		rule trash_sentence
+			trash ( up_to? integer / this ) ( card / event or? / stage or? / character )+ your_hand? space? <TrashEffect>
+		end
+
+		rule power_gain_sentence
+			( this / up_to? integer your colored? / up_to? integer opponent / up_to? integer )
+			( character / leader / leader or character) ( cost integer )?
+			gain integer power ( 'for every ' integer your rested don card )? ( battle / turn )?
+		end
+
+		rule power_give_sentence
+			give
+			( this / up_to? integer opponent / up_to? integer your colored? / up_to? integer )
+			( character / leader or up_to? integer character / leader ) ( cost integer )?
+			integer power ( battle / turn )?
+		end
+
+		rule prevent_ko_sentence
+			may_clause? trash_sentence 'instead' space? <PreventKOEffect>
+		end
+
+		rule rest_opponent_sentence
+			rest ( up_to? integer / all) ( opponent / your ) character space? <RestEffect>
+		end
+
+		rule restand_sentence
+			'Set ' this character 'as ' active space?
+		end
+
+		rule apply_don_sentence
+			give up_to? integer ( rested don card ) 'to ' ( leader or_clause? / integer your character )*
+		end
+
+		rule add_don_sentence
+			'Add ' up_to? integer ( rested / active ) don card 'from your ' don 'deck' ( 'as active' / 'and rest it')
+		end
+
+		rule activation_cost
+			don_cost space? <DonCostCondition>
+		end
+
+		rule trash_investment
+			may_clause? trash ( this / up_to? integer ) ( card / character or_clause? / event or_clause? / stage or_clause? )+ your_hand? space?
+		end
+
+		rule power_investment
+			may_clause? give ( 'your ' integer 'active Leader' space? ) integer power turn
 		end
 	end
 end

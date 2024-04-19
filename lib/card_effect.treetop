@@ -24,8 +24,8 @@ class Card
 				'This card can attack on the turn in which it is played.' /
 				'After your opponent declares an attack, you may rest this card to make it the new target of the attack.' /
 				'When this card deals damage, the target card is trashed without activating its Trigger.' /
-				'This attack deals 2 damage.'
-			) ')'
+				'This card deals 2 damage.'
+			) ')' space?
 		end
 
 		# Don
@@ -51,6 +51,10 @@ class Card
 		# Types
 		rule has_type
 			'[' ( keyword ) ']' space? <TermLiteral>
+	  end
+
+	  rule has_name
+	  	'[' ( keyword ) ']' space? <TermLiteral>
 	  end
 
 	  rule of_type
@@ -93,7 +97,7 @@ class Card
 
 		# Target
 		rule leader
-			('Your Leader' / 'your Leader') space? <LeaderLiteral>
+			('Your Leader' / 'your Leader' ) space? <LeaderLiteral>
 		end
 
 		rule you_have
@@ -105,7 +109,7 @@ class Card
 		end
 
 		rule ko
-			'K.O.' space? <TermLiteral>
+			("K.O.'d" / 'K.O.') space? <TermLiteral>
 		end
 
 		rule don
@@ -121,7 +125,7 @@ class Card
 		end
 
 		rule opponent
-			("your opponent's" / 'your opponent' / 'Your opponent') space? <TermLiteral>
+			your ("opponent's" / 'opponent') space? <TermLiteral>
 		end
 
 		rule life
@@ -200,6 +204,14 @@ class Card
 			('with a cost of' / 'with cost' / 'of cost') space? <TermLiteral>
 		end
 
+		rule rested
+			('rested' / 'Rested') space? <TermLiteral>
+		end
+
+		rule active
+			('active' / 'Active') space? <TermLiteral>
+		end
+
 		# From
 		rule your_hand
 			'from your hand' space? <TermLiteral>
@@ -235,12 +247,16 @@ class Card
 			('Up to' / 'up to') space? <UpToLiteral>
 		end
 
+		rule all
+			('All of' / 'all of' / 'All' / 'all') space? <AllLiteral>
+		end
+
 		rule or_less
 			( 'or less' ) space? <OrLessLiteral>
 		end
 
 		rule keyword
-			[a-zA-Z]+ space? <TermLiteral>
+			([a-zA-Z]+ space?)+ <TermLiteral>
 		end
 
 		rule integer

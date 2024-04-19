@@ -32,6 +32,8 @@ module Card::Codeable
     validates :code, presence: true, uniqueness: true
 
     delegate :prefix, :prefix=, :number, :number=, to: :code, prefix: true
+
+    scope :from_series, ->(series) { where('code LIKE ?', "#{series}-%") }
   end
 
   class Code
