@@ -9,7 +9,7 @@ gem "rails", "~> 7.1.3"
 gem "dockerfile-rails", ">= 1.5", group: :development
 
 # Use sqlite3 as the database for Active Record
-gem "sqlite3", "~> 1.7"
+gem "sqlite3", "~> 2.0"
 gem "pg", "~> 1.4"
 
 # Use Redis adapter to run Action Cable in production
