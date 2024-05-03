@@ -7,7 +7,7 @@ class Card
 			('[Main]' / '[Activate: Main]' /
 			'[Your Turn]' / "[Opponent's Turn]" / '[End of Your Turn]' /
 			"[On Your Opponent's Attack]" / '[When Attacking]' /
-			'[On Play]' / '[Counter]') space? <ActionLiteral>
+			'[On Play]' / '[On Block]' / '[Counter]') space? <ActionLiteral>
 		end
 
 		rule once_per_turn
@@ -34,18 +34,18 @@ class Card
 		end
 
 		rule don_cost
-			'[' ( don 'x' integer ) ']' <DonCostCondition>
+			'[' ( don 'x' integer ) ']' space? <DonCostCondition>
 		end
 
 		rule don_investment
-		  ( '①' / '②' / '③' / '④' ) space? don_cost_description? <DonInvestmentCondition>
+		  ( '①' / '➀' / '②' / '➁' / '③' / '➂' / '④' / '➃' ) space? don_cost_description? space? <DonInvestmentCondition>
 		end
 
 		rule don_cost_description
 			'(' (
 				'You may rest the specified number of DON!! cards in your cost area.' /
 				'You may return the specified number of DON!! cards from your field to your DON!! deck.'
-			) ')'
+			) ')' space?
 		end
 
 		# Types
@@ -58,11 +58,15 @@ class Card
 	  end
 
 	  rule of_type
-	  	'{' ( keyword ) '}' space? <TermLiteral>
+	  	'{' ( keyword ) '}' (space? 'type')? space? <TermLiteral>
 	  end
 
 	  rule sub_type
 	  	'"' ( keyword ) '"' space? <TermLiteral>
+	  end
+
+	  rule other_than
+	  	'other than' space? <TermLiteral>
 	  end
 
 	  # Specs
@@ -71,7 +75,7 @@ class Card
 	  end
 
 	  rule is_specific
-	    'is [' keyword ']' <TermLiteral>
+	    'is [' keyword ']' space? <TermLiteral>
 	  end
 
 		# Clauses
@@ -97,27 +101,31 @@ class Card
 
 		# Target
 		rule leader
-			('Your Leader' / 'your Leader' ) space? <LeaderLiteral>
+			('Your Leader' / 'your Leader' / 'Leaders' / 'leaders' / 'Leader' / 'leader') space? <LeaderLiteral>
 		end
 
 		rule you_have
 			('You have' / 'you have') space? <SelfLiteral>
 		end
 
+		rule your_opponent
+			("Your opponent's" / "your opponent's" / 'Your opponent' / 'your opponent') space? <OpponentLiteral>
+		end
+
 		rule your_opponent_has
-			('Your opponent has' / 'your opponent has') space? <OpponentLiteral>
+			your_opponent 'has' space? <OpponentLiteral>
 		end
 
 		rule ko
 			("K.O.'d" / 'K.O.') space? <TermLiteral>
 		end
 
-		rule don
-			"DON!!" space? <DonLiteral>
-		end
-
 		rule this
 			('this' / 'This') space? <TermLiteral>
+		end
+
+		rule them
+			('them' / 'Them') space? <TermLiteral>
 		end
 
 		rule your
@@ -168,8 +176,28 @@ class Card
 			'Activate this ' card space? <TermLiteral>
 		end
 
+		rule top_deck
+			('at' / 'from' / 'to')? space? 'the top of ' ('the ' owner / your) 'deck' space? <TermLiteral>
+		end
+
 		rule bottom_deck
-			'at the bottom of the ' owner 'deck' space? <TermLiteral>
+			('at' / 'from' / 'to')? space? 'the bottom of ' ('the ' owner / your) 'deck' space? <TermLiteral>
+		end
+
+		rule top_or_bottom_deck
+			('at' / 'from' / 'to')? space? 'the top or bottom' space? 'of the deck' space? <TermLiteral>
+		end
+
+		rule trash_pile
+			('from' / 'to')? space? (opponent / your)? trash space? <TermLiteral>
+		end
+
+		rule deck
+			('at' / 'from' / 'to')? space? ( your / 'the ') 'deck' space? <TermLiteral>
+		end
+
+		rule shuffle_deck
+			('Shuffle' / 'shuffle') space? ( your / 'the ') 'deck' space? <TermLiteral>
 		end
 
 		rule owner
@@ -214,7 +242,15 @@ class Card
 
 		# From
 		rule your_hand
-			'from your hand' space? <TermLiteral>
+			('from' / 'to')? space? 'your hand' space? <TermLiteral>
+		end
+
+		rule trash
+			('from' / 'to')? space? 'trash' space? <TermLiteral>
+		end
+
+		rule owner_hand
+			('from the' / 'to the')? space? owner 'hand' space? <TermLiteral>
 		end
 
 		rule from_trash
@@ -232,6 +268,10 @@ class Card
 
 		rule turn
 			('during ')? this 'turn' space? <TermLiteral>
+		end
+
+		rule have_battle
+		  'battles' space? <TermLiteral>
 		end
 
 		# Effect occurred
@@ -255,6 +295,10 @@ class Card
 			( 'or less' ) space? <OrLessLiteral>
 		end
 
+		rule or_more
+			( 'or more' ) space? <OrMoreLiteral>
+		end
+
 		rule keyword
 			([a-zA-Z]+ space?)+ <TermLiteral>
 		end
@@ -267,12 +311,16 @@ class Card
 			'.' space? <TermLiteral>
 		end
 
+		rule comma
+			',' space? <TermLiteral>
+		end
+
 		rule none
 			'-' <TermLiteral>
 		end
 
 		rule divider
-			(':' / ',' / "/" / dot? 'Then') space? <TermLiteral>
+			(':' / dot? 'Then' / comma space? 'then' / comma / "/") space? <TermLiteral>
 		end
 
 		rule empty

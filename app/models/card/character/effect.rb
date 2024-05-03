@@ -34,7 +34,19 @@ module Card::Character::Effect
   class RestEffect < BaseEffect
   end
 
+  class ReturnEffect < BaseEffect
+  end
+
+  class LookUpEffect < BaseEffect
+  end
+
   class KOEffect < BaseEffect
+  end
+
+  class PlaceEffect < BaseEffect
+  end
+
+  class PlayEffect < BaseEffect
   end
 
   class SearchEffect < BaseEffect

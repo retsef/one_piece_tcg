@@ -104,6 +104,9 @@ module Card::Effect
   class OrLessLiteral < Literal
   end
 
+  class OrMoreLiteral < Literal
+  end
+
   class TraitNode < Literal
   end
 
