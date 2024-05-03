@@ -26,7 +26,7 @@
     "idiomorph": "^0.3.0",
     "inputmask": "^5.0.7",
     "local-time": "^3.0.2",
-    "trix": "^2.1.0"
+    "trix": "^2.1.1"
   },
   "devDependencies": {
     "@tailwindcss/forms": "^0.5.3",
