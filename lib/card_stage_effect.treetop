@@ -8,18 +8,29 @@ module Card::Stage
 			(
 				trait trait_description
 			)*
+			effect dot?
+			<ShallowParsedQuery>
+		end
+
+		rule effect
 			( activation_cost )?
 			(
 				action once_per_turn? divider? /
 				once_per_turn
 			)*
-			( don_investment divider? )*
-			( trait trait_description )*
+			(
+				don_investment divider? /
+				rest_card_investment divider?
+			)*
+			(
+				leader_condition
+			)*
 			(
 				draw_sentence and_clause? trash_sentence? /
 				rest_opponent_sentence /
+				add_don_sentence /
 				none / empty
-			) dot? <ShallowParsedQuery>
+			) <ShallowParsedQuery>
 		end
 
 	  rule draw_sentence
@@ -36,6 +47,22 @@ module Card::Stage
 
 		rule activation_cost
 		  don_cost space?
+		end
+
+		rule leader_condition
+			if_clause (your / opponent) leader
+			( 'has the ' of_type )
+			divider space? # <LeaderCondition>
+		end
+
+		rule rest_card_investment
+			may_clause? rest ( this / up_to? integer )
+			( card / character or_clause? / event or_clause? / stage or_clause? )+ your_hand? space?
+		end
+
+		rule add_don_sentence
+			('Add ' / 'add ') up_to? integer ( rested / active )? don card
+			'from your ' don 'deck' space? ( 'as active' / 'and rest it')
 		end
 	end
 end

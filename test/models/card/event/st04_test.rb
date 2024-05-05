@@ -1,0 +1,31 @@
+require "test_helper"
+
+class Card::Event::ST04Test < ActiveSupport::TestCase
+  EVENT = [
+    "[Main] Draw 1 card, then add up to 1 DON!! card from your DON!! deck and set it as active.",
+    "[Main] K.O. up to 1 of your opponent's Characters with a cost of 6 or less, then add up to 1 DON!! card from your DON!! deck and set it as active.",
+    "[Counter] DON!! −1 (You may return the specified number of DON!! cards from your field to your DON!! deck.): Up to 1 of your Leader or Character cards gains +4000 power during this battle."
+  ].freeze
+
+  TRIGGER = [
+    "Activate this card's [Main] effect.",
+    "Add up to 1 DON!! card from your DON!! deck and set it as active.",
+    ""
+  ].freeze
+
+  EVENT.each do |effect|
+    test "parse event effect: #{effect}" do
+      parsed = Card::Event::Effect.parse(effect)
+
+      assert_not_nil parsed
+    end
+  end
+
+  TRIGGER.each do |trigger|
+    test "parse event trigger: #{trigger}" do
+      parsed = Card::Event::Trigger.parse(trigger)
+
+      assert_not_nil parsed
+    end
+  end
+end

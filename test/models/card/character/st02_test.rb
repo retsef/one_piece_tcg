@@ -1,7 +1,7 @@
 require "test_helper"
 
 class Card::Character::ST02Test < ActiveSupport::TestCase
-  CHARACTER = [
+  EFFECT = [
     "-",
     "[DON!! x1] If you have 3 or more Characters, this card gains +2000 power.",
     "[Blocker] (After your opponent declares an attack, you may rest this card to make it the new target of the attack.)",
@@ -14,9 +14,22 @@ class Card::Character::ST02Test < ActiveSupport::TestCase
     "[DON!! x1] [Your Turn] If this Character is rested, your {Supernovas} or {Navy} type Leaders and Characters gain +1000 power."
   ].freeze
 
-  CHARACTER.each do |effect|
-    test "parse leader effect: #{effect}" do
+  TRIGGER = [
+    "",
+    "Play this card."
+  ].freeze
+
+  EFFECT.each do |effect|
+    test "parse effect: #{effect}" do
       parsed = Card::Character::Effect.parse(effect)
+
+      assert_not_nil parsed
+    end
+  end
+
+  TRIGGER.each do |trigger|
+    test "parse trigger: #{trigger}" do
+      parsed = Card::Character::Trigger.parse(trigger)
 
       assert_not_nil parsed
     end

@@ -1,7 +1,7 @@
 require "test_helper"
 
 class Card::Character::ST03Test < ActiveSupport::TestCase
-  CHARACTER = [
+  EFFECT = [
     "-",
     "[Blocker] (After your opponent declares an attack, you may rest this card to make it the new target of the attack.)[DON!! x1] [On Block] Place up to 1 Character with a cost of 2 or less at the bottom of the owner's deck.",
     "[On Play] Add up to 1 {The Seven Warlords of the Sea} or {Thriller Bark Pirates} type Character with a cost of 4 or less other than [Gecko Moria] from your trash to your hand.",
@@ -13,9 +13,22 @@ class Card::Character::ST03Test < ActiveSupport::TestCase
     "[On Play] Return up to 1 Character with a cost of 3 or less to the owner's hand."
   ].freeze
 
-  CHARACTER.each do |effect|
-    test "parse leader effect: #{effect}" do
+  TRIGGER = [
+    "",
+    "Play this card."
+  ].freeze
+
+  EFFECT.each do |effect|
+    test "parse effect: #{effect}" do
       parsed = Card::Character::Effect.parse(effect)
+
+      assert_not_nil parsed
+    end
+  end
+
+  TRIGGER.each do |trigger|
+    test "parse trigger: #{trigger}" do
+      parsed = Card::Character::Trigger.parse(trigger)
 
       assert_not_nil parsed
     end

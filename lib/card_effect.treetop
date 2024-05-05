@@ -38,7 +38,7 @@ class Card
 		end
 
 		rule don_investment
-		  ( '①' / '➀' / '②' / '➁' / '③' / '➂' / '④' / '➃' ) space? don_cost_description? space? <DonInvestmentCondition>
+		  ( '➀' / '➁' / '➂' / '➃' ) space? don_cost_description? space? <DonInvestmentCondition>
 		end
 
 		rule don_cost_description

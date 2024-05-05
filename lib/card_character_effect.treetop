@@ -160,7 +160,8 @@ module Card::Character
 		end
 
 		rule add_don_sentence
-			('Add ' / 'add ') up_to? integer ( rested / active ) don card 'from your ' don 'deck' ( 'as active' / 'and rest it')
+			('Add ' / 'add ') up_to? integer ( rested / active )? don card
+			'from your ' don 'deck' space? ( 'as active' / 'and rest it')
 		end
 
 		rule activation_cost
@@ -192,7 +193,9 @@ module Card::Character
 		end
 
 		rule leader_condition
-			if_clause (you_have / your_opponent_has) integer (up_to / or_less)? space? leader divider space? <LeaderCondition>
+			if_clause (your / opponent) leader
+			( 'has the ' of_type )
+			divider space? <LeaderCondition>
 		end
 
 		rule battle_condition

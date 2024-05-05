@@ -1,0 +1,31 @@
+require "test_helper"
+
+class Card::Event::ST02Test < ActiveSupport::TestCase
+  EVENT = [
+    "[Counter] Up to 1 of your Leader or Character cards gains +2000 power during this battle. Then, set up to 1 of your DON!! cards as active.",
+    "[Counter] Up to 1 of your Leader or Character cards gains +4000 power during this battle. Then, set up to 1 of your DON!! cards as active.",
+    "[Main] Rest up to 1 of your opponent's Characters."
+  ].freeze
+
+  TRIGGER = [
+    "Set up to 2 of your DON!! cards as active.",
+    "",
+    "Play up to 1 {Supernovas} type card with a cost of 2 or less from your hand."
+  ].freeze
+
+  EVENT.each do |effect|
+    test "parse event effect: #{effect}" do
+      parsed = Card::Event::Effect.parse(effect)
+
+      assert_not_nil parsed
+    end
+  end
+
+  TRIGGER.each do |trigger|
+    test "parse event trigger: #{trigger}" do
+      parsed = Card::Event::Trigger.parse(trigger)
+
+      assert_not_nil parsed
+    end
+  end
+end

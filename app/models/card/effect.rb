@@ -135,7 +135,7 @@ module Card::Effect
   end
 
   class DonInvestmentCondition < GroupNode
-    VALUES = %w[① ② ③ ④].freeze
+    VALUES = %w[➀ ➁ ➂ ➃].freeze
 
     def parse
       return 0 unless VALUES.include?(text_value.strip)

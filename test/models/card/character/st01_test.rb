@@ -1,7 +1,7 @@
 require "test_helper"
 
 class Card::Character::ST01Test < ActiveSupport::TestCase
-  CHARACTER = [
+  EFFECT = [
     "[DON!! x2] [When Attacking] Your opponent cannot activate a [Blocker] Character that has 5000 or more power during this battle.",
     "-",
     "[DON!! x2] This Character gains [Rush].(This card can attack on the turn in which it is played.)",
@@ -13,9 +13,22 @@ class Card::Character::ST01Test < ActiveSupport::TestCase
     "[DON!! x1] This Character gains +1000 power."
   ].freeze
 
-  CHARACTER.each do |effect|
-    test "parse leader effect: #{effect}" do
+  TRIGGER = [
+    "",
+    "Play this card."
+  ].freeze
+
+  EFFECT.each do |effect|
+    test "parse effect: #{effect}" do
       parsed = Card::Character::Effect.parse(effect)
+
+      assert_not_nil parsed
+    end
+  end
+
+  TRIGGER.each do |trigger|
+    test "parse trigger: #{trigger}" do
+      parsed = Card::Character::Trigger.parse(trigger)
 
       assert_not_nil parsed
     end
