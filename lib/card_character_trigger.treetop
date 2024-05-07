@@ -1,0 +1,14 @@
+# card_trigger_grammar.treetop
+# You can use a .tt extension instead if you wish
+module Card::Character
+	grammar Trigger
+		include Card::Trigger
+
+	  rule body
+	    (
+				play_sentence /
+				none / empty
+	    ) dot? <ShallowParsedQuery>
+	  end
+	end
+end

@@ -49,6 +49,9 @@ module Card::Character::Effect
   class PlayEffect < BaseEffect
   end
 
+  class RevealEffect < BaseEffect
+  end
+
   class SearchEffect < BaseEffect
   end
 

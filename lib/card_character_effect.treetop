@@ -12,7 +12,7 @@ module Card::Character
 			(
 				trait trait_description
 			)*
-			effect dot?
+			( effect / none / empty ) dot?
 			<ShallowParsedQuery>
 		end
 
@@ -40,11 +40,13 @@ module Card::Character
 			(
 				draw_sentence and_clause? trash_sentence? /
 				look_up_sentence and_clause? return_sentence? /
+				reveal_sentence /
 				power_gain_sentence /
 				power_give_sentence /
 				trait_gain_sentence /
 				cannot_block_sentence /
 				prevent_ko_sentence /
+				ko_immune_sentence /
 				ko_sentence /
 				place_sentence /
 				rest_opponent_sentence /
@@ -54,8 +56,8 @@ module Card::Character
 				add_card_sentence /
 				apply_don_sentence /
 				add_don_sentence /
-				none / empty
-			) <ShallowParsedQuery>
+				reactivate_don_sentence
+			)+ <ShallowParsedQuery>
 		end
 
 	  rule draw_sentence
@@ -67,7 +69,7 @@ module Card::Character
 	  end
 
 	  rule look_up_sentence
-	  	('Look at' / 'look at') space? up_to? integer card top_deck
+	  	('Look at' / 'look at') space? up_to? integer card top_deck divider?
 	  end
 
 		rule power_gain_sentence
@@ -106,6 +108,10 @@ module Card::Character
 			may_clause? trash_sentence 'instead' space? <PreventKOEffect>
 		end
 
+		rule ko_immune_sentence
+			this character "cannot be K.O.'d" space? battle? ('by ' element space? 'attribute ' character)? space?
+		end
+
 		rule place_sentence
 			place ( this / up_to? integer )
 			( card / character or_clause? / event or_clause? / stage or_clause? )+
@@ -121,7 +127,7 @@ module Card::Character
 		end
 
 		rule return_sentence
-			return ( this / up_to? integer / them )
+			( return / place ) ( this / up_to? integer / them / 'the rest ' )
 			( card / character or_clause? / event or_clause? / stage or_clause? )*
 			( cost integer or_less? )?
 			( your_hand / owner_hand / top_or_bottom_deck / top_deck / bottom_deck )+ any_order? space? <ReturnEffect>
@@ -129,11 +135,19 @@ module Card::Character
 
 		rule play_sentence
 			play ( this / up_to? integer )
-			( has_name / card / character or_clause? / event or_clause? / stage or_clause? )+
+			( has_name / of_type character / character or_clause? / event or_clause? / stage or_clause? )+
 			( cost integer or_less? )?
 			( your_hand / trash / top_or_bottom_deck / top_deck / bottom_deck / deck )+
 			( divider shuffle_deck )?
 			space? <PlayEffect>
+		end
+
+		rule reveal_sentence
+			reveal ( this / up_to? integer )
+			( card / of_type character / character or_clause? / event or_clause? / stage or_clause? )+
+			( cost integer or_less? )?
+			( your_hand / trash / top_or_bottom_deck / top_deck / bottom_deck / deck )+
+		  space? <RevealEffect>
 		end
 
 		rule add_card_sentence
@@ -153,6 +167,12 @@ module Card::Character
 			( character / leader / card )
 			( cost integer or_less? )?
 			'as ' active space?
+		end
+
+		rule reactivate_don_sentence
+			('Set ' / 'set ') up_to? intege
+			 your ( rested don card )
+			 'as ' active space?
 		end
 
 		rule apply_don_sentence
@@ -194,7 +214,7 @@ module Card::Character
 
 		rule leader_condition
 			if_clause (your / opponent) leader
-			( 'has the ' of_type )
+			( 'has the ' of_type / 'is ' has_name )
 			divider space? <LeaderCondition>
 		end
 

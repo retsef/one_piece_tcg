@@ -7,12 +7,18 @@ class Card
 			('[Main]' / '[Activate: Main]' /
 			'[Your Turn]' / "[Opponent's Turn]" / '[End of Your Turn]' /
 			"[On Your Opponent's Attack]" / '[When Attacking]' /
-			'[On Play]' / '[On Block]' / '[Counter]') space? <ActionLiteral>
+			'[On Play]' / '[On Block]' / '[On K.O.]' /
+			'[Counter]') space? <ActionLiteral>
 		end
 
 		rule once_per_turn
 			'[Once Per Turn]' space? <OncePerTurnLiteral>
 		end
+
+		# Element
+		rule element
+		 	('<Slash>' / '<Special>') space? <ElementLiteral>
+	 	end
 
 		# Trait
 		rule trait
@@ -38,7 +44,7 @@ class Card
 		end
 
 		rule don_investment
-		  ( '➀' / '➁' / '➂' / '➃' ) space? don_cost_description? space? <DonInvestmentCondition>
+		  ( '①' / '➀' / '②' / '➁' / '③' / '➂' / '④' / '➃' ) space? don_cost_description? space? <DonInvestmentCondition>
 		end
 
 		rule don_cost_description
@@ -168,6 +174,10 @@ class Card
 			('Rest' / 'rest') space? <TermLiteral>
 		end
 
+		rule reveal
+			('Reveal' / 'reveal') space? <TermLiteral>
+		end
+
 		rule gain
 			('Gains' / 'gains' / 'Gain' / 'gain') space? <TermLiteral>
 		end
@@ -209,15 +219,15 @@ class Card
 		end
 
 		rule stage
-			('stage' / 'Stage') space? <TermLiteral>
+			('stage' / 'Stage') space? card? <TermLiteral>
 		end
 
 		rule event
-			('event' / 'Event') space? <TermLiteral>
+			('event' / 'Event') space? card? <TermLiteral>
 		end
 
 		rule character
-			('characters' / 'Characters' / 'character' / 'Character') space? <TermLiteral>
+			('characters' / 'Characters' / 'character' / 'Character') space? card? <TermLiteral>
 		end
 
 		rule power
@@ -320,7 +330,7 @@ class Card
 		end
 
 		rule divider
-			(':' / dot? 'Then' / comma space? 'then' / comma / "/") space? <TermLiteral>
+			(':' / ';' / dot? 'Then' / comma space? 'then' / comma / "/") space? <TermLiteral>
 		end
 
 		rule empty
