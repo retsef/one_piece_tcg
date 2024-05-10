@@ -148,7 +148,7 @@ group :development do
   gem 'brakeman'
   gem 'bundler-audit'
 
-  gem 'i18n-tasks', '~> 1.0.12'
+  gem 'i18n-tasks', '~> 1.0.14'
 
   gem 'lookbook'
 
