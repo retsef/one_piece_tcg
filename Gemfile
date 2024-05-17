@@ -70,7 +70,7 @@ group :auth, :default do
 end
 
 # gem 'discard', '~> 1.2'
-gem 'downstream', '~> 1.0'
+gem 'downstream', '~> 1.5'
 
 gem 'clowne'
 

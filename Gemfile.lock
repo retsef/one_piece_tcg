@@ -158,7 +158,7 @@ GEM
     dockerfile-rails (1.6.13)
       rails (>= 3.0.0)
     dotenv (2.8.1)
-    downstream (1.4.0)
+    downstream (1.5.0)
       after_commit_everywhere (~> 1.0)
       globalid (~> 1.0)
       rails (>= 6)
@@ -558,7 +558,7 @@ DEPENDENCIES
   cssbundling-rails
   debug
   dockerfile-rails (>= 1.5)
-  downstream (~> 1.0)
+  downstream (~> 1.5)
   faker
   feature_toggles
   groupdate
