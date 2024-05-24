@@ -470,10 +470,10 @@ GEM
       bcrypt (~> 3.1)
       oauth (>= 0.6)
       oauth2 (~> 2.0)
-    sqlite3 (1.7.3)
+    sqlite3 (2.0.2)
       mini_portile2 (~> 2.8.0)
-    sqlite3 (1.7.3-aarch64-linux)
-    sqlite3 (1.7.3-x86_64-linux)
+    sqlite3 (2.0.2-aarch64-linux-gnu)
+    sqlite3 (2.0.2-x86_64-linux-gnu)
     sshkit (1.22.2)
       base64
       mutex_m
@@ -601,7 +601,7 @@ DEPENDENCIES
   solid_cache (~> 0.6)
   solid_queue (~> 0.3)
   sorcery
-  sqlite3 (~> 1.7)
+  sqlite3 (~> 2.0)
   stackprof
   stimulus-rails
   store_attribute
