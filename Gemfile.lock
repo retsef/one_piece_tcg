@@ -223,7 +223,7 @@ GEM
     json (2.7.2)
     jwt (2.8.1)
       base64
-    kamal (1.4.0)
+    kamal (1.5.2)
       activesupport (>= 7.0)
       base64 (~> 0.2)
       bcrypt_pbkdf (~> 1.0)
@@ -474,7 +474,7 @@ GEM
       mini_portile2 (~> 2.8.0)
     sqlite3 (1.7.3-aarch64-linux)
     sqlite3 (1.7.3-x86_64-linux)
-    sshkit (1.22.1)
+    sshkit (1.22.2)
       base64
       mutex_m
       net-scp (>= 1.1.2)
