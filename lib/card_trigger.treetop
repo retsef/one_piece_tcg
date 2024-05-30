@@ -4,25 +4,6 @@ class Card
 	grammar Trigger
 		include Card::Effect
 
-	  rule body
-	    (
-				activation_cost /
-				life_condition /
-				trash_condition /
-				leader_condition
-	    )?
-	    (
-				play_sentence /
-				search_sentence /
-				draw_sentence and_clause? trash_sentence? /
-				activate_sentence /
-				ko_sentence /
-				give_sentence /
-				rest_sentence /
-				none / empty
-	    ) dot? <ShallowParsedQuery>
-	  end
-
 	  rule activate_sentence
 	    activate action 'effect' space? <ActivateEffect>
 	  end

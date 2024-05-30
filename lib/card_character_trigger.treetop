@@ -10,5 +10,10 @@ module Card::Character
 				none / empty
 	    ) dot? <ShallowParsedQuery>
 	  end
+
+	  rule play_sentence
+	  	play ( this )
+	  	space? <PlayEffect>
+	  end
 	end
 end
