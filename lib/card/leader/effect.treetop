@@ -41,7 +41,7 @@ module Card::Leader
 		end
 
 		rule trash_sentence
-			trash ( up_to? integer / this ) ( card / event or? / stage or? / character )+ your_hand? space? <TrashEffect>
+			trash ( up_to? integer / this ) ( card / event or_clause? / stage or_clause? / character )+ your_hand? space? <TrashEffect>
 		end
 
 		rule power_gain_sentence

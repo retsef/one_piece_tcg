@@ -12,6 +12,7 @@ module Card::Event
 				ko_sentence /
 				power_gain_sentence /
 				power_give_sentence /
+				return_sentence /
 				none / empty
 	    ) dot? <ShallowParsedQuery>
 		end
@@ -41,6 +42,14 @@ module Card::Event
 			( this / up_to? integer opponent / up_to? integer your colored? / up_to? integer )
 			( character / leader or_clause character / leader ) ( cost integer )?
 			integer power ( battle / turn )?
+		end
+
+		rule return_sentence
+			( return / place )
+			( this / up_to? integer / them / 'the rest ' )
+			( card / character or_clause? / event or_clause? / stage or_clause? )*
+			( cost integer or_less? )?
+			( your_hand / owner_hand / top_or_bottom_deck / top_deck / bottom_deck )+ any_order? space? <ReturnEffect>
 		end
 	end
 end

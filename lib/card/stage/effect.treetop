@@ -5,14 +5,6 @@ module Card::Stage
 		include Card::Effect
 
 		rule body
-			(
-				trait trait_description
-			)*
-			effect dot?
-			<ShallowParsedQuery>
-		end
-
-		rule effect
 			( activation_cost )?
 			(
 				action once_per_turn? divider? /
@@ -26,7 +18,7 @@ module Card::Stage
 				leader_condition
 			)*
 			(
-				draw_sentence and_clause? trash_sentence? /
+				draw_sentence and_clause? trash_sentence? divider? trash_sentence? /
 				rest_opponent_sentence /
 				add_don_sentence /
 				none / empty
@@ -38,7 +30,11 @@ module Card::Stage
 	  end
 
 	  rule trash_sentence
-	    may_clause? trash up_to? integer ( card / event or? / stage or? )+ your_hand? space?
+	    may_clause? trash
+	    up_to? integer
+	    ( card / event or_clause? / stage or_clause? )+
+	    your_hand?
+	    dot? space?
 	  end
 
 		rule rest_opponent_sentence
@@ -50,14 +46,16 @@ module Card::Stage
 		end
 
 		rule leader_condition
-			if_clause (your / opponent) leader
-			( 'has the ' of_type )
+			if_clause ( your / opponent ) leader
+			( 'has the ' of_type / 'is ' has_name )
 			divider space? # <LeaderCondition>
 		end
 
 		rule rest_card_investment
-			may_clause? rest ( this / up_to? integer )
-			( card / character or_clause? / event or_clause? / stage or_clause? )+ your_hand? space?
+			may_clause? rest
+			( this / up_to? integer )
+			( card / stage )
+			space?
 		end
 
 		rule add_don_sentence

@@ -81,7 +81,7 @@ class Card
 	  end
 
 	  rule is_specific
-	    'is [' keyword ']' space? <TermLiteral>
+	    'is ' has_name space? <TermLiteral>
 	  end
 
 		# Clauses
@@ -318,7 +318,7 @@ class Card
 		end
 
 		rule keyword
-			([a-zA-Z]+ space?)+ <TermLiteral>
+			([a-zA-Z.]+ space?)+ <TermLiteral>
 		end
 
 		rule integer

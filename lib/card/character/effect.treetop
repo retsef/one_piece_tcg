@@ -26,7 +26,8 @@ module Card::Character
 				don_investment divider? /
 				trash_investment divider? /
 				power_investment divider? /
-				rest_card_investment divider?
+				rest_card_investment divider? /
+				life_investment divider?
 			)*
 			(
 				life_condition /
@@ -208,6 +209,11 @@ module Card::Character
 
 		rule rest_card_investment
 			may_clause? rest ( this / up_to? integer ) ( card / character or_clause? / event or_clause? / stage or_clause? )+ your_hand?
+			space?
+		end
+
+		rule life_investment
+			may_clause? 'add ' integer card 'from your Life area ' your_hand
 			space?
 		end
 
