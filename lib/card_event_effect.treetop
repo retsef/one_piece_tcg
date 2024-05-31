@@ -5,7 +5,10 @@ module Card::Event
 		include Card::Effect
 
 		rule body
-			dot? <ShallowParsedQuery>
+	    (
+				activate_sentence /
+				none / empty
+	    ) dot? <ShallowParsedQuery>
 		end
 	end
 end

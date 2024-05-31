@@ -8,7 +8,7 @@ class Card
 			'[Your Turn]' / "[Opponent's Turn]" / '[End of Your Turn]' /
 			"[On Your Opponent's Attack]" / '[When Attacking]' /
 			'[On Play]' / '[On Block]' / '[On K.O.]' /
-			'[Counter]') space? <ActionLiteral>
+			'[Counter]' / '[Trigger]') space? <ActionLiteral>
 		end
 
 		rule once_per_turn
@@ -116,6 +116,14 @@ class Card
 
 		rule your_opponent
 			("Your opponent's" / "your opponent's" / 'Your opponent' / 'your opponent') space? <OpponentLiteral>
+		end
+
+		rule you_havent
+			("You don't have" / "you don't have") space? <SelfLiteral>
+		end
+
+		rule your_opponent_hasnt
+			("Your opponent don't have" / "your opponent don't have") space? <OpponentLiteral>
 		end
 
 		rule your_opponent_has
@@ -330,7 +338,7 @@ class Card
 		end
 
 		rule divider
-			(':' / ';' / dot? 'Then' / comma space? 'then' / comma / "/") space? <TermLiteral>
+			(':' / ';' / dot? 'Then' comma? / comma space? 'then' / comma / "/") space? <TermLiteral>
 		end
 
 		rule empty

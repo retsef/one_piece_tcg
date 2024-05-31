@@ -35,7 +35,8 @@ module Card::Character
 				card_hand_condition /
 				battle_condition /
 				rested_condition /
-				character_count_condition
+				character_count_condition /
+				character_in_play_condition
 			)*
 			(
 				draw_sentence and_clause? trash_sentence? /
@@ -56,7 +57,8 @@ module Card::Character
 				add_card_sentence /
 				apply_don_sentence /
 				add_don_sentence /
-				reactivate_don_sentence
+				reactivate_don_sentence /
+				attack_active_sentence
 			)+ <ShallowParsedQuery>
 		end
 
@@ -112,6 +114,10 @@ module Card::Character
 			this character "cannot be K.O.'d" space? battle? ('by ' element space? 'attribute ' character)? space?
 		end
 
+		rule attack_active_sentence
+			this character ' can also attack ' your_opponent 'active ' character space?
+		end
+
 		rule place_sentence
 			place ( this / up_to? integer )
 			( card / character or_clause? / event or_clause? / stage or_clause? )+
@@ -144,9 +150,10 @@ module Card::Character
 
 		rule reveal_sentence
 			reveal ( this / up_to? integer )
-			( card / of_type character / character or_clause? / event or_clause? / stage or_clause? )+
+			( card / of_type character / of_type card / character or_clause? / event or_clause? / stage or_clause? )+
 			( cost integer or_less? )?
-			( your_hand / trash / top_or_bottom_deck / top_deck / bottom_deck / deck )+
+			( and_clause 'add it ' your_hand )+
+			( divider place_remaining_card )?
 		  space? <RevealEffect>
 		end
 
@@ -189,27 +196,33 @@ module Card::Character
 		end
 
 		rule trash_investment
-			may_clause? trash ( this / up_to? integer ) ( card / character or_clause? / event or_clause? / stage or_clause? )+ your_hand? space?
+			may_clause? trash ( this / up_to? integer ) ( card / character or_clause? / event or_clause? / stage or_clause? )+ your_hand?
+			space?
 		end
 
 		rule power_investment
 			may_clause? give ( 'your ' integer 'active Leader' space? ) integer power turn
+			space?
 		end
 
 		rule rest_card_investment
-			may_clause? rest ( this / up_to? integer ) ( card / character or_clause? / event or_clause? / stage or_clause? )+ your_hand? space?
+			may_clause? rest ( this / up_to? integer ) ( card / character or_clause? / event or_clause? / stage or_clause? )+ your_hand?
+			space?
 		end
 
 		rule life_condition
-			if_clause (you_have / your_opponent_has) integer (up_to / or_less)? space? life divider space? <LifeCondition>
+			if_clause (you_have / your_opponent_has) integer (up_to / or_less)? space? life
+			divider space? <LifeCondition>
 		end
 
 		rule card_hand_condition
-			if_clause (you_have / your_opponent_has) integer (up_to / or_less)? space? card (in / from) your_hand? divider space? <CardHandCondition>
+			if_clause (you_have / your_opponent_has) integer (up_to / or_less)? space? card (in / from) your_hand?
+			divider space? <CardHandCondition>
 		end
 
 		rule ko_effect_condition
-			if_clause this character would_clause ko ( by_effect / by_battle )? divider? <KOCondition>
+			if_clause this character would_clause ko ( by_effect / by_battle )?
+			divider? <KOCondition>
 		end
 
 		rule leader_condition
@@ -219,17 +232,31 @@ module Card::Character
 		end
 
 		rule battle_condition
-		  if_clause ( this ) character have_battle your_opponent ( character / leader ) divider space?
+		  if_clause ( this ) character have_battle your_opponent ( character / leader )
+		  divider space?
 		end
 
 		rule rested_condition
-		  if_clause ( this ) character 'is ' rested divider space?
+		  if_clause ( this ) character 'is ' rested
+		  divider space?
 		end
 
 		rule character_count_condition
 			if_clause ( you_have / your_opponent_has )
 			integer (or_more / or_less)?
-			rested? character divider space?
+			rested? character
+			divider space?
+		end
+
+		rule character_in_play_condition
+		  if_clause ( you_have / you_havent ) has_name
+		  divider space?
+		end
+
+		rule place_remaining_card
+			place 'the rest '
+			( bottom_deck / top_deck / top_or_bottom_deck / trash_pile )
+			any_order? space?
 		end
 
 		rule name_override
