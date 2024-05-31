@@ -8,9 +8,9 @@ module Card::Character::Trigger
   def self.parser
     return @@parser if defined? @@parser
 
-    Treetop.load Rails.root.join('lib/card_effect.treetop').to_s
-    Treetop.load Rails.root.join('lib/card_trigger.treetop').to_s
-    Treetop.load Rails.root.join('lib/card_character_trigger.treetop').to_s
+    Treetop.load Rails.root.join('lib/card/effect.treetop').to_s
+    Treetop.load Rails.root.join('lib/card/trigger.treetop').to_s
+    Treetop.load Rails.root.join('lib/card/character/trigger.treetop').to_s
     @@parser ||= Card::Character::TriggerParser.new
   end
 

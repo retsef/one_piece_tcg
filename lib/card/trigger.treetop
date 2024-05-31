@@ -9,7 +9,9 @@ class Card
 	  end
 
 	  rule ko_sentence
-	    if_clause? ko up_to? integer space? <KOEffect>
+	    ko up_to? integer opponent rested character
+	    ( cost integer or_less? )?
+		 	space? <KOEffect>
 	  end
 
 	  rule play_sentence

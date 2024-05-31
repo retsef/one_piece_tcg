@@ -89,8 +89,8 @@ module Card::Character::Effect
   def self.parser
     return @@parser if defined? @@parser
 
-    Treetop.load Rails.root.join('lib/card_effect.treetop').to_s
-    Treetop.load Rails.root.join('lib/card_character_effect.treetop').to_s
+    Treetop.load Rails.root.join('lib/card/effect.treetop').to_s
+    Treetop.load Rails.root.join('lib/card/character/effect.treetop').to_s
     @@parser ||= Card::Character::EffectParser.new
   end
 

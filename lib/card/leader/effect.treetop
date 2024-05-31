@@ -46,14 +46,14 @@ module Card::Leader
 
 		rule power_gain_sentence
 			( this / up_to? integer your colored? / up_to? integer opponent / up_to? integer )
-			( character / leader / leader or character) ( cost integer )?
+			( character / leader / leader or_clause character) ( cost integer )?
 			gain integer power ( 'for every ' integer your rested don card )? ( battle / turn )?
 		end
 
 		rule power_give_sentence
 			give
 			( this / up_to? integer opponent / up_to? integer your colored? / up_to? integer )
-			( character / leader or up_to? integer character / leader ) ( cost integer )?
+			( character / leader or_clause up_to? integer character / leader ) ( cost integer )?
 			integer power ( battle / turn )?
 		end
 

@@ -1,0 +1,113 @@
+# card_event_effect_grammar.treetop
+# You can use a .tt extension instead if you wish
+module Card::Event
+	grammar Effect
+		include Card::Effect
+
+		rule body
+			(
+				trait trait_description
+			)*
+			effect dot?
+			<ShallowParsedQuery>
+		end
+
+		rule effect
+			( activation_cost )?
+			(
+				action once_per_turn? divider? /
+				once_per_turn
+			)*
+			(
+				don_investment divider? /
+				rest_card_investment divider?
+			)*
+			(
+				leader_condition
+			)*
+			(
+				draw_sentence and_clause? trash_sentence? /
+				look_up_sentence and_clause? return_sentence? /
+				reveal_sentence /
+				power_gain_sentence /
+				power_give_sentence /
+				ko_sentence /
+				rest_opponent_sentence /
+				add_don_sentence /
+				return_sentence /
+				none / empty
+			) <ShallowParsedQuery>
+		end
+
+		rule activation_cost
+			don_cost space?
+		end
+
+		rule rest_card_investment
+			may_clause? rest ( this / up_to? integer )
+			( card / character or_clause? / event or_clause? / stage or_clause? )+ your_hand? space?
+		end
+
+		rule draw_sentence
+			draw up_to? integer card space?
+		end
+
+		rule trash_sentence
+			may_clause? trash up_to? integer ( card / event or? / stage or? )+ your_hand? space?
+		end
+
+	  rule ko_sentence
+	  	ko ( up_to? integer ) opponent
+	  	rested?
+	  	( character / stage )
+	  	cost integer or_less?
+	  end
+
+		rule power_gain_sentence
+			( this / up_to? integer your colored? / up_to? integer opponent / up_to? integer / your of_type or_clause? / of_type )+
+			( character / leader or_clause character / leader and_clause character / leader / card ) card? ( cost integer )?
+			( 'other than this ' card space?)?
+			gain integer power
+			( 'for every ' integer your rested don card )?
+			( battle / turn )?
+		end
+
+		rule power_give_sentence
+			give
+			( this / up_to? integer opponent / up_to? integer your colored? / up_to? integer )
+			( character / leader or_clause character / leader ) ( cost integer )?
+			integer power ( battle / turn )?
+		end
+
+		rule rest_opponent_sentence
+			rest ( up_to? integer / all) ( opponent / your ) character space?
+		end
+
+		rule return_sentence
+			( return / place ) ( this / up_to? integer / them / 'the rest ' )
+			( card / character or_clause? / event or_clause? / stage or_clause? )*
+			( cost integer or_less? )?
+			( your_hand / owner_hand / top_or_bottom_deck / top_deck / bottom_deck )+ any_order? space? <ReturnEffect>
+		end
+
+		rule add_don_sentence
+			('Add ' / 'add ') up_to? integer ( rested / active )? don card
+			'from your ' don 'deck' space? ( 'as active' / 'and rest it')
+		end
+
+		rule reveal_sentence
+			reveal ( this / up_to? integer )
+			( card / of_type character / of_type card / character or_clause? / event or_clause? / stage or_clause? )+
+			( cost integer or_less? )?
+			( and_clause 'add it ' your_hand )+
+			( divider place_remaining_card )?
+		  space? <RevealEffect>
+		end
+
+		rule leader_condition
+			if_clause (your / opponent) leader
+			( 'has the ' of_type )
+			divider space? # <LeaderCondition>
+		end
+	end
+end

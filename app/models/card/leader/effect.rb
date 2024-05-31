@@ -8,8 +8,8 @@ module Card::Leader::Effect
   def self.parser
     return @@parser if defined? @@parser
 
-    Treetop.load Rails.root.join('lib/card_effect.treetop').to_s
-    Treetop.load Rails.root.join('lib/card_leader_effect.treetop').to_s
+    Treetop.load Rails.root.join('lib/card/effect.treetop').to_s
+    Treetop.load Rails.root.join('lib/card/leader/effect.treetop').to_s
     @@parser ||= Card::Leader::EffectParser.new
   end
 

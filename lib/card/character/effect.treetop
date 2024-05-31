@@ -86,19 +86,20 @@ module Card::Character
 		rule power_give_sentence
 			give
 			( this / up_to? integer opponent / up_to? integer your colored? / up_to? integer )
-			( character / leader or character / leader ) ( cost integer )?
+			( character / leader or_clause character / leader ) ( cost integer )?
 			integer power ( battle / turn )?
 		end
 
 		rule trait_gain_sentence
 			( this / up_to? integer )
-			( character / leader or character / leader )
+			( character / leader or_clause character / leader )
 			gain ( trait dot? trait_description? )
 		end
 
 		rule cannot_block_sentence
 			your_opponent 'cannot activate ' ('a' space)? trait
-			character? ('that has ' / 'with ')? ( integer or_more / or_less )? power?
+			character? ('that has ' / 'with ')?
+			integer? ( or_more / or_less )? power?
 			battle
 	  end
 

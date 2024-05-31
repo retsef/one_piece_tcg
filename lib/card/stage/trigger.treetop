@@ -12,7 +12,7 @@ module Card::Stage
 	  end
 
 	  rule play_sentence
-	  	play ( this )
+	  	play this card
 	  	space? <PlayEffect>
 	  end
 	end

@@ -1,0 +1,46 @@
+# card_event_effect_grammar.treetop
+# You can use a .tt extension instead if you wish
+module Card::Event
+	grammar Trigger
+		include Card::Trigger
+
+		rule body
+			( activation_cost )?
+	    (
+				activate_sentence /
+				draw_sentence /
+				ko_sentence /
+				power_gain_sentence /
+				power_give_sentence /
+				none / empty
+	    ) dot? <ShallowParsedQuery>
+		end
+
+		rule activation_cost
+			don_cost space?
+		end
+
+	  rule ko_sentence
+	  	ko ( up_to? integer ) opponent
+	  	rested?
+	  	( character / stage )
+	  	cost integer or_less?
+	  end
+
+		rule power_gain_sentence
+			( this / up_to? integer your colored? / up_to? integer opponent / up_to? integer / your of_type or_clause? / of_type )+
+			( character / leader or_clause character / leader and_clause character / leader / card ) card? ( cost integer )?
+			( 'other than this ' card space?)?
+			gain integer power
+			( 'for every ' integer your rested don card )?
+			( battle / turn )?
+		end
+
+		rule power_give_sentence
+			give
+			( this / up_to? integer opponent / up_to? integer your colored? / up_to? integer )
+			( character / leader or_clause character / leader ) ( cost integer )?
+			integer power ( battle / turn )?
+		end
+	end
+end
