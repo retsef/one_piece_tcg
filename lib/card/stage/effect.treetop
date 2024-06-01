@@ -56,7 +56,7 @@ module Card::Stage
 		end
 
 		rule leader_condition
-			if_clause ( your / opponent ) leader
+			if_clause your leader
 			( 'has the ' of_type / 'is ' has_name )
 			divider space? # <LeaderCondition>
 		end
@@ -71,6 +71,7 @@ module Card::Stage
 		rule add_don_sentence
 			('Add ' / 'add ') up_to? integer ( rested / active )? don card
 			'from your ' don 'deck' space? ( 'as active' / 'and rest it')
+			dot? space?
 		end
 	end
 end
