@@ -21,6 +21,7 @@ module Card::Stage
 				draw_sentence and_clause? trash_sentence? divider? trash_sentence? /
 				rest_opponent_sentence /
 				add_don_sentence /
+				power_gain_sentence /
 				none / empty
 			) <ShallowParsedQuery>
 		end
@@ -39,6 +40,15 @@ module Card::Stage
 
 		rule rest_opponent_sentence
 			rest ( up_to? integer / all) ( opponent / your ) character space?
+		end
+
+		rule power_gain_sentence
+			( up_to? integer of_type or_clause? / up_to? integer opponent / up_to? integer / of_type )+
+			( character / leader or_clause character / leader and_clause character / leader / card ) card?
+			( 'on your field ')?
+			gain integer power
+			( battle / turn )?
+			dot? space?
 		end
 
 		rule activation_cost
