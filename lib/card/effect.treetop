@@ -47,6 +47,10 @@ class Card
 		  ( '①' / '➀' / '②' / '➁' / '③' / '➂' / '④' / '➃' ) space? don_cost_description? space? <DonInvestmentCondition>
 		end
 
+		rule don_sacrifice
+			don integer space? don_cost_description? space? <DonSacrificeCondition>
+		end
+
 		rule don_cost_description
 			'(' (
 				'You may rest the specified number of DON!! cards in your cost area.' /

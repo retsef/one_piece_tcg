@@ -13,6 +13,9 @@ module Card::Character
 				trait trait_description
 			)*
 			( effect / none / empty ) dot?
+			(
+				trait trait_description
+			)*
 			<ShallowParsedQuery>
 		end
 
@@ -24,6 +27,7 @@ module Card::Character
 			)*
 			(
 				don_investment divider? /
+				don_sacrifice divider? /
 				trash_investment divider? /
 				power_investment divider? /
 				rest_card_investment divider? /
@@ -37,10 +41,11 @@ module Card::Character
 				battle_condition /
 				rested_condition /
 				character_count_condition /
-				character_in_play_condition
+				character_in_play_condition /
+				character_cost_condition
 			)*
 			(
-				draw_sentence and_clause? trash_sentence? /
+				draw_sentence and_clause? trash_sentence? divider? trash_sentence? /
 				look_up_sentence and_clause? return_sentence? /
 				reveal_sentence /
 				power_gain_sentence /
@@ -131,14 +136,17 @@ module Card::Character
 		rule rest_opponent_sentence
 			rest ( up_to? integer / all)
 			( opponent / your )
-			( character / don card ) space? <RestEffect>
+			( character / don card )
+			( cost integer or_less? )?
+			space? <RestEffect>
 		end
 
 		rule return_sentence
 			( return / place ) ( this / up_to? integer / them / 'the rest ' )
 			( card / character or_clause? / event or_clause? / stage or_clause? )*
 			( cost integer or_less? )?
-			( your_hand / owner_hand / top_or_bottom_deck / top_deck / bottom_deck )+ any_order? space? <ReturnEffect>
+			( your_hand / owner_hand / top_or_bottom_deck / top_deck / bottom_deck )+ any_order?
+			space? <ReturnEffect>
 		end
 
 		rule play_sentence
@@ -256,8 +264,15 @@ module Card::Character
 		end
 
 		rule character_in_play_condition
-		  if_clause ( you_have / you_havent ) has_name
+		  if_clause ( you_have / you_havent )
+		  ('a ')? has_name character?
 		  divider space?
+		end
+
+		rule character_cost_condition
+			if_clause ( you_have / "there is a " )
+			integer character cost integer
+			divider space?
 		end
 
 		rule place_remaining_card

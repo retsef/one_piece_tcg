@@ -134,6 +134,9 @@ module Card::Effect
   class DonCostCondition < GroupNode
   end
 
+  class DonSacrificeCondition < GroupNode
+  end
+
   class DonInvestmentCondition < GroupNode
     VALUES = {
       '➀': 1,
