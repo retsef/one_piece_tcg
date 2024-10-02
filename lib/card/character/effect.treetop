@@ -36,7 +36,7 @@ module Card::Character
 			(
 				life_condition /
 				ko_effect_condition /
-				leader_condition /
+				leader_condition not_other_same_character_condition? /
 				card_hand_condition /
 				battle_condition /
 				rested_condition /
@@ -205,8 +205,8 @@ module Card::Character
 		end
 
 		rule reactivate_don_sentence
-			('Set ' / 'set ') up_to? intege
-			 your ( rested don card )
+			('Set ' / 'set ') up_to? integer
+			 your ( rested? don card )
 			 'as ' active space?
 		end
 
@@ -261,31 +261,35 @@ module Card::Character
 
 		rule leader_condition
 			if_clause (your / opponent) leader
-			( 'has the ' of_type / 'is ' has_name )
-			divider space? <LeaderCondition>
+			( 'types includes ' sub_type / 'has the ' of_type / 'is ' has_name )
+			divider? space? <LeaderCondition>
 		end
+
+		rule not_other_same_character_condition
+			and_clause? you_have 'no other ' has_name character ('in play')? divider? space?
+	 	end
 
 		rule battle_condition
 		  if_clause ( this ) character have_battle your_opponent ( character / leader )
-		  divider space?
+		  divider? space?
 		end
 
 		rule rested_condition
 		  if_clause ( this ) character 'is ' rested
-		  divider space?
+		  divider? space?
 		end
 
 		rule character_count_condition
 			if_clause ( you_have / your_opponent_has )
 			integer (or_more / or_less)?
 			rested? character
-			divider space?
+			divider? space?
 		end
 
 		rule character_in_play_condition
 		  if_clause ( you_have / you_havent )
 		  ('a ')? has_name character?
-		  divider space?
+		  divider? space?
 		end
 
 		rule character_cost_condition
