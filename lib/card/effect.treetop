@@ -60,19 +60,19 @@ class Card
 
 		# Types
 		rule has_type
-			'[' ( keyword ) ']' space? <TermLiteral>
+			'[' ( keyword space? )* ']' space? <TermLiteral>
 	  end
 
 	  rule has_name
-	  	'[' ( keyword ) ']' space? <TermLiteral>
+	  	'[' ( keyword space? )* ']' space? <TermLiteral>
 	  end
 
 	  rule of_type
-	  	'{' ( keyword ) '}' (space? 'type')? space? <TermLiteral>
+	  	'{' ( keyword space? )* '}' (space? 'type')? space? <TermLiteral>
 	  end
 
 	  rule sub_type
-	  	'"' ( keyword ) '"' space? <TermLiteral>
+	  	'"' ( keyword space? )* '"' space? <TermLiteral>
 	  end
 
 	  rule other_than

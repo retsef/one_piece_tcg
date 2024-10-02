@@ -100,6 +100,7 @@ module Card::Character
 			( this / up_to? integer )
 			( character / leader or_clause character / leader )
 			gain ( trait dot? trait_description? )
+			( battle / turn )? space? dot? trait_description?
 		end
 
 		rule cannot_block_sentence
@@ -110,7 +111,7 @@ module Card::Character
 	  end
 
 	  rule ko_sentence
-	  	ko ( up_to? integer ) opponent rested character cost integer or_less?
+	  	ko ( up_to? integer ) 'of' space opponent rested? character (cost integer or_less?)? space? dot?
 	  end
 
 		rule prevent_ko_sentence
@@ -151,7 +152,7 @@ module Card::Character
 
 		rule play_sentence
 			play ( this / up_to? integer )
-			( has_name / of_type character / character or_clause? / event or_clause? / stage or_clause? )+
+			( has_name card? / of_type character / character or_clause? / event or_clause? / stage or_clause? )+
 			( cost integer or_less? )?
 			( your_hand / trash / top_or_bottom_deck / top_deck / bottom_deck / deck )+
 			( divider shuffle_deck )?
@@ -198,7 +199,8 @@ module Card::Character
 
 		rule add_don_sentence
 			('Add ' / 'add ') up_to? integer ( rested / active )? don card
-			'from your ' don 'deck' space? ( 'as active' / 'and rest it')
+			'from your ' don 'deck' space?
+			( 'as active' / 'and rest it' / and_clause 'set it as active' / and_clause 'set it as rested' )
 		end
 
 		rule activation_cost
