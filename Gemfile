@@ -4,9 +4,7 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 ruby "3.3.5"
 
 # Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"
-gem "rails", "~> 7.1.3"
-
-gem "dockerfile-rails", ">= 1.5", group: :development
+gem "rails", "~> 7.2.0"
 
 # Use sqlite3 as the database for Active Record
 gem "sqlite3", "~> 1.7"
@@ -26,9 +24,6 @@ gem "jbuilder"
 
 # Use Kredis to get higher-level data types in Redis [https://github.com/rails/kredis]
 # gem "kredis"
-
-# Use Active Model has_secure_password [https://guides.rubyonrails.org/active_model_basics.html#securepassword]
-# gem "bcrypt", "~> 3.1.7"
 
 group :assets, :default do
   gem 'propshaft'
@@ -58,8 +53,8 @@ group :search, :default do
 end
 
 group :auth, :default do
-  gem 'sorcery'
-  # gem 'sorcery-jwt'
+  # Use Active Model has_secure_password [https://guides.rubyonrails.org/active_model_basics.html#securepassword]
+  # gem "bcrypt", "~> 3.1.7"
 
   gem 'pwned'
   gem 'rotp'
@@ -70,16 +65,11 @@ group :auth, :default do
 end
 
 # gem 'discard', '~> 1.2'
-gem 'downstream', '~> 1.5'
+# gem 'downstream', '~> 1.5'
 
-gem 'clowne'
+# gem 'clowne'
 
 gem 'treetop'
-
-group :tenant, :default do
-  # gem 'acts_as_tenant'
-  gem 'feature_toggles'
-end
 
 group :email, :default do
   gem 'premailer-rails'
