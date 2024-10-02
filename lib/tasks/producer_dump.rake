@@ -22,7 +22,7 @@ namespace :producer do
     html = response.body
     doc = Nokogiri::HTML(html)
 
-    SERIES = {}
+    SERIES = {} # rubocop:disable Lint/ConstantDefinitionInBlock Style/MutableConstant
 
     doc.css('.seriesCol option').each do |option|
       id = option.attribute('value').text

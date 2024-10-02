@@ -58,11 +58,12 @@ module Card::Character
 				ko_immune_sentence /
 				ko_sentence /
 				place_sentence /
-				rest_opponent_sentence /
+				rest_opponent_sentence and_clause? power_gain_sentence? /
 				return_sentence /
 				restand_sentence /
 				play_sentence /
 				add_card_sentence /
+				add_life_sentence /
 				apply_don_sentence /
 				add_don_sentence /
 				reactivate_don_sentence /
@@ -193,6 +194,11 @@ module Card::Character
 			( cost integer or_less? )?
 			( other_than has_name )?
 			( trash_pile your_hand ) space?
+		end
+
+		rule add_life_sentence
+			('Add ' / 'add ') up_to? integer card 'from your Life area ' your_hand
+			space? dot?
 		end
 
 		rule restand_sentence
