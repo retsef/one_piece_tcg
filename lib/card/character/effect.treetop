@@ -50,6 +50,8 @@ module Card::Character
 				reveal_sentence /
 				power_gain_sentence /
 				power_give_sentence /
+				cost_gain_sentence /
+				cost_reduction_sentence /
 				trait_gain_sentence /
 				cannot_block_sentence /
 				prevent_ko_sentence /
@@ -64,7 +66,8 @@ module Card::Character
 				apply_don_sentence /
 				add_don_sentence /
 				reactivate_don_sentence /
-				attack_active_sentence
+				attack_active_sentence /
+				then_clause
 			)+ <ShallowParsedQuery>
 		end
 
@@ -81,7 +84,7 @@ module Card::Character
 	  end
 
 		rule power_gain_sentence
-			( this / up_to? integer your colored? / up_to? integer opponent / up_to? integer / your of_type or_clause? / of_type )+
+			( this / up_to? integer your colored? / up_to? integer opponent / up_to? integer your has_name / your of_type or_clause? / of_type / up_to? integer )+
 			( character / leader or_clause character / leader and_clause character / leader / card ) card? ( cost integer )?
 			( 'other than this ' card space?)?
 			gain integer power
@@ -94,6 +97,18 @@ module Card::Character
 			( this / up_to? integer opponent / up_to? integer your colored? / up_to? integer )
 			( character / leader or_clause character / leader ) ( cost integer )?
 			integer power ( battle / turn )?
+		end
+
+		rule cost_reduction_sentence
+			give ( up_to? integer )
+			opponent character
+			integer cost turn space? dot?
+		end
+
+		rule cost_gain_sentence
+			( this / up_to? integer )
+			( character )
+			gain integer cost turn? space? dot?
 		end
 
 		rule trait_gain_sentence
@@ -154,7 +169,9 @@ module Card::Character
 			play ( this / up_to? integer )
 			( has_name card? / of_type character / character or_clause? / event or_clause? / stage or_clause? )+
 			( cost integer or_less? )?
+			( other_than has_name )?
 			( your_hand / trash / top_or_bottom_deck / top_deck / bottom_deck / deck )+
+			rested?
 			( divider shuffle_deck )?
 			space? <PlayEffect>
 		end

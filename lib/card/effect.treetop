@@ -113,6 +113,10 @@ class Card
 			('Set' / 'set') space? <TermLiteral>
 		end
 
+		rule then_clause
+			('Then' / 'then') divider space? <TermLiteral>
+		end
+
 		# Target
 		rule leader
 			('Your Leader' / 'your Leader' / 'Leaders' / 'leaders' / 'Leader' / 'leader') space? <LeaderLiteral>
@@ -255,7 +259,7 @@ class Card
 		end
 
 		rule cost
-			('with a cost of' / 'with cost' / 'of cost') space? <TermLiteral>
+			('with a cost of' / 'with cost' / 'of cost' / 'cost') space? <TermLiteral>
 		end
 
 		rule rested
