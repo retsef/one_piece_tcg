@@ -26,7 +26,7 @@ namespace :producer do
 
     doc.css('.seriesCol option').each do |option|
       id = option.attribute('value').text
-      label = option.text
+      label = option.text.rm("<br class=\"spInline\">", '')
 
       next if id.blank?
 
