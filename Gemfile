@@ -7,7 +7,7 @@ ruby "3.3.5"
 gem "rails", "~> 7.2.0"
 
 # Use sqlite3 as the database for Active Record
-gem "sqlite3", "~> 1.7"
+gem "sqlite3", "~> 2.1"
 gem "pg", "~> 1.4"
 
 # Use Redis adapter to run Action Cable in production
