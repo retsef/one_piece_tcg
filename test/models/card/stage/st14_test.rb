@@ -1,9 +1,13 @@
-require "test_helper"
+require 'test_helper'
 
-class Card::Stage::ST03Test < ActiveSupport::TestCase
-  EFFECT = [].freeze
+class Card::Stage::ST14Test < ActiveSupport::TestCase
+  EFFECT = [
+    "All of your black {Straw Hat Crew} type Characters gain +1 cost.[On Play] If your Leader has the {Straw Hat Crew} type, draw 1 card."
+  ].freeze
 
-  TRIGGER = [].freeze
+  TRIGGER = [
+    ""
+  ].freeze
 
   EFFECT.each do |effect|
     test "parse effect: #{effect}" do

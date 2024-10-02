@@ -1,8 +1,11 @@
 class Card < ApplicationRecord
   include Searchable, Codeable, Colored, Attributed
+  include Friendly
+
+  friendly_id :code
 
   has_many :card_families, class_name: 'Card::Family', dependent: :destroy
-  has_many :families, through: :card_families
+  has_many :families, through: :card_families, class_name: '::Family'
 
   has_many :artworks, class_name: 'Card::Artwork', dependent: :destroy
 

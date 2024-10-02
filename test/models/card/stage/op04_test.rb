@@ -1,9 +1,13 @@
-require "test_helper"
+require 'test_helper'
 
-class Card::Stage::OP01Test < ActiveSupport::TestCase
-  EFFECT = [].freeze
+class Card::Stage::OP04Test < ActiveSupport::TestCase
+  EFFECT = [
+    "If your Leader has the {Dressrosa} type, your {Dressrosa} type Characters can attack Characters on the turn in which they are played."
+  ].freeze
 
-  TRIGGER = [].freeze
+  TRIGGER = [
+    ""
+  ].freeze
 
   EFFECT.each do |effect|
     test "parse effect: #{effect}" do

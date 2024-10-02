@@ -1,7 +1,7 @@
-require "test_helper"
+require 'test_helper'
 
 class Card::Event::OP01Test < ActiveSupport::TestCase
-  EVENT = [
+  EFFECT = [
     "[Counter] Up to 1 of your Leader or Character cards gains +4000 power during this battle. Then, K.O. up to 1 of your opponent's Characters with 4000 power or less.",
     "[Main] Give up to 1 of your opponent's Characters −10000 power during this turn.",
     "[Counter] Give up to 1 of your opponent's Leader or Character cards −2000 power during this turn.",
@@ -37,8 +37,8 @@ class Card::Event::OP01Test < ActiveSupport::TestCase
     "Add up to 1 DON!! card from your DON!! deck and set it as active."
   ].freeze
 
-  EVENT.each do |effect|
-    test "parse event effect: #{effect}" do
+  EFFECT.each do |effect|
+    test "parse effect: #{effect}" do
       parsed = Card::Event::Effect.parse(effect)
 
       assert_not_nil parsed
@@ -46,7 +46,7 @@ class Card::Event::OP01Test < ActiveSupport::TestCase
   end
 
   TRIGGER.each do |trigger|
-    test "parse event trigger: #{trigger}" do
+    test "parse trigger: #{trigger}" do
       parsed = Card::Event::Trigger.parse(trigger)
 
       assert_not_nil parsed

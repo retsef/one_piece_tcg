@@ -114,6 +114,15 @@ module Card::Event
 		  space? <RevealEffect>
 		end
 
+		rule play_sentence
+			play ( this / up_to? integer )
+			( has_name / of_type character / character or_clause? / event or_clause? / stage or_clause? )+
+			( cost integer or_less? )?
+			( your_hand / trash / top_or_bottom_deck / top_deck / bottom_deck / deck )+
+			( divider shuffle_deck )?
+			space? <PlayEffect>
+		end
+
 		rule leader_condition
 			if_clause (your / opponent) leader
 			( 'has the ' of_type )

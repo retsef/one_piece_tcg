@@ -1,7 +1,7 @@
-require "test_helper"
+require 'test_helper'
 
 class Card::Event::OP02Test < ActiveSupport::TestCase
-  EVENT = [
+  EFFECT = [
     "[Counter] Up to 1 of your Leader or Character cards gains +6000 power during this battle. Then, play up to 1 Character card with a cost of 3 or less and no base effect from your hand.",
     "[Main] If your Leader's type includes \"Whitebeard Pirates\", K.O. up to 1 of your opponent's Characters with 3000 power or less.",
     "[Main] Look at 5 cards from the top of your deck; reveal up to 1 Character card with a type including \"Whitebeard Pirates\" and add it to your hand. Then, place the rest at the bottom of your deck in any order.",
@@ -36,8 +36,8 @@ class Card::Event::OP02Test < ActiveSupport::TestCase
     "Draw 2 cards and trash 1 card from your hand."
   ].freeze
 
-  EVENT.each do |effect|
-    test "parse event effect: #{effect}" do
+  EFFECT.each do |effect|
+    test "parse effect: #{effect}" do
       parsed = Card::Event::Effect.parse(effect)
 
       assert_not_nil parsed
@@ -45,7 +45,7 @@ class Card::Event::OP02Test < ActiveSupport::TestCase
   end
 
   TRIGGER.each do |trigger|
-    test "parse event trigger: #{trigger}" do
+    test "parse trigger: #{trigger}" do
       parsed = Card::Event::Trigger.parse(trigger)
 
       assert_not_nil parsed

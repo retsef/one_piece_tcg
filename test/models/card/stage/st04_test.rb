@@ -1,4 +1,4 @@
-require "test_helper"
+require 'test_helper'
 
 class Card::Stage::ST04Test < ActiveSupport::TestCase
   EFFECT = [

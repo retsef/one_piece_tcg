@@ -1,4 +1,4 @@
-require "test_helper"
+require 'test_helper'
 
 class Card::Character::ST01Test < ActiveSupport::TestCase
   EFFECT = [
@@ -14,8 +14,8 @@ class Card::Character::ST01Test < ActiveSupport::TestCase
   ].freeze
 
   TRIGGER = [
-    "",
-    "Play this card."
+    "Play this card.",
+    ""
   ].freeze
 
   EFFECT.each do |effect|

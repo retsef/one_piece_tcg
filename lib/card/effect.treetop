@@ -109,6 +109,10 @@ class Card
 		 	('You may' / 'you may') space? <TermLiteral>
 		end
 
+		rule set_clause
+			('Set' / 'set') space? <TermLiteral>
+		end
+
 		# Target
 		rule leader
 			('Your Leader' / 'your Leader' / 'Leaders' / 'leaders' / 'Leader' / 'leader') space? <LeaderLiteral>

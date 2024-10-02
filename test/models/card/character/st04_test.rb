@@ -1,7 +1,7 @@
-require "test_helper"
+require 'test_helper'
 
 class Card::Character::ST04Test < ActiveSupport::TestCase
-  EVENT = [
+  EFFECT = [
     "[On Play] DON!! −1 (You may return the specified number of DON!! cards from your field to your DON!! deck.): Play up to 1 [Page One] card with a cost of 4 or less from your hand.",
     "[On Play] DON!! −5 (You may return the specified number of DON!! cards from your field to your DON!! deck.): K.O. up to 1 of your opponent's Characters with a cost of 6 or less. This Character gains [Rush] during this turn.(This card can attack on the turn in which it is played.)",
     "[On Play] DON!! −1 (You may return the specified number of DON!! cards from your field to your DON!! deck.): K.O. up to 1 of your opponent's Characters with a cost of 4 or less.",
@@ -18,7 +18,7 @@ class Card::Character::ST04Test < ActiveSupport::TestCase
     "Play this card."
   ].freeze
 
-  EVENT.each do |effect|
+  EFFECT.each do |effect|
     test "parse effect: #{effect}" do
       parsed = Card::Character::Effect.parse(effect)
 

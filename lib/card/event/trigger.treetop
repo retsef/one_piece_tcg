@@ -7,14 +7,22 @@ module Card::Event
 		rule body
 			( activation_cost )?
 	    (
+				sentence divider?
+	    )+
+	    none? empty? dot? <ShallowParsedQuery>
+		end
+
+		rule sentence
+			(
 				activate_sentence /
 				draw_sentence /
+				play_sentence /
 				ko_sentence /
 				power_gain_sentence /
 				power_give_sentence /
 				return_sentence /
-				none / empty
-	    ) dot? <ShallowParsedQuery>
+				restand_don_sentence
+			) <ShallowParsedQuery>
 		end
 
 		rule activation_cost
@@ -50,6 +58,20 @@ module Card::Event
 			( card / character or_clause? / event or_clause? / stage or_clause? )*
 			( cost integer or_less? )?
 			( your_hand / owner_hand / top_or_bottom_deck / top_deck / bottom_deck )+ any_order? space? <ReturnEffect>
+		end
+
+		rule play_sentence
+			play ( this / up_to? integer )
+			( has_name / of_type card / of_type character / character or_clause? / event or_clause? / stage or_clause? )+
+			( cost integer or_less? )?
+			( your_hand / trash / top_or_bottom_deck / top_deck / bottom_deck / deck )+
+			( divider shuffle_deck )?
+			space? <PlayEffect>
+		end
+
+		rule restand_don_sentence
+			set_clause up_to integer 'of your ' don card ( 'as active' )+
+			space?
 		end
 	end
 end
