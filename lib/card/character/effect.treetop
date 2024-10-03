@@ -271,12 +271,12 @@ module Card::Character
 			may_clause? trash ( this / up_to? integer )
 			( card / character or_clause? / event or_clause? / stage or_clause? / of_type )+
 			your_hand?
-			space?
+			divider? space?
 		end
 
 		rule power_investment
 			may_clause? give ( 'your ' integer 'active Leader ' ) integer power turn
-			space?
+			divider? space?
 		end
 
 		rule rest_card_investment
@@ -297,7 +297,7 @@ module Card::Character
 
 		rule life_condition
 			if_clause (you_have / your_opponent_has) integer (up_to / or_less)? space? life
-			divider space? <LifeCondition>
+			divider space? dot? <LifeCondition>
 		end
 
 		rule card_hand_condition
@@ -313,53 +313,55 @@ module Card::Character
 		rule leader_condition
 			if_clause (your / opponent) leader
 			( 'types includes ' sub_type / 'has the ' of_type / 'is ' has_name )
-			divider? space? <LeaderCondition>
+			divider? space? dot? <LeaderCondition>
 		end
 
 		rule not_other_same_character_condition
-			and_clause? you_have 'no other ' has_name character ('in play')? divider? space?
+			and_clause? you_have 'no other ' has_name character ('in play')?
+			divider? space? dot?
 	 	end
 
 		rule battle_condition
 		  ( if_clause / 'When ') this character have_battle with_attribute? your_opponent? ( character / leader )
-		  divider? space?
+		  divider? space? dot?
 		end
 
 		rule rested_condition
 		  if_clause ( this ) character 'is ' rested
-		  divider? space?
+		  divider? space? dot?
 		end
 
 		rule character_count_condition
 			if_clause ( you_have / your_opponent_has )
 			integer (or_more / or_less)?
 			rested? character
-			divider? space?
+			divider? space? dot?
 		end
 
 		rule character_in_play_condition
 		  if_clause ( you_have / you_havent )
 		  ('a ' / 'no other ')? has_name character?
-		  divider? space?
+		  divider? space? dot?
 		end
 
 		rule character_cost_condition
 			if_clause ( you_have / 'there is a ' )
 			( integer character cost integer / character cost integer)
-			divider space?
+			divider space? dot?
 		end
 
 		rule don_in_play_condition
 			if_clause ( opponent 'has more ' / 'you have ' )
 			( integer or_more )? don card
 			( 'on their field than you' / 'on your field' )?
-			divider space?
+			divider space? dot?
 		end
 
 		rule place_remaining_card
 			place 'the rest '
 			( bottom_deck / top_deck / top_or_bottom_deck / trash_pile )
-			any_order? space?
+			any_order?
+			space? dot?
 		end
 
 		rule name_override

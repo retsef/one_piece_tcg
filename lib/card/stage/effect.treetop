@@ -5,25 +5,37 @@ module Card::Stage
 		include Card::Effect
 
 		rule body
+			( effect / none / empty ) dot?
+			<ShallowParsedQuery>
+		end
+
+		rule effect
 			( activation_cost )?
 			(
 				action once_per_turn? divider? /
 				once_per_turn
 			)*
+			( investment divider? )*
+			( leader_condition )*
 			(
-				don_investment divider? /
-				rest_card_investment divider?
-			)*
-			(
-				leader_condition
-			)*
-			(
-				draw_sentence and_clause? trash_sentence? divider? trash_sentence? /
-				rest_opponent_sentence /
-				add_don_sentence /
-				power_gain_sentence /
-				none / empty
-			) <ShallowParsedQuery>
+				sentence /
+				space? then_clause
+			)
+		end
+
+		rule investment
+			don_investment /
+			rest_card_investment and_clause? trash_investment? /
+			trash_investment and_clause? rest_card_investment?
+		end
+
+		rule sentence
+			draw_sentence and_clause? trash_sentence? divider? trash_sentence? /
+			look_up_sentence and_clause? return_sentence? /
+			reveal_sentence /
+			rest_opponent_sentence /
+			add_don_sentence /
+			power_gain_sentence
 		end
 
 	  rule draw_sentence
@@ -37,6 +49,28 @@ module Card::Stage
 	    your_hand?
 	    dot? space?
 	  end
+
+	  rule look_up_sentence
+	  	('Look at' / 'look at') space? up_to? integer card top_deck divider? space? dot?
+	  end
+
+		rule reveal_sentence
+			reveal ( this / up_to? integer )
+			( card / of_type character / of_type card? / character or_clause? / event or_clause? / stage or_clause? )+
+			( cost integer or_less? )?
+			( other_than has_name )?
+			( and_clause 'add it ' your_hand )+
+			( divider place_remaining_card )?
+		  space? dot? # <RevealEffect>
+		end
+
+		rule return_sentence
+			( return / place ) ( this / up_to? integer / them / 'the rest ' )
+			( card / opponent? character or_clause? / event or_clause? / stage or_clause? )*
+			( cost integer or_less? )?
+			( your_hand / owner_hand / top_or_bottom_deck / top_deck / bottom_deck )+ any_order?
+			space? dot? # <ReturnEffect>
+		end
 
 		rule rest_opponent_sentence
 			rest ( up_to? integer / all) ( opponent / your ) character space?
@@ -62,9 +96,15 @@ module Card::Stage
 		end
 
 		rule rest_card_investment
-			may_clause? rest
-			( this / up_to? integer )
+			may_clause? rest ( this / up_to? integer )
 			( card / stage )
+			space?
+		end
+
+		rule trash_investment
+			may_clause? trash ( this / up_to? integer )
+			( card / character or_clause? / event or_clause? / stage or_clause? / of_type )+
+			your_hand?
 			space?
 		end
 
@@ -72,6 +112,13 @@ module Card::Stage
 			('Add ' / 'add ') up_to? integer ( rested / active )? don card
 			'from your ' don 'deck' space? ( 'as active' / 'and rest it')
 			dot? space?
+		end
+
+		rule place_remaining_card
+			place 'the rest '
+			( bottom_deck / top_deck / top_or_bottom_deck / trash_pile )
+			any_order?
+			space? dot?
 		end
 	end
 end
