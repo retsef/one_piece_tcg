@@ -75,6 +75,10 @@ class Card
 	  	'"' ( keyword space? )* '"' space? <TermLiteral>
 	  end
 
+	  rule with_attribute
+	  	'<' ( keyword space? )* '>' (space? 'attribute')? space? <TermLiteral>
+	  end
+
 	  rule other_than
 	  	'other than' space? <TermLiteral>
 	  end
@@ -272,19 +276,15 @@ class Card
 
 		# From
 		rule your_hand
-			('from' / 'to')? space? 'your hand' space? <TermLiteral>
+			('from' / 'to' / 'in')? space? your 'hand' space? <TermLiteral>
 		end
 
 		rule trash
-			('from' / 'to')? space? 'trash' space? <TermLiteral>
+			('from' / 'to' / 'in')? space? (your / opponent)? 'trash' space? <TermLiteral>
 		end
 
 		rule owner_hand
 			('from the' / 'to the')? space? owner 'hand' space? <TermLiteral>
-		end
-
-		rule from_trash
-			'from trash' space? <TermLiteral>
 		end
 
 		rule any_order
@@ -293,7 +293,7 @@ class Card
 
 		# In Occasion
 		rule battle
-			('during ')? this 'battle' space? <TermLiteral>
+			('during ')? ( this / 'in ' ) 'battle' space? <TermLiteral>
 		end
 
 		rule turn
@@ -305,12 +305,8 @@ class Card
 		end
 
 		# Effect occurred
-		rule by_effect
+		rule effect
 			'by an effect' space? <TermLiteral>
-		end
-
-		rule by_battle
-			'by battle' space? <TermLiteral>
 		end
 
 		rule up_to

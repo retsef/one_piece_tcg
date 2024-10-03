@@ -28,10 +28,11 @@ module Card::Character
 			(
 				don_investment divider? /
 				don_sacrifice divider? /
-				trash_investment divider? /
+				trash_investment and_clause? rest_card_investment? divider? /
 				power_investment divider? /
-				rest_card_investment divider? /
-				life_investment divider?
+				rest_card_investment and_clause? trash_investment? divider? /
+				life_investment divider? /
+				return_card_investment divider?
 			)*
 			(
 				life_condition /
@@ -40,12 +41,13 @@ module Card::Character
 				card_hand_condition /
 				battle_condition /
 				rested_condition /
+				don_in_play_condition /
 				character_count_condition /
 				character_in_play_condition /
 				character_cost_condition
 			)*
 			(
-				draw_sentence and_clause? trash_sentence? divider? trash_sentence? /
+				draw_sentence and_clause? trash_sentence? divider? trash_sentence? card_hand_condition? /
 				look_up_sentence and_clause? return_sentence? /
 				reveal_sentence /
 				power_gain_sentence /
@@ -68,7 +70,8 @@ module Card::Character
 				add_don_sentence /
 				reactivate_don_sentence /
 				attack_active_sentence /
-				then_clause
+				event_discount_sentence /
+				space? then_clause
 			)+ <ShallowParsedQuery>
 		end
 
@@ -77,7 +80,10 @@ module Card::Character
 	  end
 
 	  rule trash_sentence
-	    trash ( up_to? integer / this ) ( card / event or_clause? / stage or_clause? / character )+ your_hand? space? <TrashEffect>
+	    trash
+	    ( up_to? integer / this )
+	    ( card / event or_clause? / stage or_clause? / character )+
+	    your_hand? space? <TrashEffect>
 	  end
 
 	  rule look_up_sentence
@@ -90,7 +96,7 @@ module Card::Character
 			( 'other than this ' card space?)?
 			gain integer power
 			( 'for every ' integer your rested don card )?
-			( battle / turn )?
+			( battle / turn )? space? dot?
 		end
 
 		rule power_give_sentence
@@ -139,7 +145,7 @@ module Card::Character
 		end
 
 		rule attack_active_sentence
-			this character ' can also attack ' your_opponent 'active ' character space?
+			this character 'can also attack ' your_opponent 'active ' character turn? space?
 		end
 
 		rule place_sentence
@@ -147,7 +153,7 @@ module Card::Character
 			( card / character or_clause? / event or_clause? / stage or_clause? )+
 			( cost integer or_less? )?
 			( your_hand / owner_hand / top_or_bottom_deck / top_deck / bottom_deck )+
-			any_order? space? <PlaceEffect>
+			any_order? space? dot? <PlaceEffect>
 		end
 
 		rule rest_opponent_sentence
@@ -155,7 +161,7 @@ module Card::Character
 			( opponent / your )
 			( character / don card )
 			( cost integer or_less? )?
-			space? <RestEffect>
+			space? dot? space? <RestEffect>
 		end
 
 		rule return_sentence
@@ -168,7 +174,7 @@ module Card::Character
 
 		rule play_sentence
 			play ( this / up_to? integer )
-			( has_name card? / of_type character / character or_clause? / event or_clause? / stage or_clause? )+
+			( has_name card? / of_type character / colored character / character or_clause? / event or_clause? / stage or_clause? )+
 			( cost integer or_less? )?
 			( other_than has_name )?
 			( your_hand / trash / top_or_bottom_deck / top_deck / bottom_deck / deck )+
@@ -181,6 +187,7 @@ module Card::Character
 			reveal ( this / up_to? integer )
 			( card / of_type character / of_type card / character or_clause? / event or_clause? / stage or_clause? )+
 			( cost integer or_less? )?
+			( other_than has_name )?
 			( and_clause 'add it ' your_hand )+
 			( divider place_remaining_card )?
 		  space? <RevealEffect>
@@ -217,13 +224,18 @@ module Card::Character
 		end
 
 		rule apply_don_sentence
-			give up_to? integer ( rested don card ) 'to ' ( leader or_clause? / integer your character )*
+			give ( this character )? up_to? integer ( rested don card )
+			('to ' ( leader or_clause? / integer your character )*)? space? dot?
 		end
 
 		rule add_don_sentence
 			('Add ' / 'add ') up_to? integer ( rested / active )? don card
 			'from your ' don 'deck' space?
-			( 'as active' / 'and rest it' / and_clause 'set it as active' / and_clause 'set it as rested' )
+			( 'as active' / 'and rest it' / 'and rest them' / and_clause 'set it as active' / and_clause 'set it as rested' )
+		end
+
+		rule event_discount_sentence
+			give colored 'Events ' your_hand integer cost space? dot?
 		end
 
 		rule activation_cost
@@ -231,22 +243,30 @@ module Card::Character
 		end
 
 		rule trash_investment
-			may_clause? trash ( this / up_to? integer ) ( card / character or_clause? / event or_clause? / stage or_clause? )+ your_hand?
+			may_clause? trash ( this / up_to? integer )
+			( card / character or_clause? / event or_clause? / stage or_clause? / of_type )+
+			your_hand?
 			space?
 		end
 
 		rule power_investment
-			may_clause? give ( 'your ' integer 'active Leader' space? ) integer power turn
+			may_clause? give ( 'your ' integer 'active Leader ' ) integer power turn
 			space?
 		end
 
 		rule rest_card_investment
-			may_clause? rest ( this / up_to? integer ) ( card / character or_clause? / event or_clause? / stage or_clause? )+ your_hand?
+			may_clause? rest ( this / up_to? integer )
+			( card / character or_clause? / event or_clause? / stage or_clause? )+
 			space?
 		end
 
 		rule life_investment
 			may_clause? 'add ' integer card 'from your Life area ' your_hand
+			space?
+		end
+
+		rule return_card_investment
+			may_clause? return integer character your_hand
 			space?
 		end
 
@@ -256,13 +276,13 @@ module Card::Character
 		end
 
 		rule card_hand_condition
-			if_clause (you_have / your_opponent_has) integer (up_to / or_less)? space? card (in / from) your_hand?
-			divider space? <CardHandCondition>
+			if_clause (you_have / your_opponent_has) integer (up_to / or_less)? space? card your_hand?
+			divider? space? dot? <CardHandCondition>
 		end
 
 		rule ko_effect_condition
-			if_clause this character would_clause ko ( by_effect / by_battle )?
-			divider? <KOCondition>
+			if_clause this character would_clause ko ( effect / battle )?
+			divider? space? dot? <KOCondition>
 		end
 
 		rule leader_condition
@@ -276,7 +296,7 @@ module Card::Character
 	 	end
 
 		rule battle_condition
-		  if_clause ( this ) character have_battle your_opponent ( character / leader )
+		  ( if_clause / 'When ') this character have_battle with_attribute? your_opponent? ( character / leader )
 		  divider? space?
 		end
 
@@ -294,13 +314,20 @@ module Card::Character
 
 		rule character_in_play_condition
 		  if_clause ( you_have / you_havent )
-		  ('a ')? has_name character?
+		  ('a ' / 'no other ')? has_name character?
 		  divider? space?
 		end
 
 		rule character_cost_condition
 			if_clause ( you_have / "there is a " )
 			integer character cost integer
+			divider space?
+		end
+
+		rule don_in_play_condition
+			if_clause ( opponent 'has more ' / 'you have ' )
+			( integer or_more )? don card
+			( 'on their field than you' / 'on your field' )?
 			divider space?
 		end
 

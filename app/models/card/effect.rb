@@ -4,7 +4,7 @@ require 'treetop'
 module Card::Effect
   class ParsingError < StandardError
     def initialize(data = '', parser = nil, chunk_offset = 3)
-      error_index = parser.max_terminal_failure_index # parser.index
+      error_index = parser&.failure_index || 0 # parser.index
       sliced_data = data.slice([0, error_index - chunk_offset].max, [data.size, chunk_offset * 2].min)
       message = "Parse error at index #{error_index} near: \"#{sliced_data}\""
 
