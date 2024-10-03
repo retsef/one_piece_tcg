@@ -20,7 +20,7 @@ module Card::Stage
 			(
 				sentence /
 				space? then_clause
-			)
+			)+ <ShallowParsedQuery>
 		end
 
 		rule investment
