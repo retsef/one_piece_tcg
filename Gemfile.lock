@@ -275,7 +275,7 @@ GEM
     parser (3.3.2.0)
       ast (~> 2.4.1)
       racc
-    pg (1.5.6)
+    pg (1.5.8)
     polyglot (0.3.5)
     premailer (1.23.0)
       addressable
@@ -526,7 +526,7 @@ DEPENDENCIES
   name_of_person
   nokogiri
   pagy
-  pg (~> 1.4)
+  pg (~> 1.5)
   premailer-rails
   propshaft
   puma (~> 6.4)
