@@ -17,7 +17,7 @@ class Card
 
 		# Element
 		rule element
-		 	('<Slash>' / '<Special>') space? <ElementLiteral>
+		 	with_attribute space? <ElementLiteral>
 	 	end
 
 		# Trait
@@ -76,7 +76,7 @@ class Card
 	  end
 
 	  rule with_attribute
-	  	'<' ( keyword space? )* '>' (space? 'attribute')? space? <TermLiteral>
+	  	'＜' ( keyword space? )* '＞' (space? 'attribute')? space? <TermLiteral>
 	  end
 
 	  rule other_than

@@ -7,7 +7,10 @@ module Card::Character
 		rule body
 			(
 				name_override /
-				unlimited_copy_override
+				unlimited_copy_override /
+				battle_condition power_gain_sentence /
+				ko_immune_sentence /
+				attack_active_sentence
 			)*
 			(
 				trait trait_description
@@ -120,7 +123,7 @@ module Card::Character
 
 		rule trait_gain_sentence
 			( this / up_to? integer )
-			( character / leader or_clause character / leader )
+			( character / leader or_clause character / leader / your has_name card / your has_name card )
 			gain ( trait dot? trait_description? )
 			( battle / turn )? space? dot? trait_description?
 		end
@@ -141,11 +144,12 @@ module Card::Character
 		end
 
 		rule ko_immune_sentence
-			this character "cannot be K.O.'d" space? battle? ('by ' element space? 'attribute ' character)? space?
+			this character "cannot be K.O.'d" space? battle?
+			('by ' element space? 'attribute ' character / 'by effects')? space? dot?
 		end
 
 		rule attack_active_sentence
-			this character 'can also attack ' your_opponent 'active ' character turn? space?
+			this character 'can also attack ' your_opponent 'active ' character turn? space? dot?
 		end
 
 		rule place_sentence
@@ -319,8 +323,8 @@ module Card::Character
 		end
 
 		rule character_cost_condition
-			if_clause ( you_have / "there is a " )
-			integer character cost integer
+			if_clause ( you_have / 'there is a ' )
+			( integer character cost integer / character 'with a ' cost 'of ' integer)
 			divider space?
 		end
 
