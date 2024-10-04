@@ -5,10 +5,53 @@ module Card::Character
 		include Card::Trigger
 
 	  rule body
-	    (
-				play_sentence /
-				none / empty
-	    ) dot? <ShallowParsedQuery>
+			( effect / none / empty ) dot?
+			<ShallowParsedQuery>
 	  end
+
+		rule effect
+			( investment divider? )*
+			( condition )*
+			(
+				sentence /
+				space? then_clause
+			)+ <ShallowParsedQuery>
+		end
+
+		rule investment
+			don_sacrifice /
+			life_investment /
+			return_card_investment
+		end
+
+		rule condition
+			life_condition /
+			leader_condition
+		end
+
+	  rule sentence
+	  	activate_sentence /
+	  	play_sentence
+	  end
+
+		rule play_sentence
+			play this card
+			space? dot? <PlayEffect>
+		end
+
+		rule life_investment
+			may_clause? 'add ' integer card 'from your Life area ' your_hand
+			space?
+		end
+
+		rule return_card_investment
+			may_clause? return integer character your_hand
+			space?
+		end
+
+		rule life_condition
+			if_clause (you_have / your_opponent_has) integer (up_to / or_less)? space? life
+			divider space? dot? <LifeCondition>
+		end
 	end
 end

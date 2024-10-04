@@ -5,11 +5,29 @@ module Card::Event
 		include Card::Trigger
 
 		rule body
-			( activation_cost )?
-	    (
-				sentence divider?
-	    )+
-	    none? empty? dot? <ShallowParsedQuery>
+			( effect / none / empty ) dot?
+			<ShallowParsedQuery>
+		end
+
+		rule effect
+			(
+				action divider?
+			)*
+			( investment divider? )*
+			( condition )*
+			(
+				sentence /
+				space? then_clause
+			)+ <ShallowParsedQuery>
+		end
+
+		rule investment
+			don_investment /
+			don_sacrifice /
+			power_investment /
+			rest_card_investment /
+			life_investment /
+			return_card_investment
 		end
 
 		rule sentence
@@ -71,6 +89,27 @@ module Card::Event
 
 		rule restand_don_sentence
 			set_clause up_to integer 'of your ' don card ( 'as active' )+
+			space?
+		end
+
+		rule power_investment
+			may_clause? give ( 'your ' integer 'active Leader ' ) integer power turn
+			divider? space?
+		end
+
+		rule rest_card_investment
+			may_clause? rest ( this / up_to? integer )
+			( card / character or_clause? / event or_clause? / stage or_clause? )+
+			space?
+		end
+
+		rule life_investment
+			may_clause? 'add ' integer card 'from your Life area ' your_hand
+			space?
+		end
+
+		rule return_card_investment
+			may_clause? return integer character your_hand
 			space?
 		end
 	end

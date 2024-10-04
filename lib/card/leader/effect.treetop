@@ -8,7 +8,7 @@ module Card::Leader
 			(
 				trait trait_description
 			)*
-			effect dot?
+			( effect / none / empty ) dot?
 			<ShallowParsedQuery>
 		end
 
@@ -31,17 +31,18 @@ module Card::Leader
 				rest_opponent_sentence /
 				restand_sentence /
 				apply_don_sentence /
-				add_don_sentence /
-				none / empty
+				add_don_sentence
 			) <ShallowParsedQuery>
 		end
 
 		rule draw_sentence
-			draw up_to? integer card space? <DrawEffect>
+			draw up_to? integer card
+			space? # <DrawEffect>
 		end
 
 		rule trash_sentence
-			trash ( up_to? integer / this ) ( card / event or_clause? / stage or_clause? / character )+ your_hand? space? <TrashEffect>
+			trash ( up_to? integer / this ) ( card / event or_clause? / stage or_clause? / character )+ your_hand?
+			space? # <TrashEffect>
 		end
 
 		rule power_gain_sentence
@@ -58,19 +59,23 @@ module Card::Leader
 		end
 
 		rule prevent_ko_sentence
-			may_clause? trash_sentence 'instead' space? <PreventKOEffect>
+			may_clause? trash_sentence 'instead'
+			space? # <PreventKOEffect>
 		end
 
 		rule rest_opponent_sentence
-			rest ( up_to? integer / all) ( opponent / your ) character space? <RestEffect>
+			rest ( up_to? integer / all) ( opponent / your ) character
+			space? # <RestEffect>
 		end
 
 		rule restand_sentence
-			'Set ' this character 'as ' active space?
+			'Set ' this leader 'as ' active space?
 		end
 
 		rule apply_don_sentence
-			give up_to? integer ( rested don card ) 'to ' ( leader or_clause? / integer your character )*
+			give ( this leader or_clause? / up_to? integer your character )+
+			up_to? integer ( rested don card )
+			space? dot?
 		end
 
 		rule add_don_sentence
@@ -78,11 +83,12 @@ module Card::Leader
 		end
 
 		rule activation_cost
-			don_cost space? <DonCostCondition>
+			don_cost space? # <DonCostCondition>
 		end
 
 		rule trash_investment
-			may_clause? trash ( this / up_to? integer ) ( card / character or_clause? / event or_clause? / stage or_clause? )+ your_hand? space?
+			may_clause? trash ( this / up_to? integer ) ( card / character or_clause? / event or_clause? / stage or_clause? )+ your_hand?
+			space?
 		end
 
 		rule power_investment
