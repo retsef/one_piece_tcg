@@ -13,7 +13,7 @@ namespace :parser do
       File.delete(file)
     end
 
-    Card::Codeable::SERIES.keys.each do |series|
+    Card::Codeable::SERIES.each_key do |series|
       characters = Character.from_series(series)
       next if characters.empty?
 
@@ -58,7 +58,7 @@ namespace :parser do
       File.delete(file)
     end
 
-    Card::Codeable::SERIES.keys.each do |series|
+    Card::Codeable::SERIES.each_key do |series|
       events = Event.from_series(series)
       next if events.empty?
 
@@ -103,7 +103,7 @@ namespace :parser do
       File.delete(file)
     end
 
-    Card::Codeable::SERIES.keys.each do |series|
+    Card::Codeable::SERIES.each_key do |series|
       stages = Stage.from_series(series)
       next if stages.empty?
 
@@ -148,7 +148,7 @@ namespace :parser do
       File.delete(file)
     end
 
-    Card::Codeable::SERIES.keys.each do |series|
+    Card::Codeable::SERIES.each_key do |series|
       leaders = Leader.from_series(series)
       next if leaders.empty?
 

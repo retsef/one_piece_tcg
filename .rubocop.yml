@@ -78,6 +78,8 @@ Metrics/PerceivedComplexity:
 
 Layout/LineLength:
   Max: 180
+  Exclude:
+    - 'test/models/card/**/*_test.rb'
 
 Layout/IndentationConsistency:
   EnforcedStyle: indented_internal_methods

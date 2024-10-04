@@ -111,19 +111,20 @@ module Card::Effect
   end
 
   class ActionLiteral < Literal
+    ACTIONS = {
+      '[Main]': :main,
+      '[Activate: Main]': :activate_main,
+      '[End of Your Turn]': :end_of_your_turn,
+      '[Your Turn]': :your_turn,
+      "[Opponent's Turn]": :opponents_turn,
+      '[On Play]': :on_play,
+      '[When Attacking]': :when_attacking,
+      '[Counter]': :counter,
+      "[On Your Opponent's Attack]": :on_your_opponents_attack
+    }.freeze
+
     def parse
-      case text_value.strip
-      when '[Main]' then :main
-      when '[Activate: Main]' then :activate_main
-      when '[End of Your Turn]' then :end_of_your_turn
-      when '[Your Turn]' then :your_turn
-      when "[Opponent's Turn]" then :opponents_turn
-      when "[On Play]" then :on_play
-      when "[When Attacking]" then :when_attacking
-      when "[Counter]" then :counter
-      when "[On Your Opponent's Attack]" then :on_your_opponents_attack
-      else text_value.strip
-      end
+      ACTIONS.fetch(text_value.strip.to_sym, text_value.strip)
     end
   end
 
