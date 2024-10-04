@@ -21,6 +21,7 @@ module Card::Character
 		rule investment
 			don_sacrifice /
 			life_investment /
+			trash_investment /
 			return_card_investment
 		end
 
@@ -42,6 +43,13 @@ module Card::Character
 		rule life_investment
 			may_clause? 'add ' integer card 'from your Life area ' your_hand
 			space?
+		end
+
+		rule trash_investment
+			may_clause? trash ( this / up_to? integer )
+			( card / character or_clause? / event or_clause? / stage or_clause? / of_type )+
+			your_hand?
+			divider? space?
 		end
 
 		rule return_card_investment

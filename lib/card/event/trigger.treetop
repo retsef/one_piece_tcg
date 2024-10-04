@@ -30,6 +30,10 @@ module Card::Event
 			return_card_investment
 		end
 
+		rule condition
+			none
+		end
+
 		rule sentence
 			(
 				activate_sentence /
