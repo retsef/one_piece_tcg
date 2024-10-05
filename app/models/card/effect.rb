@@ -68,6 +68,10 @@ module Card::Effect
     def conditions
       (main_node&.elements || []).select { |e| e.class.name&.demodulize.to_s.include? 'Condition' }
     end
+
+    def investments
+      (main_node&.elements || []).select { |e| e.class.name&.demodulize.to_s.include? 'Investment' }
+    end
   end
 
   class SentenceNode < GroupNode

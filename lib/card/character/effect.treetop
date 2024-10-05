@@ -58,6 +58,8 @@ module Card::Character
 		rule sentence
 			draw_sentence and_clause? trash_sentence? divider? trash_sentence? card_hand_condition? /
 			look_up_sentence and_clause? return_sentence? /
+			look_up_sentence play_sentence then_clause place_remaining_card /
+			play_sentence /
 			reveal_sentence /
 			power_gain_sentence /
 			power_give_sentence /
@@ -239,10 +241,10 @@ module Card::Character
 		end
 
 		rule reactivate_don_sentence
-			('Set ' / 'set ') up_to? integer
-			 your ( rested? don card )
-			 'as ' active
-			 space? dot?
+			set_clause up_to? integer
+			your ( rested? don card )
+			'as ' active
+			space? dot?
 		end
 
 		rule apply_don_sentence

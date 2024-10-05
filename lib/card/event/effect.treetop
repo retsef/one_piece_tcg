@@ -36,6 +36,7 @@ module Card::Event
 			draw_sentence and_clause? trash_sentence? /
 			look_up_sentence and_clause? return_sentence? /
 			look_up_sentence divider play_sentence divider place_remaining_card /
+			play_sentence /
 			reveal_sentence /
 			power_gain_sentence /
 			power_give_sentence /
@@ -50,9 +51,8 @@ module Card::Event
 		end
 
 		rule rest_card_investment
-			may_clause? rest ( this / up_to? integer )
-			( card / character or_clause? / event or_clause? / stage or_clause? )+
-			your_hand?
+			may_clause? rest up_to? integer
+			your ( card / character or_clause? / event or_clause? / stage or_clause? )+
 			space?
 		end
 
@@ -100,7 +100,7 @@ module Card::Event
 	  	ko ( up_to? integer ) opponent
 	  	rested?
 	  	( character / stage )
-	  	cost integer or_less?
+	  	( cost integer or_less? / power integer or_less? )?
 	  	space? dot?
 	  end
 
@@ -144,7 +144,7 @@ module Card::Event
 
 		rule reveal_sentence
 			reveal ( this / up_to? integer )
-			( card / of_type character / of_type card / character or_clause? / event or_clause? / stage or_clause? )+
+			( card / of_type character / of_type card / sub_type / character or_clause? / event or_clause? / stage or_clause? )+
 			( cost integer or_less? )?
 			( and_clause 'add it ' your_hand )+
 			( divider place_remaining_card )?

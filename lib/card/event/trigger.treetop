@@ -10,9 +10,6 @@ module Card::Event
 		end
 
 		rule effect
-			(
-				action divider?
-			)*
 			( investment divider? )*
 			( condition )*
 			(
@@ -37,19 +34,33 @@ module Card::Event
 		rule sentence
 			(
 				activate_sentence /
-				draw_sentence /
+				draw_sentence and_clause? trash_sentence? /
 				play_sentence /
 				ko_sentence /
 				power_gain_sentence /
 				power_give_sentence /
 				return_sentence /
-				restand_don_sentence
-			) <ShallowParsedQuery>
+				reactivate_don_sentence /
+				add_don_sentence /
+				rest_opponent_sentence
+			)
 		end
 
 		rule activation_cost
 			don_cost space?
 		end
+
+	  rule draw_sentence
+	    draw up_to? integer card
+	    space? dot? # <DrawEffect>
+	  end
+
+	  rule trash_sentence
+	    trash
+	    ( up_to? integer / this )
+	    ( card / event or_clause? / stage or_clause? / character )+
+	    your_hand? space? dot? # <TrashEffect>
+	  end
 
 	  rule ko_sentence
 	  	ko ( up_to? integer ) opponent
@@ -79,7 +90,8 @@ module Card::Event
 			( this / up_to? integer / them / 'the rest ' )
 			( card / character or_clause? / event or_clause? / stage or_clause? )*
 			( cost integer or_less? )?
-			( your_hand / owner_hand / top_or_bottom_deck / top_deck / bottom_deck )+ any_order? space? <ReturnEffect>
+			( your_hand / owner_hand / top_or_bottom_deck / top_deck / bottom_deck )+ any_order?
+			space? # <ReturnEffect>
 		end
 
 		rule play_sentence
@@ -88,12 +100,28 @@ module Card::Event
 			( cost integer or_less? )?
 			( your_hand / trash / top_or_bottom_deck / top_deck / bottom_deck / deck )+
 			( divider shuffle_deck )?
-			space? <PlayEffect>
+			space? # <PlayEffect>
 		end
 
-		rule restand_don_sentence
-			set_clause up_to integer 'of your ' don card ( 'as active' )+
+		rule reactivate_don_sentence
+			set_clause up_to? integer
+			your don card ( 'as ' active )+
 			space?
+		end
+
+		rule add_don_sentence
+			('Add ' / 'add ') up_to? integer ( rested / active )? don card
+			'from your ' don 'deck' space?
+			( 'as active' / 'and rest it' / 'and rest them' / and_clause 'set it as active' / and_clause 'set it as rested' )
+			space? dot?
+		end
+
+		rule rest_opponent_sentence
+			rest ( up_to? integer / all)
+			( opponent / your )
+			( character / don card )
+			( cost integer or_less? )?
+			space? dot? # <RestEffect>
 		end
 
 		rule power_investment

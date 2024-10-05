@@ -72,7 +72,7 @@ class Card
 	  end
 
 	  rule sub_type
-	  	'"' ( keyword space? )* '"' space? <TermLiteral>
+	  	('of a type including ')? '"' ( keyword space? )* '"' space? <TermLiteral>
 	  end
 
 	  rule with_attribute
@@ -255,7 +255,7 @@ class Card
 		end
 
 		rule power
-			('power' / 'Power') space? <TermLiteral>
+			('with a power of' / 'with power' / 'of power' / 'power' / 'Power') space? <TermLiteral>
 		end
 
 		rule colored
