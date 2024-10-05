@@ -354,7 +354,7 @@ class Card
 		end
 
 		rule space
-			[ \t\n\r]* <TermLiteral>
+			[ \t\n\r] <TermLiteral>
 		end
 	end
 end

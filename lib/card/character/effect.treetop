@@ -24,20 +24,25 @@ module Card::Character
 				action once_per_turn? divider? /
 				once_per_turn
 			)*
-			( investment divider? )*
-			( condition )*
+			(
+				investment divider? /
+				and_clause space?
+			)*
+			( condition / and_clause )*
 			(
 				sentence /
-				space? then_clause
+				space? then_clause /
+				and_clause space? /
+				divider
 			)+ <ShallowParsedQuery>
 		end
 
 		rule investment
 			don_investment /
 			don_sacrifice /
-			trash_investment and_clause? rest_card_investment? /
+			trash_investment /
 			power_investment /
-			rest_card_investment and_clause? trash_investment? /
+			rest_card_investment /
 			life_investment /
 			return_card_investment
 		end
@@ -45,7 +50,8 @@ module Card::Character
 		rule condition
 			life_condition /
 			ko_effect_condition /
-			leader_condition not_other_same_character_condition? /
+			leader_condition /
+			not_other_same_character_condition /
 			card_hand_condition /
 			battle_condition /
 			rested_condition /
@@ -56,9 +62,9 @@ module Card::Character
 		end
 
 		rule sentence
-			draw_sentence and_clause? trash_sentence? divider? trash_sentence? card_hand_condition? /
-			look_up_sentence and_clause? return_sentence? /
-			look_up_sentence play_sentence then_clause place_remaining_card /
+			draw_sentence card_hand_condition? /
+			trash_sentence card_hand_condition? /
+			look_up_sentence /
 			play_sentence /
 			reveal_sentence /
 			power_gain_sentence /
@@ -71,7 +77,7 @@ module Card::Character
 			ko_immune_sentence /
 			ko_sentence /
 			place_sentence /
-			rest_opponent_sentence and_clause? power_gain_sentence? /
+			rest_opponent_sentence /
 			return_sentence /
 			restand_sentence /
 			play_sentence /
@@ -81,7 +87,8 @@ module Card::Character
 			add_don_sentence /
 			reactivate_don_sentence /
 			attack_active_sentence /
-			event_discount_sentence
+			event_discount_sentence /
+			then_clause place_remaining_card
 		end
 
 	  rule draw_sentence
@@ -100,7 +107,7 @@ module Card::Character
 	  end
 
 		rule power_gain_sentence
-			( this / up_to? integer your colored? / up_to? integer opponent / up_to? integer your has_name / your of_type or_clause? / of_type / up_to? integer )+
+			( this / up_to? integer your has_name / up_to? integer your colored? / up_to? integer opponent / your of_type or_clause? / of_type / up_to? integer your )+
 			( character / leader or_clause character / leader and_clause character / leader / card ) card? ( cost integer )?
 			( 'other than this ' card space?)?
 			gain integer power
