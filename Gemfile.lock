@@ -162,7 +162,7 @@ GEM
       raabro (~> 1.4)
     globalid (1.2.1)
       activesupport (>= 6.1)
-    groupdate (6.5.0)
+    groupdate (6.5.1)
       activesupport (>= 7)
     has_scope (0.8.2)
       actionpack (>= 5.2)
