@@ -5,6 +5,14 @@ module Card::Character
 		include Card::Effect
 
 		rule body
+			( permanent )
+			( trait trait_description )*
+			( effect )* none? empty? dot?
+			( trait trait_description )*
+			<ShallowParsedQuery>
+		end
+
+		rule permanent
 			(
 				name_override /
 				unlimited_copy_override /
@@ -12,17 +20,14 @@ module Card::Character
 				ko_immune_sentence /
 				attack_active_sentence
 			)*
-			( trait trait_description )*
-			( effect / none / empty ) dot?
-			( trait trait_description )*
-			<ShallowParsedQuery>
 		end
 
 		rule effect
 			( activation_cost )?
 			(
-				action once_per_turn? divider? /
-				once_per_turn
+				action /
+				once_per_turn /
+				divider
 			)*
 			(
 				investment divider? /
@@ -63,6 +68,7 @@ module Card::Character
 
 		rule sentence
 			draw_sentence card_hand_condition? /
+			draw_sentence opponent_action_condition? /
 			trash_sentence card_hand_condition? /
 			look_up_sentence /
 			play_sentence /
@@ -80,7 +86,6 @@ module Card::Character
 			rest_opponent_sentence /
 			return_sentence /
 			restand_sentence /
-			play_sentence /
 			add_card_sentence /
 			add_life_sentence /
 			apply_don_sentence /
@@ -112,14 +117,14 @@ module Card::Character
 			( 'other than this ' card space?)?
 			gain integer power
 			( 'for every ' integer your rested don card )?
-			( battle / turn )? space? dot?
+			( battle / turn / start_next_turn / end_next_turn / opponent_end_turn )? space? dot?
 		end
 
 		rule power_give_sentence
 			give
 			( this / up_to? integer opponent / up_to? integer your colored? / up_to? integer )
 			( character / leader or_clause character / leader ) ( cost integer )?
-			integer power ( battle / turn )? space? dot?
+			integer power ( battle / turn / opponent_end_turn )? space? dot?
 		end
 
 		rule cost_reduction_sentence
@@ -192,15 +197,17 @@ module Card::Character
 
 		rule return_sentence
 			( return / place ) ( this / up_to? integer / them / 'the rest ' )
+			active?
 			( card / opponent? character or_clause? / event or_clause? / stage or_clause? )*
 			( cost integer or_less? )?
-			( your_hand / owner_hand / top_or_bottom_deck / top_deck / bottom_deck )+ any_order?
+			( your_hand / owner_hand / top_or_bottom_deck / top_deck / bottom_deck )+
+			any_order?
 			space? dot? <ReturnEffect>
 		end
 
 		rule play_sentence
 			play ( this / up_to? integer )
-			( has_name card? / of_type character / colored character / character or_clause? / event or_clause? / stage or_clause? )+
+			( has_name card? / of_type character / colored of_type? character / character or_clause? / event or_clause? / stage or_clause? )+
 			( cost integer or_less? )?
 			( other_than has_name )?
 			( cost integer or_less? )?
@@ -214,6 +221,7 @@ module Card::Character
 			reveal ( this / up_to? integer )
 			( card / of_type character / of_type card? / character or_clause? / event or_clause? / stage or_clause? )+
 			( cost integer or_less? )?
+			( your_hand / top_or_bottom_deck / top_deck )?
 			( other_than has_name )?
 			( and_clause 'add it ' your_hand )+
 			( divider place_remaining_card )?
@@ -300,7 +308,7 @@ module Card::Character
 		end
 
 		rule return_card_investment
-			may_clause? return integer character your_hand
+			may_clause? return ( integer character / this character ) ( your_hand / owner_hand )
 			space?
 		end
 
@@ -310,8 +318,14 @@ module Card::Character
 		end
 
 		rule card_hand_condition
-			if_clause (you_have / your_opponent_has) integer (up_to / or_less)? space? card your_hand?
+			if_clause (you_have / your_opponent_has)
+			integer (up_to / or_less)? card your_hand?
 			divider? space? dot? <CardHandCondition>
+		end
+
+		rule opponent_action_condition
+			(if_clause / when_clause ) your_opponent ('activates' / 'have activate') space 'an Event'
+			divider? space? dot?
 		end
 
 		rule ko_effect_condition
@@ -321,17 +335,17 @@ module Card::Character
 
 		rule leader_condition
 			if_clause (your / opponent) leader
-			( 'types includes ' sub_type / 'has the ' of_type / 'is ' has_name )
+			( sub_type / of_type / has_name )
 			divider? space? dot? <LeaderCondition>
 		end
 
 		rule not_other_same_character_condition
-			and_clause? you_have 'no other ' has_name character ('in play')?
+			and_clause? you_have 'no other ' has_name character? ('in play')?
 			divider? space? dot?
 	 	end
 
 		rule battle_condition
-		  ( if_clause / 'When ') this character have_battle with_attribute? your_opponent? ( character / leader )
+		  ( if_clause / when_clause ) this character ( have_battle and_clause? / ko )+ with_attribute? your_opponent? ( character / leader )
 		  divider? space? dot?
 		end
 

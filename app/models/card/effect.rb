@@ -78,9 +78,6 @@ module Card::Effect
   end
 
   # Literals
-  class TraitLiteral < Literal
-  end
-
   class LifeLiteral < Literal
   end
 
@@ -112,6 +109,33 @@ module Card::Effect
   end
 
   class TraitNode < Literal
+  end
+
+  class TraitLiteral < Literal
+    TRAITS = {
+      '[Blocker]': :blocker,
+      '[Rush]': :rush,
+      '[Banish]': :banish,
+      '[Double Attack]': :double_attack
+    }.freeze
+
+    def parse
+      TRAITS.fetch(text_value.strip.to_sym, text_value.strip)
+    end
+  end
+
+  class ElementLiteral < Literal
+    ELEMENTS = {
+      '<Strike>': :strike,
+      '<Special>': :special,
+      '<Slash>': :slash,
+      '<Wisdom>': :wisdom,
+      '<Ranged>': :ranged
+    }.freeze
+
+    def parse
+      ELEMENTS.fetch(text_value.strip.to_sym, text_value.strip)
+    end
   end
 
   class ActionLiteral < Literal

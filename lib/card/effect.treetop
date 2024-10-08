@@ -68,11 +68,11 @@ class Card
 	  end
 
 	  rule of_type
-	  	'{' ( keyword space? )* '}' (space? 'type')? space? <TermLiteral>
+	  	('has the ')? '{' ( keyword space? )* '}' (space? 'type')? space? <TermLiteral>
 	  end
 
 	  rule sub_type
-	  	('of a type including ')? '"' ( keyword space? )* '"' space? <TermLiteral>
+	  	('of a type including ' / 'type includes ')* '"' ( keyword space? )* '"' space? <TermLiteral>
 	  end
 
 	  rule with_attribute
@@ -113,12 +113,16 @@ class Card
 		 	('You may' / 'you may') space? <TermLiteral>
 		end
 
+		rule when_clause
+			('When' / 'when') space? <TermLiteral>
+		end
+
 		rule set_clause
 			('Set' / 'set') space? <TermLiteral>
 		end
 
 		rule then_clause
-			('Then' / 'then') divider space? <TermLiteral>
+			('Then' / 'then') divider? space? <TermLiteral>
 		end
 
 		# Target
@@ -300,6 +304,18 @@ class Card
 			('during ')? this 'turn' space? <TermLiteral>
 		end
 
+		rule start_next_turn
+			('until the start of your next turn') space? <TermLiteral>
+		end
+
+		rule end_next_turn
+			('until the end of your next turn') space? <TermLiteral>
+		end
+
+		rule opponent_end_turn
+			('until the end of ') your_opponent space? <TermLiteral>
+		end
+
 		rule have_battle
 		  'battles' space? <TermLiteral>
 		end
@@ -346,7 +362,7 @@ class Card
 		end
 
 		rule divider
-			(':' / ';' / dot? 'Then' comma? / comma space? 'then' / comma / "/") space? <TermLiteral>
+			(':' / ';' / dot / comma / "/") space? <TermLiteral>
 		end
 
 		rule empty

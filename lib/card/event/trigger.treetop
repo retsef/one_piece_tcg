@@ -64,9 +64,10 @@ module Card::Event
 
 	  rule ko_sentence
 	  	ko ( up_to? integer ) opponent
-	  	rested?
+	  	rested? trait?
 	  	( character / stage )
-	  	cost integer or_less?
+	  	( cost integer or_less? / power integer or_less? / 'with ' integer power or_less? )?
+			space? dot?
 	  end
 
 		rule power_gain_sentence
