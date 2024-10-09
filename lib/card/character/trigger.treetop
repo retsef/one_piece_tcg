@@ -41,19 +41,19 @@ module Card::Character
 		end
 
 		rule life_investment
-			may_clause? 'add ' integer card 'from your Life area ' your_hand
+			may_clause? 'add ' integer card 'from your Life area ' hand
 			space?
 		end
 
 		rule trash_investment
 			may_clause? trash ( this / up_to? integer )
 			( card / character or_clause? / event or_clause? / stage or_clause? / of_type )+
-			your_hand?
+			hand?
 			divider? space?
 		end
 
 		rule return_card_investment
-			may_clause? return integer character your_hand
+			may_clause? return integer character hand
 			space?
 		end
 

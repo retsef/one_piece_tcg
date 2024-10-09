@@ -59,7 +59,7 @@ module Card::Event
 	    trash
 	    ( up_to? integer / this )
 	    ( card / event or_clause? / stage or_clause? / character )+
-	    your_hand? space? dot? # <TrashEffect>
+	    hand? space? dot? # <TrashEffect>
 	  end
 
 	  rule ko_sentence
@@ -91,7 +91,7 @@ module Card::Event
 			( this / up_to? integer / them / 'the rest ' )
 			( card / character or_clause? / event or_clause? / stage or_clause? )*
 			( cost integer or_less? )?
-			( your_hand / owner_hand / top_or_bottom_deck / top_deck / bottom_deck )+ any_order?
+			( hand / top_or_bottom_deck / top_deck / bottom_deck )+ any_order?
 			space? # <ReturnEffect>
 		end
 
@@ -99,7 +99,7 @@ module Card::Event
 			play ( this / up_to? integer )
 			( has_name / of_type card / of_type character / character or_clause? / event or_clause? / stage or_clause? )+
 			( cost integer or_less? )?
-			( your_hand / trash / top_or_bottom_deck / top_deck / bottom_deck / deck )+
+			( hand / trash / top_or_bottom_deck / top_deck / bottom_deck / deck )+
 			( divider shuffle_deck )?
 			space? # <PlayEffect>
 		end
@@ -137,12 +137,12 @@ module Card::Event
 		end
 
 		rule life_investment
-			may_clause? 'add ' integer card 'from your Life area ' your_hand
+			may_clause? 'add ' integer card 'from your Life area ' hand
 			space?
 		end
 
 		rule return_card_investment
-			may_clause? return integer character your_hand
+			may_clause? return integer character hand
 			space?
 		end
 	end

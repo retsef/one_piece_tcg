@@ -64,7 +64,7 @@ class Card
 	  end
 
 	  rule has_name
-	  	'[' ( keyword space? )* ']' space? <TermLiteral>
+	  	('is ')? '[' ( keyword space? )* ']' space? <TermLiteral>
 	  end
 
 	  rule of_type
@@ -243,7 +243,7 @@ class Card
 		end
 
 		rule card
-			('cards' / "card's" / "card") space? <TermLiteral>
+			('cards' / "card's" / 'card') space? <TermLiteral>
 		end
 
 		rule stage
@@ -279,16 +279,12 @@ class Card
 		end
 
 		# From
-		rule your_hand
-			('from' / 'to' / 'in')? space? your 'hand' space? <TermLiteral>
+		rule hand
+			('from the' / 'to the' / 'from' / 'to' / 'in')? space? (your / opponent / owner)? 'hand' space? <TermLiteral>
 		end
 
 		rule trash
 			('from' / 'to' / 'in')? space? (your / opponent)? 'trash' space? <TermLiteral>
-		end
-
-		rule owner_hand
-			('from the' / 'to the')? space? owner 'hand' space? <TermLiteral>
 		end
 
 		rule any_order

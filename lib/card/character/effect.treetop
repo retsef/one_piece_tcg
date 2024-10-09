@@ -8,7 +8,6 @@ module Card::Character
 			( permanent )
 			( trait trait_description )*
 			( effect )* none? empty? dot?
-			( trait trait_description )*
 			<ShallowParsedQuery>
 		end
 
@@ -38,6 +37,7 @@ module Card::Character
 				sentence /
 				space? then_clause /
 				and_clause space? /
+				trait_description /
 				divider
 			)+ <ShallowParsedQuery>
 		end
@@ -73,7 +73,7 @@ module Card::Character
 			look_up_sentence /
 			play_sentence /
 			reveal_sentence /
-			power_gain_sentence /
+			power_gain_sentence card_pile_condition? /
 			power_give_sentence /
 			cost_gain_sentence /
 			cost_reduction_sentence /
@@ -104,7 +104,7 @@ module Card::Character
 	    trash
 	    ( up_to? integer / this )
 	    ( card / event or_clause? / stage or_clause? / character )+
-	    your_hand? space? dot? <TrashEffect>
+	    hand? space? dot? <TrashEffect>
 	  end
 
 	  rule look_up_sentence
@@ -114,7 +114,7 @@ module Card::Character
 		rule power_gain_sentence
 			( this / up_to? integer your has_name / up_to? integer your colored? / up_to? integer opponent / your of_type or_clause? / of_type / up_to? integer your )+
 			( character / leader or_clause character / leader and_clause character / leader / card ) card? ( cost integer )?
-			( 'other than this ' card space?)?
+			( other_than this card space?)?
 			gain integer power
 			( 'for every ' integer your rested don card )?
 			( battle / turn / start_next_turn / end_next_turn / opponent_end_turn )? space? dot?
@@ -182,7 +182,7 @@ module Card::Character
 			place ( this / up_to? integer )
 			( card / character or_clause? / event or_clause? / stage or_clause? )+
 			( cost integer or_less? )?
-			( your_hand / owner_hand / top_or_bottom_deck / top_deck / bottom_deck )+
+			( hand / top_or_bottom_deck / top_deck / bottom_deck )+
 			any_order?
 			space? dot? <PlaceEffect>
 		end
@@ -200,7 +200,7 @@ module Card::Character
 			active?
 			( card / opponent? character or_clause? / event or_clause? / stage or_clause? )*
 			( cost integer or_less? )?
-			( your_hand / owner_hand / top_or_bottom_deck / top_deck / bottom_deck )+
+			( hand / top_or_bottom_deck / top_deck / bottom_deck )+
 			any_order?
 			space? dot? <ReturnEffect>
 		end
@@ -211,9 +211,9 @@ module Card::Character
 			( cost integer or_less? )?
 			( other_than has_name )?
 			( cost integer or_less? )?
-			( your_hand / trash / top_or_bottom_deck / top_deck / bottom_deck / deck )+
+			( hand / trash / top_or_bottom_deck / top_deck / bottom_deck / deck )+
 			rested?
-			( divider shuffle_deck )?
+			( divider then_clause shuffle_deck )?
 			space? dot? <PlayEffect>
 		end
 
@@ -221,9 +221,9 @@ module Card::Character
 			reveal ( this / up_to? integer )
 			( card / of_type character / of_type card? / character or_clause? / event or_clause? / stage or_clause? )+
 			( cost integer or_less? )?
-			( your_hand / top_or_bottom_deck / top_deck )?
+			( hand / top_or_bottom_deck / top_deck )?
 			( other_than has_name )?
-			( and_clause 'add it ' your_hand )+
+			( and_clause 'add it ' hand )+
 			( divider place_remaining_card )?
 		  space? dot? <RevealEffect>
 		end
@@ -232,16 +232,16 @@ module Card::Character
 			('Add ' / 'add ') up_to? integer
 			( rested / active )?
 			( of_type or_clause? )*
-			( card / character or_clause? / event or_clause? / stage or_clause? )+
+			( card / colored / character or_clause? / event or_clause? / stage or_clause? )+
 			( cost integer or_less? )?
 			( other_than has_name )?
 			( cost integer or_less? )?
-			( trash_pile your_hand )
+			( trash_pile hand )
 			space? dot?
 		end
 
 		rule add_life_sentence
-			('Add ' / 'add ') up_to? integer card 'from your Life area ' your_hand
+			('Add ' / 'add ') up_to? integer card 'from your Life area ' hand
 			space? dot?
 		end
 
@@ -276,7 +276,7 @@ module Card::Character
 		end
 
 		rule event_discount_sentence
-			give colored 'Events ' your_hand integer cost
+			give colored 'Events ' hand integer cost
 			space? dot?
 		end
 
@@ -287,7 +287,7 @@ module Card::Character
 		rule trash_investment
 			may_clause? trash ( this / up_to? integer )
 			( card / character or_clause? / event or_clause? / stage or_clause? / of_type )+
-			your_hand?
+			hand?
 			divider? space?
 		end
 
@@ -303,12 +303,12 @@ module Card::Character
 		end
 
 		rule life_investment
-			may_clause? 'add ' integer card 'from your Life area ' your_hand
+			may_clause? 'add ' integer card 'from your Life area ' hand
 			space?
 		end
 
 		rule return_card_investment
-			may_clause? return ( integer character / this character ) ( your_hand / owner_hand )
+			may_clause? return ( integer character / this character ) hand
 			space?
 		end
 
@@ -319,8 +319,14 @@ module Card::Character
 
 		rule card_hand_condition
 			if_clause (you_have / your_opponent_has)
-			integer (up_to / or_less)? card your_hand?
+			integer (up_to / or_less)? card hand?
 			divider? space? dot? <CardHandCondition>
+		end
+
+		rule card_pile_condition
+			'for every ' ( integer 'Events' / card ) space?
+			( trash / hand )
+			divider? space? dot?
 		end
 
 		rule opponent_action_condition

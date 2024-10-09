@@ -46,7 +46,7 @@ module Card::Stage
 	    may_clause? trash
 	    up_to? integer
 	    ( card / event or_clause? / stage or_clause? )+
-	    your_hand?
+	    hand?
 	    dot? space?
 	  end
 
@@ -59,7 +59,7 @@ module Card::Stage
 			( card / of_type character / of_type card? / character or_clause? / event or_clause? / stage or_clause? )+
 			( cost integer or_less? )?
 			( other_than has_name )?
-			( and_clause 'add it ' your_hand )+
+			( and_clause 'add it ' hand )+
 			( divider place_remaining_card )?
 		  space? dot? # <RevealEffect>
 		end
@@ -68,7 +68,7 @@ module Card::Stage
 			( return / place ) ( this / up_to? integer / them / 'the rest ' )
 			( card / opponent? character or_clause? / event or_clause? / stage or_clause? )*
 			( cost integer or_less? )?
-			( your_hand / owner_hand / top_or_bottom_deck / top_deck / bottom_deck )+ any_order?
+			( hand / top_or_bottom_deck / top_deck / bottom_deck )+ any_order?
 			space? dot? # <ReturnEffect>
 		end
 
@@ -104,7 +104,7 @@ module Card::Stage
 		rule trash_investment
 			may_clause? trash ( this / up_to? integer )
 			( card / character or_clause? / event or_clause? / stage or_clause? / of_type )+
-			your_hand?
+			hand?
 			space?
 		end
 

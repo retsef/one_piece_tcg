@@ -31,7 +31,7 @@ class Card
 	  end
 
 	  rule trash_sentence
-	    trash up_to? integer card your_hand space? <TrashEffect>
+	    trash up_to? integer card hand space? <TrashEffect>
 	  end
 
 	  rule rest_sentence
@@ -51,7 +51,7 @@ class Card
 		end
 
 		rule trash_condition
-			(if_clause / may_clause) trash up_to? integer card (your_hand / 'top or bottom of your ' life card) divider <TrashCondition>
+			(if_clause / may_clause) trash up_to? integer card (hand / 'top or bottom of your ' life card) divider <TrashCondition>
 		end
 	end
 end
