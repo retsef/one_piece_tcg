@@ -135,7 +135,7 @@ class Card
 
 		# Target
 		rule leader
-			('Your Leader' / 'your Leader' / "Your Leader's" / "your leader's" / 'Leaders' / 'leaders' / "leader's" / 'Leader' / 'leader') space? <LeaderLiteral>
+			your? ("Leader's" / "leader's" / 'Leaders' / 'leaders' / "leader's" / 'Leader' / 'leader') space? <LeaderLiteral>
 		end
 
 		rule you_have

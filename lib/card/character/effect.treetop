@@ -99,12 +99,14 @@ module Card::Character
 			restand_sentence /
 			add_card_sentence /
 			add_life_sentence /
+			gain_life_sentence /
 			apply_don_sentence /
 			add_don_sentence /
 			reactivate_don_sentence /
 			attack_active_sentence /
 			event_discount_sentence /
 			attack_only_sentence /
+			chose_option_sentence /
 			place_remaining_card /
 			shuffle_deck
 		end
@@ -273,7 +275,13 @@ module Card::Character
 
 		rule add_life_sentence
 			add_clause up_to? numbered card
-			'from ' ('the top or bottom of ' / 'the top of ')? your life_area hand
+			'from ' ('the top or bottom of ' / 'the top of ')? your ( life_area / life ) hand
+			space? dot?
+		end
+
+		rule gain_life_sentence
+			add_clause up_to? numbered card
+			top_deck 'to the top ' your life_area
 			space? dot?
 		end
 
@@ -317,6 +325,11 @@ module Card::Character
 		rule attack_only_sentence
 			your_opponent 'cannot attack any ' card other_than 'the ' character has_name
 			space? dot?
+		end
+
+		rule chose_option_sentence
+			'Choose one' divider
+			('•' space? sentence dot?)+
 		end
 
 		rule activation_cost
@@ -368,7 +381,7 @@ module Card::Character
 
 		rule life_condition
 			if_clause (you_have / your_opponent_has) numbered (up_to / or_less)? space? life
-			divider space? dot? <LifeCondition>
+			divider? space? dot? <LifeCondition>
 		end
 
 		rule card_hand_condition
