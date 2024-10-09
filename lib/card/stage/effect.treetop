@@ -39,25 +39,25 @@ module Card::Stage
 		end
 
 	  rule draw_sentence
-	    draw up_to? integer card space?
+	    draw up_to? numbered card space?
 	  end
 
 	  rule trash_sentence
 	    may_clause? trash
-	    up_to? integer
+	    up_to? numbered
 	    ( card / event or_clause? / stage or_clause? )+
 	    hand?
 	    dot? space?
 	  end
 
 	  rule look_up_sentence
-	  	('Look at' / 'look at') space? up_to? integer card top_deck divider? space? dot?
+	  	('Look at' / 'look at') space? up_to? numbered card top_deck divider? space? dot?
 	  end
 
 		rule reveal_sentence
-			reveal ( this / up_to? integer )
+			reveal ( this / up_to? numbered )
 			( card / of_type character / of_type card? / character or_clause? / event or_clause? / stage or_clause? )+
-			( cost integer or_less? )?
+			( cost numbered or_less? )?
 			( other_than has_name )?
 			( and_clause 'add it ' hand )+
 			( divider place_remaining_card )?
@@ -65,22 +65,22 @@ module Card::Stage
 		end
 
 		rule return_sentence
-			( return / place ) ( this / up_to? integer / them / 'the rest ' )
+			( return / place ) ( this / up_to? numbered / them / 'the rest ' )
 			( card / opponent? character or_clause? / event or_clause? / stage or_clause? )*
-			( cost integer or_less? )?
+			( cost numbered or_less? )?
 			( hand / top_or_bottom_deck / top_deck / bottom_deck )+ any_order?
 			space? dot? # <ReturnEffect>
 		end
 
 		rule rest_opponent_sentence
-			rest ( up_to? integer / all) ( opponent / your ) character space?
+			rest ( up_to? numbered / all) ( opponent / your ) character space?
 		end
 
 		rule power_gain_sentence
-			( up_to? integer of_type or_clause? / up_to? integer opponent / up_to? integer / of_type )+
+			( up_to? numbered of_type or_clause? / up_to? numbered opponent / up_to? numbered / of_type )+
 			( character / leader or_clause character / leader and_clause character / leader / card ) card?
 			( 'on your field ')?
-			gain integer power
+			gain numbered power
 			( battle / turn )?
 			dot? space?
 		end
@@ -96,21 +96,22 @@ module Card::Stage
 		end
 
 		rule rest_card_investment
-			may_clause? rest ( this / up_to? integer )
+			may_clause? rest ( this / up_to? numbered )
 			( card / stage )
 			space?
 		end
 
 		rule trash_investment
-			may_clause? trash ( this / up_to? integer )
+			may_clause? trash ( this / up_to? numbered )
 			( card / character or_clause? / event or_clause? / stage or_clause? / of_type )+
 			hand?
 			space?
 		end
 
 		rule add_don_sentence
-			('Add ' / 'add ') up_to? integer ( rested / active )? don card
-			'from your ' don 'deck' space? ( 'as active' / 'and rest it')
+			add_clause up_to? numbered ( rested / active )? don card
+			'from ' your don_deck space?
+			( active / rested )
 			dot? space?
 		end
 

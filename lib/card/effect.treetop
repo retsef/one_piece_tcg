@@ -8,7 +8,7 @@ class Card
 			'[Your Turn]' / "[Opponent's Turn]" / '[End of Your Turn]' /
 			"[On Your Opponent's Attack]" / '[When Attacking]' /
 			'[On Play]' / '[On Block]' / '[On K.O.]' /
-			'[Counter]' / '[Trigger]') space? <ActionLiteral>
+			'[Counter]') space? <ActionLiteral>
 		end
 
 		rule once_per_turn
@@ -40,7 +40,7 @@ class Card
 		end
 
 		rule don_cost
-			'[' ( don 'x' integer ) ']' space? <DonCostCondition>
+			'[' ( don 'x' numbered ) ']' space? <DonCostCondition>
 		end
 
 		rule don_investment
@@ -48,7 +48,7 @@ class Card
 		end
 
 		rule don_sacrifice
-			don integer space? don_cost_description? space? <DonSacrificeCondition>
+			don numbered space? don_cost_description? space? <DonSacrificeCondition>
 		end
 
 		rule don_cost_description
@@ -118,7 +118,11 @@ class Card
 		end
 
 		rule set_clause
-			('Set' / 'set') space? <TermLiteral>
+			('Set' / 'set') (' it')? space? <TermLiteral>
+		end
+
+		rule add_clause
+			('Add' / 'add') (' it')? space? <TermLiteral>
 		end
 
 		rule then_clause
@@ -215,7 +219,7 @@ class Card
 		end
 
 		rule your_deck
-			'from ' your 'deck' space? <TermLiteral>
+			your 'deck' space? <TermLiteral>
 		end
 
 		rule top_deck
@@ -240,6 +244,10 @@ class Card
 
 		rule deck
 			('at' / 'from' / 'to')? space? ( your / 'the ') 'deck' space? <TermLiteral>
+		end
+
+		rule don_deck
+			('at' / 'from' / 'to')? space? ( your / 'the ') don 'deck' space? <TermLiteral>
 		end
 
 		rule shuffle_deck
@@ -279,11 +287,11 @@ class Card
 		end
 
 		rule rested
-			('rested' / 'Rested') space? <TermLiteral>
+			and_clause? ('rested' / 'Rested' / 'rest it' / 'rest them') space? <TermLiteral>
 		end
 
 		rule active
-			('active' / 'Active') space? <TermLiteral>
+			('as ')? ('active' / 'Active') space? <TermLiteral>
 		end
 
 		# From
@@ -308,16 +316,16 @@ class Card
 			('during ')? this 'turn' space? <TermLiteral>
 		end
 
+		rule end_turn
+			('at' / 'until') space 'the end of ' ( this / your ) 'turn' space? <TermLiteral>
+		end
+
 		rule start_next_turn
-			('until the start of your next turn') space? <TermLiteral>
+			('until the start of ') ( your / your_opponent ) ('next turn') space? <TermLiteral>
 		end
 
 		rule end_next_turn
-			('until the end of your next turn') space? <TermLiteral>
-		end
-
-		rule opponent_end_turn
-			('until the end of ') your_opponent space? <TermLiteral>
+			('until the end of ') ( your / your_opponent ) ('next turn') space? <TermLiteral>
 		end
 
 		rule have_battle
@@ -337,6 +345,10 @@ class Card
 			('All of' / 'all of' / 'All' / 'all') space? <AllLiteral>
 		end
 
+		rule every
+			('for ')? ('Every' / 'every') space? <EveryLiteral>
+		end
+
 		rule or_less
 			( 'or less' ) space? <OrLessLiteral>
 		end
@@ -349,7 +361,7 @@ class Card
 			([a-zA-Z.]+ space?)+ <TermLiteral>
 		end
 
-		rule integer
+		rule numbered
 			('+' / '−')? [0-9]+ space? <IntegerLiteral>
 		end
 

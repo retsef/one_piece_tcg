@@ -41,24 +41,24 @@ module Card::Character
 		end
 
 		rule life_investment
-			may_clause? 'add ' integer card 'from your Life area ' hand
+			may_clause? 'add ' numbered card 'from your Life area ' hand
 			space?
 		end
 
 		rule trash_investment
-			may_clause? trash ( this / up_to? integer )
+			may_clause? trash ( this / up_to? numbered )
 			( card / character or_clause? / event or_clause? / stage or_clause? / of_type )+
 			hand?
 			divider? space?
 		end
 
 		rule return_card_investment
-			may_clause? return integer character hand
+			may_clause? return numbered character hand
 			space?
 		end
 
 		rule life_condition
-			if_clause (you_have / your_opponent_has) integer (up_to / or_less)? space? life
+			if_clause (you_have / your_opponent_has) numbered (up_to / or_less)? space? life
 			divider space? dot? <LifeCondition>
 		end
 	end

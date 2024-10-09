@@ -9,13 +9,13 @@ class Card
 	  end
 
 	  rule ko_sentence
-	    ko up_to? integer opponent rested character
-	    ( cost integer or_less? )?
+	    ko up_to? numbered opponent rested character
+	    ( cost numbered or_less? )?
 		 	space? <KOEffect>
 	  end
 
 	  rule play_sentence
-	    play ('this ' card / up_to? integer) space? <PlayEffect>
+	    play ('this ' card / up_to? numbered) space? <PlayEffect>
 	  end
 
 	  rule search_sentence
@@ -23,27 +23,27 @@ class Card
 		end
 
 	  rule draw_sentence
-	    draw up_to? integer card space? <DrawEffect>
+	    draw up_to? numbered card space? <DrawEffect>
 	  end
 
 	  rule give_sentence
-	  	give up_to? integer space? <GiveEffect>
+	  	give up_to? numbered space? <GiveEffect>
 	  end
 
 	  rule trash_sentence
-	    trash up_to? integer card hand space? <TrashEffect>
+	    trash up_to? numbered card hand space? <TrashEffect>
 	  end
 
 	  rule rest_sentence
-	    rest up_to? integer card space? <RestEffect>
+	    rest up_to? numbered card space? <RestEffect>
 	  end
 
 		rule activation_cost
-		  don integer don_cost_description? divider <DonCostCondition>
+		  don numbered don_cost_description? divider <DonCostCondition>
 		end
 
 		rule life_condition
-			if_clause (you_have / your_opponent_has) integer (up_to / or_less)? space? life divider space? <LifeCondition>
+			if_clause (you_have / your_opponent_has) numbered (up_to / or_less)? space? life divider space? <LifeCondition>
 		end
 
 		rule leader_condition
@@ -51,7 +51,7 @@ class Card
 		end
 
 		rule trash_condition
-			(if_clause / may_clause) trash up_to? integer card (hand / 'top or bottom of your ' life card) divider <TrashCondition>
+			(if_clause / may_clause) trash up_to? numbered card (hand / 'top or bottom of your ' life card) divider <TrashCondition>
 		end
 	end
 end

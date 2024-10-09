@@ -51,98 +51,99 @@ module Card::Event
 		end
 
 	  rule draw_sentence
-	    draw up_to? integer card
+	    draw up_to? numbered card
 	    space? dot? # <DrawEffect>
 	  end
 
 	  rule trash_sentence
 	    trash
-	    ( up_to? integer / this )
+	    ( up_to? numbered / this )
 	    ( card / event or_clause? / stage or_clause? / character )+
 	    hand? space? dot? # <TrashEffect>
 	  end
 
 	  rule ko_sentence
-	  	ko ( up_to? integer ) opponent
+	  	ko ( up_to? numbered ) opponent
 	  	rested? trait?
 	  	( character / stage )
-	  	( cost integer or_less? / power integer or_less? / 'with ' integer power or_less? )?
+	  	( cost numbered or_less? / power numbered or_less? / 'with ' numbered power or_less? )?
 			space? dot?
 	  end
 
 		rule power_gain_sentence
-			( this / up_to? integer your colored? / up_to? integer opponent / up_to? integer / your of_type or_clause? / of_type )+
-			( character / leader or_clause character / leader and_clause character / leader / card ) card? ( cost integer )?
-			( 'other than this ' card space?)?
-			gain integer power
-			( 'for every ' integer your rested don card )?
+			( this / up_to? numbered your colored? / up_to? numbered opponent / up_to? numbered / your of_type or_clause? / of_type )+
+			( character / leader or_clause character / leader and_clause character / leader / card ) card? ( cost numbered )?
+			( other_than this card space?)?
+			gain numbered power
+			( every numbered your rested don card )?
 			( battle / turn )?
 		end
 
 		rule power_give_sentence
 			give
-			( this / up_to? integer opponent / up_to? integer your colored? / up_to? integer )
-			( character / leader or_clause character / leader ) ( cost integer )?
-			integer power ( battle / turn )?
+			( this / up_to? numbered opponent / up_to? numbered your colored? / up_to? numbered )
+			( character / leader or_clause character / leader ) ( cost numbered )?
+			numbered power ( battle / turn )?
 		end
 
 		rule return_sentence
 			( return / place )
-			( this / up_to? integer / them / 'the rest ' )
+			( this / up_to? numbered / them / 'the rest ' )
 			( card / character or_clause? / event or_clause? / stage or_clause? )*
-			( cost integer or_less? )?
+			( cost numbered or_less? )?
 			( hand / top_or_bottom_deck / top_deck / bottom_deck )+ any_order?
 			space? # <ReturnEffect>
 		end
 
 		rule play_sentence
-			play ( this / up_to? integer )
+			play ( this / up_to? numbered )
 			( has_name / of_type card / of_type character / character or_clause? / event or_clause? / stage or_clause? )+
-			( cost integer or_less? )?
+			( cost numbered or_less? )?
 			( hand / trash / top_or_bottom_deck / top_deck / bottom_deck / deck )+
 			( divider shuffle_deck )?
 			space? # <PlayEffect>
 		end
 
 		rule reactivate_don_sentence
-			set_clause up_to? integer
+			set_clause up_to? numbered
 			your don card ( 'as ' active )+
 			space?
 		end
 
 		rule add_don_sentence
-			('Add ' / 'add ') up_to? integer ( rested / active )? don card
-			'from your ' don 'deck' space?
-			( 'as active' / 'and rest it' / 'and rest them' / and_clause 'set it as active' / and_clause 'set it as rested' )
+			add_clause up_to? numbered ( rested / active )? don card
+			'from ' your don_deck space?
+			and_clause? set_clause?
+			( active / rested )
 			space? dot?
 		end
 
 		rule rest_opponent_sentence
-			rest ( up_to? integer / all)
+			rest ( up_to? numbered / all)
 			( opponent / your )
 			( character / don card )
-			( cost integer or_less? )?
+			( cost numbered or_less? )?
 			space? dot? # <RestEffect>
 		end
 
 		rule power_investment
-			may_clause? give ( 'your ' integer 'active Leader ' ) integer power turn
+			may_clause? give ( 'your ' numbered 'active Leader ' ) numbered power turn
 			divider? space?
 		end
 
 		rule rest_card_investment
-			may_clause? rest ( this / up_to? integer )
+			may_clause? rest ( this / up_to? numbered )
 			( card / character or_clause? / event or_clause? / stage or_clause? )+
 			space?
 		end
 
 		rule life_investment
-			may_clause? 'add ' integer card 'from your Life area ' hand
+			may_clause? 'add ' numbered card 'from your Life area ' hand
 			space?
 		end
 
 		rule return_card_investment
-			may_clause? return integer character hand
+			may_clause? return numbered character hand
 			space?
 		end
 	end

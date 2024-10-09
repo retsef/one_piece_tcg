@@ -54,26 +54,26 @@ module Card::Leader
 		end
 
 		rule draw_sentence
-			draw up_to? integer card
+			draw up_to? numbered card
 			space? # <DrawEffect>
 		end
 
 		rule trash_sentence
-			trash ( up_to? integer / this ) ( card / event or_clause? / stage or_clause? / character )+ hand?
+			trash ( up_to? numbered / this ) ( card / event or_clause? / stage or_clause? / character )+ hand?
 			space? # <TrashEffect>
 		end
 
 		rule power_gain_sentence
-			( this / up_to? integer your colored? / up_to? integer opponent / up_to? integer )
-			( character / leader / leader or_clause character) ( cost integer )?
-			gain integer power ( 'for every ' integer your rested don card )? ( battle / turn )?
+			( this / up_to? numbered your colored? / up_to? numbered opponent / up_to? numbered )
+			( character / leader / leader or_clause character) ( cost numbered )?
+			gain numbered power ( every numbered your rested don card )? ( battle / turn )?
 		end
 
 		rule power_give_sentence
 			give
-			( this / up_to? integer opponent / up_to? integer your colored? / up_to? integer )
-			( character / leader or_clause up_to? integer character / leader ) ( cost integer )?
-			integer power ( battle / turn )?
+			( this / up_to? numbered opponent / up_to? numbered your colored? / up_to? numbered )
+			( character / leader or_clause up_to? numbered character / leader ) ( cost numbered )?
+			numbered power ( battle / turn )?
 		end
 
 		rule prevent_ko_sentence
@@ -82,15 +82,15 @@ module Card::Leader
 		end
 
 		rule rest_opponent_sentence
-			rest ( up_to? integer / all) ( opponent / your ) character
+			rest ( up_to? numbered / all) ( opponent / your ) character
 			space? dot? # <RestEffect>
 		end
 
 		rule return_sentence
-			( return / place ) ( this / up_to? integer / them / 'the rest ' )
+			( return / place ) ( this / up_to? numbered / them / 'the rest ' )
 			active?
 			( card / opponent? character or_clause? / event or_clause? / stage or_clause? )*
-			( cost integer or_less? )?
+			( cost numbered or_less? )?
 			( hand / top_or_bottom_deck / top_deck / bottom_deck )+
 			any_order?
 			space? dot? # <ReturnEffect>
@@ -101,13 +101,15 @@ module Card::Leader
 		end
 
 		rule apply_don_sentence
-			give ( this leader or_clause? / up_to? integer your character )+
-			up_to? integer ( rested don card )
+			give ( this leader or_clause? / up_to? numbered your character )+
+			up_to? numbered ( rested don card )
 			space? dot?
 		end
 
 		rule add_don_sentence
-			'Add ' up_to? integer ( rested / active ) don card 'from your ' don 'deck' ( 'as active' / 'and rest it')
+			add_clause up_to? numbered ( rested / active )
+			don card 'from ' your don_deck
+			( active / rested )
 		end
 
 		rule activation_cost
@@ -115,12 +117,12 @@ module Card::Leader
 		end
 
 		rule trash_investment
-			may_clause? trash ( this / up_to? integer ) ( card / character or_clause? / event or_clause? / stage or_clause? )+ hand?
+			may_clause? trash ( this / up_to? numbered ) ( card / character or_clause? / event or_clause? / stage or_clause? )+ hand?
 			space?
 		end
 
 		rule power_investment
-			may_clause? give ( 'your ' integer 'active Leader' space? ) integer power turn
+			may_clause? give ( 'your ' numbered 'active Leader' space? ) numbered power turn
 		end
 	end
 end
