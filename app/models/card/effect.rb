@@ -102,6 +102,9 @@ module Card::Effect
   class AllLiteral < Literal
   end
 
+  class EveryLiteral < Literal
+  end
+
   class OrLessLiteral < Literal
   end
 

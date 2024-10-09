@@ -110,7 +110,7 @@ module Card::Stage
 
 		rule add_don_sentence
 			add_clause up_to? numbered ( rested / active )? don card
-			'from ' your don_deck space?
+			don_deck space?
 			( active / rested )
 			dot? space?
 		end

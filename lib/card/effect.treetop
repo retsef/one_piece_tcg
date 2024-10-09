@@ -247,7 +247,7 @@ class Card
 		end
 
 		rule don_deck
-			('at' / 'from' / 'to')? space? ( your / 'the ') don 'deck' space? <TermLiteral>
+			('from' / 'to')? space? ( your / 'the ') don 'deck' space? <TermLiteral>
 		end
 
 		rule shuffle_deck

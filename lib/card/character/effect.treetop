@@ -291,8 +291,8 @@ module Card::Character
 		end
 
 		rule add_don_sentence
-			add_clause up_to? numbered ( rested / active )? don card
-			'from ' your don_deck space?
+			add_clause up_to? numbered ( rested / active )?
+			don card don_deck space?
 			and_clause? set_clause?
 			( active / rested )
 			space? dot?

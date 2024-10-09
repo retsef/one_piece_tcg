@@ -96,14 +96,14 @@ module Card::Event
 		end
 
 		rule add_life_sentence
-			('Add ' / 'add ') up_to? numbered card
+			add_clause up_to? numbered card
 			'from ' ('the top or bottom of ')? your life_area hand
 			space? dot?
 		end
 
 		rule add_don_sentence
 			add_clause up_to? numbered ( rested / active )? don card
-			'from ' your don_deck space?
+			don_deck space?
 			and_clause? set_clause?
 			( active / rested )
 			dot? space?
@@ -180,7 +180,7 @@ module Card::Event
 			your_opponent 'cannot activate ' ('a' space)? trait
 			character? ('that has ' / 'with ')?
 			numbered? ( or_more / or_less )? power?
-			battle
+			( battle / turn )?
 			space? dot?
 		end
 
@@ -205,8 +205,8 @@ module Card::Event
 
 		rule add_don_sentence
 			add_clause up_to? numbered ( rested / active )? don card
-			'from ' your don_deck space?
-			( and_clause set_clause )?
+			don_deck space?
+			and_clause? set_clause?
 			( active / rested )
 			space? dot?
 		end
@@ -214,7 +214,7 @@ module Card::Event
 		rule reactivate_don_sentence
 			set_clause up_to? numbered
 			your ( rested? don card )
-			'as ' active
+			active
 			space? dot?
 		end
 

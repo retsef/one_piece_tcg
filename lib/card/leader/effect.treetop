@@ -108,7 +108,7 @@ module Card::Leader
 
 		rule add_don_sentence
 			add_clause up_to? numbered ( rested / active )
-			don card 'from ' your don_deck
+			don card don_deck
 			( active / rested )
 		end
 
