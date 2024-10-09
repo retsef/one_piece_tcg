@@ -51,7 +51,8 @@ module Card::Character
 			rest_card_investment /
 			life_investment /
 			return_card_investment /
-			card_bottom_investment
+			card_bottom_investment /
+			select_card_investment
 		end
 
 		rule condition
@@ -65,7 +66,8 @@ module Card::Character
 			don_in_play_condition /
 			character_count_condition /
 			character_in_play_condition /
-			character_cost_condition
+			character_cost_condition /
+			power_condition
 		end
 
 		rule trail_condition
@@ -87,6 +89,7 @@ module Card::Character
 			cost_reduction_sentence /
 			trait_gain_sentence /
 			cannot_block_sentence /
+			cannot_attack_sentence /
 			prevent_ko_sentence /
 			ko_immune_sentence /
 			ko_sentence /
@@ -124,9 +127,9 @@ module Card::Character
 	  end
 
 		rule power_gain_sentence
-			( this / up_to? numbered your has_name / up_to? numbered your colored? / up_to? numbered opponent / your of_type or_clause? / of_type / up_to? numbered your )+
+			( this / up_to? numbered your has_name / up_to? numbered your colored? / up_to? numbered opponent / your of_type or_clause? / of_type / up_to? numbered your / all your )+
 			( character / leader or_clause character / leader and_clause character / leader / card ) card? ( cost numbered )?
-			( other_than this card space?)?
+			( other_than this card space? / of_type / sub_type )?
 			gain numbered power
 			( every numbered your rested don card )?
 			( battle / turn / start_next_turn / end_next_turn / end_turn )? space? dot?
@@ -165,6 +168,13 @@ module Card::Character
 			character? ('that has ' / 'with ')?
 			numbered? ( or_more / or_less )? power?
 			battle
+			space? dot?
+	  end
+
+	  rule cannot_attack_sentence
+	  	( this / your_opponent / 'The selected ')
+	  	( character or_clause? / leader )+
+	  	'cannot attack ' turn
 			space? dot?
 	  end
 
@@ -229,11 +239,12 @@ module Card::Character
 
 		rule play_sentence
 			play ( this / up_to? numbered )
-			( has_name card? / of_type character / colored of_type? character / character or_clause? / event or_clause? / stage or_clause? )+
+			( has_name card? / of_type character / colored of_type? character / character or_clause? / event or_clause? / stage or_clause? / of_type or_clause? )+
 			( cost numbered or_less? )?
 			( other_than has_name )?
 			( cost numbered or_less? )?
-			( hand / trash / top_or_bottom_deck / top_deck / bottom_deck / deck )+
+			( 'with ' numbered 'to ' numbered power)?
+			( hand or_clause? / trash / top_or_bottom_deck / top_deck / bottom_deck / deck )+
 			rested?
 			space? dot? <PlayEffect>
 		end
@@ -261,13 +272,13 @@ module Card::Character
 		end
 
 		rule add_life_sentence
-			('Add ' / 'add ') up_to? numbered card
-			'from ' ('the top or bottom of ')? your life_area hand
+			add_clause up_to? numbered card
+			'from ' ('the top or bottom of ' / 'the top of ')? your life_area hand
 			space? dot?
 		end
 
 		rule restand_sentence
-			('Set ' / 'set ') ( this / up_to? numbered )
+			set_clause ( this / up_to? numbered )
 			( your of_type or_clause? / of_type )*
 			rested?
 			( character / leader / card )
@@ -314,7 +325,8 @@ module Card::Character
 
 		rule trash_investment
 			may_clause? trash ( this / up_to? numbered )
-			( card / character or_clause? / event or_clause? / stage or_clause? / of_type )+
+			( card / your? character or_clause? / event or_clause? / stage or_clause? / of_type / sub_type )+
+			( cost numbered or_less? / numbered power or_less? or_more? )?
 			hand?
 			divider? space?
 		end
@@ -326,7 +338,7 @@ module Card::Character
 
 		rule rest_card_investment
 			may_clause? rest ( this / up_to? numbered )
-			( card / character or_clause? / event or_clause? / stage or_clause? )+
+			( card / character or_clause? / event or_clause? / stage or_clause? / your has_name )+
 			space?
 		end
 
@@ -340,9 +352,16 @@ module Card::Character
 			space?
 		end
 
+		rule select_card_investment
+			'Select ' up_to numbered ( your / opponent )*
+			( of_type? leader or_clause? / of_type? character )+
+			divider? dot? space?
+		end
+
 		rule card_bottom_investment
 			may_clause? place numbered
 			( card hand / character / stage )
+			( cost numbered )?
 			bottom_deck
 			space?
 		end
@@ -375,7 +394,7 @@ module Card::Character
 		end
 
 		rule leader_condition
-			if_clause (your / opponent) leader
+			if_clause? (your / opponent) leader
 			( sub_type / of_type / has_name )
 			divider? space? dot? <LeaderCondition>
 		end
@@ -412,6 +431,12 @@ module Card::Character
 			if_clause ( you_have / 'there is a ' )
 			( numbered character cost numbered / character cost numbered)
 			divider space? dot?
+		end
+
+		rule power_condition
+			if_clause ( this / you_have / your_opponent_has )
+			( character )
+			('has ')? numbered power or_more?
 		end
 
 		rule don_in_play_condition

@@ -12,8 +12,9 @@ module Card::Event
 		rule effect
 			( activation_cost )?
 			(
-				action once_per_turn? divider? /
-				once_per_turn
+				action /
+				once_per_turn /
+				divider
 			)*
 			( investment / and_clause / divider )*
 			( leader_condition )*
@@ -90,7 +91,7 @@ module Card::Event
 
 		rule trash_investment
 			may_clause? trash ( this / up_to? numbered )
-			( card / character or_clause? / event or_clause? / stage or_clause? / of_type )+
+			( card with_trigger? / character or_clause? / event or_clause? / stage or_clause? / of_type )+
 			hand?
 			space?
 		end
@@ -128,14 +129,14 @@ module Card::Event
 	  end
 
 		rule cost_reduction_sentence
-			give ( up_to? numbered )
+			give ( up_to? numbered / all )
 			opponent character
 			numbered cost turn space? dot?
 		end
 
 		rule cost_gain_sentence
-			up_to? numbered
-			( character )
+			( up_to? numbered / all )
+			( character of_type? )
 			gain numbered cost turn? space? dot?
 		end
 
@@ -233,6 +234,7 @@ module Card::Event
 			( has_name / of_type character / character or_clause? / event or_clause? / stage or_clause? )+
 			( cost numbered or_less? )?
 			( hand / trash / top_or_bottom_deck / top_deck / bottom_deck / deck )+
+			rested?
 			( divider then_clause shuffle_deck )?
 			space? dot? # <PlayEffect>
 		end

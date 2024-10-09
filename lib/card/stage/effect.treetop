@@ -15,27 +15,40 @@ module Card::Stage
 				action once_per_turn? divider? /
 				once_per_turn
 			)*
-			( investment divider? )*
+			( investment / and_clause / divider )*
 			( leader_condition )*
 			(
-				sentence /
-				space? then_clause
+			  sentence trail_condition? /
+			  space? then_clause /
+				and_clause space? /
+			  divider
 			)+ <ShallowParsedQuery>
 		end
 
 		rule investment
 			don_investment /
-			rest_card_investment and_clause? trash_investment? /
-			trash_investment and_clause? rest_card_investment?
+			rest_card_investment /
+			trash_investment
+		end
+
+		rule trail_condition
+			card_hand_condition /
+			life_condition
 		end
 
 		rule sentence
-			draw_sentence and_clause? trash_sentence? divider? trash_sentence? /
-			look_up_sentence and_clause? return_sentence? /
+			draw_sentence /
+			trash_sentence /
+			look_up_sentence /
 			reveal_sentence /
+			play_sentence /
+			return_sentence /
 			rest_opponent_sentence /
 			add_don_sentence /
-			power_gain_sentence
+			power_gain_sentence /
+			power_give_sentence /
+			cost_gain_sentence /
+			ko_sentence
 		end
 
 	  rule draw_sentence
@@ -43,11 +56,11 @@ module Card::Stage
 	  end
 
 	  rule trash_sentence
-	    may_clause? trash
-	    up_to? numbered
-	    ( card / event or_clause? / stage or_clause? )+
-	    hand?
-	    dot? space?
+	  	( may_clause / your_opponent )? trash
+			up_to? numbered
+	    ( card / event or_clause? / stage or_clause? / character )+
+	    ( hand / top_deck )?
+			space? dot?
 	  end
 
 	  rule look_up_sentence
@@ -62,6 +75,16 @@ module Card::Stage
 			( and_clause 'add it ' hand )+
 			( divider place_remaining_card )?
 		  space? dot? # <RevealEffect>
+		end
+
+		rule play_sentence
+			play ( this / up_to? numbered )
+			( has_name / of_type character / character or_clause? / event or_clause? / stage or_clause? )+
+			( cost numbered or_less? )?
+			( hand / trash / top_or_bottom_deck / top_deck / bottom_deck / deck )+
+			rested?
+			( divider then_clause shuffle_deck )?
+			space? dot? # <PlayEffect>
 		end
 
 		rule return_sentence
@@ -85,19 +108,58 @@ module Card::Stage
 			dot? space?
 		end
 
+		rule power_give_sentence
+			give
+			( this / up_to? numbered opponent / up_to? numbered your colored? / up_to? numbered )
+			( character / leader or_clause character / leader ) ( cost numbered )?
+			numbered power ( battle / turn )?
+			space? dot?
+		end
+
+		rule cost_gain_sentence
+			( up_to? numbered / all )
+			( character of_type? )
+			gain numbered cost turn? space? dot?
+		end
+
+	  rule ko_sentence
+	  	ko (
+				( up_to? numbered ) ( opponent / your_opponent )
+				( rested / active )?
+				( character / stage )
+				( cost numbered or_less? / power numbered or_less? / 'with ' numbered power or_less? )?
+	  		/ and_clause
+	  	)
+	  	space? dot?
+	  end
+
 		rule activation_cost
 		  don_cost space?
 		end
 
 		rule leader_condition
 			if_clause your leader
-			( 'has the ' of_type / 'is ' has_name )
+			( of_type / has_name )
 			divider space? # <LeaderCondition>
 		end
 
+		rule card_hand_condition
+			if_clause (you_have / your_opponent_has)
+			numbered (up_to / or_less)? card hand?
+			divider? space? dot? # <CardHandCondition>
+		end
+
+		rule life_condition
+			if_clause (you_have / your_opponent_has) numbered (up_to / or_less)? space? life
+			divider space? dot? # <LifeCondition>
+		end
+
 		rule rest_card_investment
-			may_clause? rest ( this / up_to? numbered )
-			( card / stage )
+			may_clause? rest
+			(
+				( this / up_to? numbered )
+				( card / stage / your has_name card )+
+			)*
 			space?
 		end
 

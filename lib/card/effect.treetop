@@ -34,6 +34,10 @@ class Card
 			) ')' space?
 		end
 
+		rule with_trigger
+			'with a [Trigger]' space?
+		end
+
 		# Don
 		rule don
 			'DON!!' space? <DonLiteral>
@@ -68,11 +72,11 @@ class Card
 	  end
 
 	  rule of_type
-	  	('has the ')? '{' ( keyword space? )* '}' (space? 'type')? space? <TermLiteral>
+	  	('has the ')? '{' ( keyword space? / numbered space? )* '}' (space? 'type')? space? <TermLiteral>
 	  end
 
 	  rule sub_type
-	  	('of a type including ' / 'type includes ')* '"' ( keyword space? )* '"' space? <TermLiteral>
+	  	('of a type including ' / 'with a type including ' / 'type includes ')* '"' ( keyword space? )* '"' space? <TermLiteral>
 	  end
 
 	  rule with_attribute
@@ -89,7 +93,7 @@ class Card
 	  end
 
 	  rule is_specific
-	    'is ' has_name space? <TermLiteral>
+	    has_name space? <TermLiteral>
 	  end
 
 		# Clauses
@@ -296,11 +300,15 @@ class Card
 
 		# From
 		rule hand
-			('from the' / 'to the' / 'from' / 'to' / 'in')? space? (your / opponent / owner)? 'hand' space? <TermLiteral>
+			('from the' / 'to the' / 'from' / 'to' / 'in')? space?
+			(your / opponent / owner / 'their ')? 'hand'
+			space? <TermLiteral>
 		end
 
 		rule trash
-			('from' / 'to' / 'in')? space? (your / opponent)? 'trash' space? <TermLiteral>
+			('from' / 'to' / 'in')? space?
+			(your / opponent / 'their ')? 'trash'
+			space? <TermLiteral>
 		end
 
 		rule any_order
