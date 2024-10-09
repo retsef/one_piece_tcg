@@ -64,7 +64,7 @@ class Card
 	  end
 
 	  rule has_name
-	  	('is ')? '[' ( keyword space? )* ']' space? <TermLiteral>
+	  	('is ')? '[' ( keyword space? / '"' )* ']' space? <TermLiteral>
 	  end
 
 	  rule of_type
@@ -187,7 +187,7 @@ class Card
 		end
 
 		rule trash
-			('Trash' / 'trash') space? <TermLiteral>
+			('Trashes' / 'trashes' / 'Trash' / 'trash') space? <TermLiteral>
 		end
 
 		rule give
@@ -214,6 +214,10 @@ class Card
 			'Activate this ' card space? <TermLiteral>
 		end
 
+		rule your_deck
+			'from ' your 'deck' space? <TermLiteral>
+		end
+
 		rule top_deck
 			('at' / 'from' / 'to')? space? 'the top of ' ('the ' owner / your) 'deck' space? <TermLiteral>
 		end
@@ -224,6 +228,10 @@ class Card
 
 		rule top_or_bottom_deck
 			('at' / 'from' / 'to')? space? 'the top or bottom' space? 'of the deck' space? <TermLiteral>
+		end
+
+		rule life_area
+			'Life area' space? <TermLiteral>
 		end
 
 		rule trash_pile

@@ -123,10 +123,13 @@ module Card::Event
 		end
 
 	  rule ko_sentence
-	  	ko ( up_to? integer ) ( opponent / your_opponent )
-	  	( rested / active )?
-	  	( character / stage )
-	  	( cost integer or_less? / power integer or_less? / 'with ' integer power or_less? )?
+	  	ko (
+				( up_to? integer ) ( opponent / your_opponent )
+				( rested / active )?
+				( character / stage )
+				( cost integer or_less? / power integer or_less? / 'with ' integer power or_less? )?
+	  		/ and_clause
+	  	)
 	  	space? dot?
 	  end
 

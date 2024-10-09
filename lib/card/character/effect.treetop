@@ -34,7 +34,7 @@ module Card::Character
 			)*
 			( condition / and_clause )*
 			(
-				sentence /
+				sentence trail_condition? /
 				space? then_clause /
 				and_clause space? /
 				trait_description /
@@ -49,7 +49,8 @@ module Card::Character
 			power_investment /
 			rest_card_investment /
 			life_investment /
-			return_card_investment
+			return_card_investment /
+			card_bottom_investment
 		end
 
 		rule condition
@@ -66,14 +67,20 @@ module Card::Character
 			character_cost_condition
 		end
 
+		rule trail_condition
+			card_hand_condition /
+			opponent_action_condition /
+			card_pile_condition /
+			don_in_play_condition
+		end
+
 		rule sentence
-			draw_sentence card_hand_condition? /
-			draw_sentence opponent_action_condition? /
-			trash_sentence card_hand_condition? /
+			draw_sentence /
+			trash_sentence /
 			look_up_sentence /
 			play_sentence /
 			reveal_sentence /
-			power_gain_sentence card_pile_condition? /
+			power_gain_sentence /
 			power_give_sentence /
 			cost_gain_sentence /
 			cost_reduction_sentence /
@@ -93,7 +100,9 @@ module Card::Character
 			reactivate_don_sentence /
 			attack_active_sentence /
 			event_discount_sentence /
-			then_clause place_remaining_card
+			attack_only_sentence /
+			place_remaining_card /
+			shuffle_deck
 		end
 
 	  rule draw_sentence
@@ -101,6 +110,7 @@ module Card::Character
 	  end
 
 	  rule trash_sentence
+	  	your_opponent?
 	    trash
 	    ( up_to? integer / this )
 	    ( card / event or_clause? / stage or_clause? / character )+
@@ -157,8 +167,16 @@ module Card::Character
 	  end
 
 	  rule ko_sentence
-	  	ko ( up_to? integer ) 'of' space opponent
-	  	rested? character ( cost integer or_less? / 'with ' integer power or_less? )?
+	  	ko (
+				( up_to? integer ) 'of' space opponent
+				( rested / active )?
+				character
+				(
+					cost integer or_less? / power integer or_less? /
+					'with ' integer power or_less? / 'with a total ' power 'of ' integer or_less?
+				)? /
+				and_clause
+	  	)+
 	  	space? dot?
 	  end
 
@@ -168,8 +186,10 @@ module Card::Character
 		end
 
 		rule ko_immune_sentence
-			this character "cannot be K.O.'d" space? battle?
-			('by ' element space? 'attribute ' character / 'by effects')?
+		  ( this character / of_type character )
+		  ( other_than your? has_name )?
+		 	"cannot be K.O.'d" space? battle?
+			('by ' with_attribute space? character / 'by effects')?
 			space? dot?
 		end
 
@@ -213,18 +233,16 @@ module Card::Character
 			( cost integer or_less? )?
 			( hand / trash / top_or_bottom_deck / top_deck / bottom_deck / deck )+
 			rested?
-			( divider then_clause shuffle_deck )?
 			space? dot? <PlayEffect>
 		end
 
 		rule reveal_sentence
 			reveal ( this / up_to? integer )
-			( card / of_type character / of_type card? / character or_clause? / event or_clause? / stage or_clause? )+
+			( card / has_name / of_type character / of_type card? / character or_clause? / event or_clause? / stage or_clause? )+
 			( cost integer or_less? )?
-			( hand / top_or_bottom_deck / top_deck )?
+			( hand / top_or_bottom_deck / top_deck / your_deck )?
 			( other_than has_name )?
 			( and_clause 'add it ' hand )+
-			( divider place_remaining_card )?
 		  space? dot? <RevealEffect>
 		end
 
@@ -280,6 +298,11 @@ module Card::Character
 			space? dot?
 		end
 
+		rule attack_only_sentence
+			your_opponent 'cannot attack any ' card other_than 'the ' character has_name
+			space? dot?
+		end
+
 		rule activation_cost
 		  don_cost space?
 		end
@@ -303,12 +326,19 @@ module Card::Character
 		end
 
 		rule life_investment
-			may_clause? 'add ' integer card 'from your Life area ' hand
+			may_clause? 'add ' integer card ('from to or bottom of ' / 'from ') your life_area hand
 			space?
 		end
 
 		rule return_card_investment
 			may_clause? return ( integer character / this character ) hand
+			space?
+		end
+
+		rule card_bottom_investment
+			may_clause? place integer
+			( card hand / character / stage )
+			bottom_deck
 			space?
 		end
 
@@ -318,8 +348,8 @@ module Card::Character
 		end
 
 		rule card_hand_condition
-			if_clause (you_have / your_opponent_has)
-			integer (up_to / or_less)? card hand?
+			if_clause ( you_have / your_opponent_has )
+			integer ( up_to / or_less / or_more )? card hand?
 			divider? space? dot? <CardHandCondition>
 		end
 
