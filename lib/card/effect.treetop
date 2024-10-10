@@ -40,7 +40,7 @@ class Card
 
 		# Don
 		rule don
-			'DON!!' space? <DonLiteral>
+			'DON!!' space? card? space? <DonLiteral>
 		end
 
 		rule don_cost
@@ -110,7 +110,7 @@ class Card
 		end
 
 		rule would_clause
-			('would be' / 'Would be') space? <TermLiteral>
+			('would be' / 'Would be' / 'is') space? <TermLiteral>
 		end
 
 		rule may_clause
@@ -133,6 +133,14 @@ class Card
 			('Then' / 'then') divider? space? <TermLiteral>
 		end
 
+		rule select_clause
+			('Select' / 'select') (' it')? space? <TermLiteral>
+		end
+
+		rule top_or_bottom_clause
+			('from' / 'to')? space? ('the top ') ('or bottom ')? 'of' space? <TermLiteral>
+		end
+
 		# Target
 		rule leader
 			your? ("Leader's" / "leader's" / 'Leaders' / 'leaders' / "leader's" / 'Leader' / 'leader') space? <LeaderLiteral>
@@ -143,7 +151,7 @@ class Card
 		end
 
 		rule your_opponent
-			("Your opponent's" / "your opponent's" / 'Your opponent' / 'your opponent') space? <OpponentLiteral>
+			opponent space? <OpponentLiteral>
 		end
 
 		rule you_havent
@@ -151,7 +159,7 @@ class Card
 		end
 
 		rule your_opponent_hasnt
-			("Your opponent don't have" / "your opponent don't have") space? <OpponentLiteral>
+			opponent ("don't have" / "don't have") space? <OpponentLiteral>
 		end
 
 		rule your_opponent_has
@@ -159,7 +167,7 @@ class Card
 		end
 
 		rule ko
-			("K.O.'d" / 'K.O.') space? <TermLiteral>
+			("K.O.'d" / "K.O.'s" / 'K.O.') space? <TermLiteral>
 		end
 
 		rule this
@@ -171,7 +179,7 @@ class Card
 		end
 
 		rule your
-			('your' / 'Your' / 'of your') space? <TermLiteral>
+			('of ')? ('your' / 'Your') space? <TermLiteral>
 		end
 
 		rule opponent
@@ -203,11 +211,11 @@ class Card
 		end
 
 		rule return
-			('Return' / 'return') space? <TermLiteral>
+			('Returns' / 'returns' / 'Return' / 'return') space? <TermLiteral>
 		end
 
 		rule rest
-			('Rest' / 'rest') space? <TermLiteral>
+			('is ')? ('Rest' / 'rest') space? <TermLiteral>
 		end
 
 		rule reveal
@@ -251,7 +259,7 @@ class Card
 		end
 
 		rule don_deck
-			('from' / 'to')? space? ( your / 'the ') don 'deck' space? <TermLiteral>
+			('from' / 'to')? space? ( your / 'the ' / 'their ') don 'deck' space? <TermLiteral>
 		end
 
 		rule shuffle_deck
@@ -263,7 +271,7 @@ class Card
 		end
 
 		rule card
-			('cards' / "card's" / 'card') space? <TermLiteral>
+			('cards' / "card's" / 'card' / 'card(s)') space? <TermLiteral>
 		end
 
 		rule stage
@@ -271,7 +279,7 @@ class Card
 		end
 
 		rule event
-			('event' / 'Event') space? card? <TermLiteral>
+			('events' / 'Events' / 'event' / 'Event') space? card? <TermLiteral>
 		end
 
 		rule character
@@ -291,7 +299,7 @@ class Card
 		end
 
 		rule rested
-			and_clause? ('rested' / 'Rested' / 'rest it' / 'rest them') space? <TermLiteral>
+			and_clause? ('is ')? ('rested' / 'Rested' / 'rest it' / 'rest them') space? <TermLiteral>
 		end
 
 		rule active
@@ -340,6 +348,10 @@ class Card
 		  'battles' space? <TermLiteral>
 		end
 
+		rule end_battle
+			'at the end of ' this 'battle' space? <TermLiteral>
+		end
+
 		# Effect occurred
 		rule effect
 			'by an effect' space? <TermLiteral>
@@ -355,6 +367,10 @@ class Card
 
 		rule every
 			('for ')? ('Every' / 'every') space? <EveryLiteral>
+		end
+
+		rule each_of
+			('for ')? ('Each of' / 'each of') space? # <EachOfLiteral>
 		end
 
 		rule or_less

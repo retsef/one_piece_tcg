@@ -95,13 +95,14 @@ module Card::Character
 			ko_sentence /
 			place_sentence /
 			rest_opponent_sentence /
-			return_sentence /
+			end_battle? return_sentence /
 			restand_sentence /
 			add_card_sentence /
 			add_life_sentence /
 			gain_life_sentence /
 			apply_don_sentence /
 			add_don_sentence /
+			return_don_sentence /
 			reactivate_don_sentence /
 			attack_active_sentence /
 			event_discount_sentence /
@@ -112,7 +113,7 @@ module Card::Character
 		end
 
 	  rule draw_sentence
-	    draw up_to? numbered card space? dot? <DrawEffect>
+	    draw (up_to? numbered)? card space? dot? <DrawEffect>
 	  end
 
 	  rule trash_sentence
@@ -130,10 +131,10 @@ module Card::Character
 
 		rule power_gain_sentence
 			( this / up_to? numbered your has_name / up_to? numbered your colored? / up_to? numbered opponent / your of_type or_clause? / of_type / up_to? numbered your / all your )+
-			( character / leader or_clause character / leader and_clause character / leader / card ) card? ( cost numbered )?
+			( character / leader or_clause? / leader and_clause? / all your / card )+ card? ( cost numbered )?
 			( other_than this card space? / of_type / sub_type )?
 			gain numbered power
-			( every numbered your rested don card )?
+			( every numbered your rested don )?
 			( battle / turn / start_next_turn / end_next_turn / end_turn )? space? dot?
 		end
 
@@ -224,7 +225,7 @@ module Card::Character
 		rule rest_opponent_sentence
 			rest ( up_to? numbered / all)
 			( opponent / your )
-			( character / don card )
+			( character / don )
 			( cost numbered or_less? )?
 			space? dot? <RestEffect>
 		end
@@ -275,13 +276,13 @@ module Card::Character
 
 		rule add_life_sentence
 			add_clause up_to? numbered card
-			'from ' ('the top or bottom of ' / 'the top of ')? your ( life_area / life ) hand
+			top_or_bottom_clause? your ( life_area / life ) hand
 			space? dot?
 		end
 
 		rule gain_life_sentence
 			add_clause up_to? numbered card
-			top_deck 'to the top ' your life_area
+			top_deck top_or_bottom_clause your life_area
 			space? dot?
 		end
 
@@ -291,34 +292,40 @@ module Card::Character
 			rested?
 			( character / leader / card )
 			( cost numbered or_less? )?
-			'as ' active
+			active
 			space? dot?
 		end
 
 		rule reactivate_don_sentence
 			set_clause up_to? numbered
-			your ( rested? don card )
-			'as ' active
+			your ( rested? don )
+			active
 			space? dot?
 		end
 
 		rule apply_don_sentence
-			give ( this character )? up_to? numbered ( rested don card )
+			give ( this character )? up_to? numbered ( rested don )
 			('to ')?
-			( leader or_clause? / numbered your character / 'each of ' your of_type character or_clause? )*
+			( leader or_clause? / numbered your character / each_of your of_type character or_clause? )*
 			space? dot?
 		end
 
 		rule add_don_sentence
 			add_clause up_to? numbered ( rested / active )?
-			don card don_deck space?
+			don don_deck space?
 			and_clause? set_clause?
 			( active / rested )
 			space? dot?
 		end
 
+		rule return_don_sentence
+		  opponent return numbered don
+		  'from their field to ' don_deck
+		  space? dot?
+		end
+
 		rule event_discount_sentence
-			give colored 'Events ' hand numbered cost
+			give colored event hand numbered cost
 			space? dot?
 		end
 
@@ -345,7 +352,7 @@ module Card::Character
 		end
 
 		rule power_investment
-			may_clause? give ( 'your ' numbered 'active Leader ' ) numbered power turn
+			may_clause? give ( your numbered active leader ) numbered power turn
 			divider? space?
 		end
 
@@ -356,7 +363,8 @@ module Card::Character
 		end
 
 		rule life_investment
-			may_clause? 'add ' numbered card ('from to or bottom of ' / 'from ') your life_area hand
+			may_clause? add_clause numbered card
+			( top_or_bottom_clause / 'from ') your life_area hand
 			space?
 		end
 
@@ -366,7 +374,7 @@ module Card::Character
 		end
 
 		rule select_card_investment
-			'Select ' up_to numbered ( your / opponent )*
+			select_clause up_to? numbered ( your / opponent )*
 			( of_type? leader or_clause? / of_type? character )+
 			divider? dot? space?
 		end
@@ -385,13 +393,13 @@ module Card::Character
 		end
 
 		rule card_hand_condition
-			if_clause ( you_have / your_opponent_has )
+			(if_clause / 'so that ')? ( you_have / your_opponent_has )
 			numbered ( up_to / or_less / or_more )? card hand?
 			divider? space? dot? <CardHandCondition>
 		end
 
 		rule card_pile_condition
-			every ( numbered 'Events' / card ) space?
+			every ( numbered event / card ) space?
 			( trash / hand )
 			divider? space? dot?
 		end
@@ -402,7 +410,7 @@ module Card::Character
 		end
 
 		rule ko_effect_condition
-			if_clause this character would_clause ko ( effect / battle )?
+			(if_clause / when_clause) this character would_clause ko ( effect / battle )?
 			divider? space? dot? <KOCondition>
 		end
 
@@ -418,12 +426,13 @@ module Card::Character
 	 	end
 
 		rule battle_condition
-		  ( if_clause / when_clause ) this character ( have_battle and_clause? / ko )+ with_attribute? your_opponent? ( character / leader )
+		  ( if_clause / when_clause ) this character
+		  ( have_battle and_clause? / ko )+ with_attribute? your_opponent? ( character / leader )
 		  divider? space? dot?
 		end
 
 		rule rested_condition
-		  if_clause ( this ) character 'is ' rested
+		  if_clause ( this ) character rested
 		  divider? space? dot?
 		end
 
@@ -454,7 +463,7 @@ module Card::Character
 
 		rule don_in_play_condition
 			if_clause ( opponent 'has more ' / 'you have ' )
-			( numbered or_more )? don card
+			( numbered or_more )? don
 			( 'on their field than you' / 'on your field' )?
 			divider space? dot?
 		end
@@ -471,7 +480,7 @@ module Card::Character
 		end
 
 		rule unlimited_copy_override
-			'Under the rules of this game,' space? may_clause 'have any number of ' this card 'in your deck' dot?
+			'Under the rules of this game,' space? may_clause 'have any number of ' this card 'in ' your deck dot?
 		end
 	end
 end
