@@ -52,7 +52,8 @@ module Card::Character
 			life_investment /
 			return_card_investment /
 			card_bottom_investment /
-			select_card_investment
+			select_card_investment /
+			choose_card_investment
 		end
 
 		rule condition
@@ -119,7 +120,7 @@ module Card::Character
 	  rule trash_sentence
 	  	your_opponent?
 	    trash
-	    ( up_to? numbered / this )
+	    ( up_to? numbered / this / 'that ' )
 	    ( card / event or_clause? / stage or_clause? / character )+
 	    ( hand / end_turn / top_deck )?
 	    space? dot? <TrashEffect>
@@ -377,6 +378,10 @@ module Card::Character
 			select_clause up_to? numbered ( your / opponent )*
 			( of_type? leader or_clause? / of_type? character )+
 			divider? dot? space?
+		end
+
+		rule choose_card_investment
+			your_opponent 'chooses ' up_to? numbered card hand
 		end
 
 		rule card_bottom_investment
