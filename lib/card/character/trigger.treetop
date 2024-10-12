@@ -47,7 +47,7 @@ module Card::Character
 
 		rule trash_investment
 			may_clause? trash ( this / up_to? numbered )
-			( card / character or_clause? / event or_clause? / stage or_clause? / of_type )+
+			( character / event / stage / of_type / card / or_clause )+
 			hand?
 			divider? space?
 		end

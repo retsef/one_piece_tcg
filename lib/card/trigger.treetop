@@ -15,7 +15,7 @@ class Card
 	  end
 
 	  rule play_sentence
-	    play ('this ' card / up_to? numbered) space? <PlayEffect>
+	    play ( this card / up_to? numbered) space? <PlayEffect>
 	  end
 
 	  rule search_sentence

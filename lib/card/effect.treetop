@@ -40,7 +40,7 @@ class Card
 
 		# Don
 		rule don
-			'DON!!' space? card? space? <DonLiteral>
+			'DON!!' space? card? <DonLiteral>
 		end
 
 		rule don_cost
@@ -48,7 +48,7 @@ class Card
 		end
 
 		rule don_investment
-		  ( '①' / '➀' / '②' / '➁' / '③' / '➂' / '④' / '➃' ) space? don_cost_description? space? <DonInvestmentCondition>
+		  ( [①] / [➀] / [②] / [➁] / [③] / [➂] / [④] / [➃] ) space? don_cost_description? space? <DonInvestmentCondition>
 		end
 
 		rule don_sacrifice
@@ -114,7 +114,7 @@ class Card
 		end
 
 		rule may_clause
-		 	('You may' / 'you may') space? <TermLiteral>
+		 	('You may' / 'you may' / 'You can' / 'you can') space? <TermLiteral>
 		end
 
 		rule when_clause
@@ -150,10 +150,6 @@ class Card
 			('You have' / 'you have') space? <SelfLiteral>
 		end
 
-		rule your_opponent
-			opponent space? <OpponentLiteral>
-		end
-
 		rule you_havent
 			("You don't have" / "you don't have") space? <SelfLiteral>
 		end
@@ -178,12 +174,28 @@ class Card
 			('them' / 'Them') space? <TermLiteral>
 		end
 
+		rule their
+			('their' / 'Their') space? <TermLiteral>
+		end
+
+		rule that
+			('that' / 'That') space? <TermLiteral>
+		end
+
 		rule your
 			('of ')? ('your' / 'Your') space? <TermLiteral>
 		end
 
 		rule opponent
 			your ("opponent's" / 'opponent') space? <TermLiteral>
+		end
+
+		rule your_opponent
+			opponent space? <OpponentLiteral>
+		end
+
+		rule owner
+			("owner's" / 'owner') space? <TermLiteral>
 		end
 
 		rule life
@@ -222,6 +234,10 @@ class Card
 			('Reveal' / 'reveal') space? <TermLiteral>
 		end
 
+		rule look_at
+			('Look at' / 'look at') space? <TermLiteral>
+		end
+
 		rule gain
 			('Gains' / 'gains' / 'Gain' / 'gain') space? <TermLiteral>
 		end
@@ -231,7 +247,7 @@ class Card
 		end
 
 		rule your_deck
-			your 'deck' space? <TermLiteral>
+			('at' / 'from' / 'to')? space? your 'deck' space? <TermLiteral>
 		end
 
 		rule top_deck
@@ -246,28 +262,8 @@ class Card
 			('at' / 'from' / 'to')? space? 'the top or bottom' space? 'of the deck' space? <TermLiteral>
 		end
 
-		rule life_area
-			'Life area' space? <TermLiteral>
-		end
-
-		rule trash_pile
-			('from' / 'to')? space? (opponent / your)? trash space? <TermLiteral>
-		end
-
-		rule deck
-			('at' / 'from' / 'to')? space? ( your / 'the ') 'deck' space? <TermLiteral>
-		end
-
-		rule don_deck
-			('from' / 'to')? space? ( your / 'the ' / 'their ') don 'deck' space? <TermLiteral>
-		end
-
 		rule shuffle_deck
 			('Shuffle' / 'shuffle') space? ( your / 'the ') 'deck' space? <TermLiteral>
-		end
-
-		rule owner
-			("owner's" / 'owner') space? <TermLiteral>
 		end
 
 		rule card
@@ -283,7 +279,7 @@ class Card
 		end
 
 		rule character
-			('characters' / 'Characters' / 'character' / 'Character') space? card? <TermLiteral>
+			("character's" / "Character's" / 'characters' / 'Characters' / 'character' / 'Character') space? card? <TermLiteral>
 		end
 
 		rule power
@@ -308,15 +304,25 @@ class Card
 
 		# From
 		rule hand
-			('from the' / 'to the' / 'from' / 'to' / 'in')? space?
-			(your / opponent / owner / 'their ')? 'hand'
+			('from the ' / 'to the ' / 'from ' / 'to ' / 'in ')?
+			( your / opponent / owner / their )? 'hand'
 			space? <TermLiteral>
 		end
 
-		rule trash
-			('from' / 'to' / 'in')? space?
-			(your / opponent / 'their ')? 'trash'
-			space? <TermLiteral>
+		rule life_area
+			'Life area' space? <TermLiteral>
+		end
+
+		rule trash_pile
+			('from ' / 'to ' / 'in ')? (opponent / your / their)? trash space? <TermLiteral>
+		end
+
+		rule deck
+			('at ' / 'from ' / 'to ')? ( your / 'the ') 'deck' space? <TermLiteral>
+		end
+
+		rule don_deck
+			('from ' / 'to ')? ( your / 'the ' / their) don 'deck' space? <TermLiteral>
 		end
 
 		rule any_order
@@ -333,7 +339,7 @@ class Card
 		end
 
 		rule end_turn
-			('at' / 'until') space 'the end of ' ( this / your ) 'turn' space? <TermLiteral>
+			('at ' / 'until ') 'the end of ' ( this / your ) 'turn' space? <TermLiteral>
 		end
 
 		rule start_next_turn
@@ -410,7 +416,7 @@ class Card
 		end
 
 		rule space
-			[ \t\n\r] <TermLiteral>
+			[ \t\n\r]+ <TermLiteral>
 		end
 	end
 end

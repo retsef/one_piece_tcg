@@ -58,7 +58,7 @@ module Card::Event
 	  rule trash_sentence
 	    trash
 	    ( up_to? numbered / this )
-	    ( card / event or_clause? / stage or_clause? / character )+
+	    ( event / stage / character / card / or_clause )+
 	    hand? space? dot? # <TrashEffect>
 	  end
 
@@ -72,10 +72,10 @@ module Card::Event
 
 		rule power_gain_sentence
 			( this / up_to? numbered your colored? / up_to? numbered opponent / up_to? numbered / your of_type or_clause? / of_type )+
-			( character / leader or_clause character / leader and_clause character / leader / card ) card? ( cost numbered )?
+			( character / leader / card / or_clause )+ ( cost numbered )?
 			( other_than this card space?)?
 			gain numbered power
-			( every numbered your rested don card )?
+			( every numbered your rested don )?
 			( battle / turn )?
 		end
 
@@ -89,7 +89,7 @@ module Card::Event
 		rule return_sentence
 			( return / place )
 			( this / up_to? numbered / them / 'the rest ' )
-			( card / character or_clause? / event or_clause? / stage or_clause? )*
+			( character / event / stage / card / or_clause )*
 			( cost numbered or_less? )?
 			( hand / top_or_bottom_deck / top_deck / bottom_deck )+ any_order?
 			space? # <ReturnEffect>
@@ -97,7 +97,7 @@ module Card::Event
 
 		rule play_sentence
 			play ( this / up_to? numbered )
-			( has_name / of_type card / of_type character / character or_clause? / event or_clause? / stage or_clause? )+
+			( has_name / of_type card / of_type? character / event / stage / or_clause )+
 			( cost numbered or_less? )?
 			( hand / trash / top_or_bottom_deck / top_deck / bottom_deck / deck )+
 			( divider shuffle_deck )?
@@ -106,22 +106,23 @@ module Card::Event
 
 		rule reactivate_don_sentence
 			set_clause up_to? numbered
-			your don card ( 'as ' active )+
-			space?
+			your ( rested? don )
+			active
+			space? dot?
 		end
 
 		rule add_don_sentence
-			add_clause up_to? numbered ( rested / active )?
-			don card don_deck space?
+			add_clause up_to? numbered ( rested / active )? don
+			don_deck space?
 			and_clause? set_clause?
 			( active / rested )
-			space? dot?
+			dot? space?
 		end
 
 		rule rest_opponent_sentence
 			rest ( up_to? numbered / all)
 			( opponent / your )
-			( character / don card )
+			( character / don )
 			( cost numbered or_less? )?
 			space? dot? # <RestEffect>
 		end
@@ -133,7 +134,7 @@ module Card::Event
 
 		rule rest_card_investment
 			may_clause? rest ( this / up_to? numbered )
-			( card / character or_clause? / event or_clause? / stage or_clause? )+
+			( character / event / stage / card / or_clause )+
 			space?
 		end
 

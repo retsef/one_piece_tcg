@@ -58,7 +58,7 @@ module Card::Stage
 	  rule trash_sentence
 	  	( may_clause / your_opponent )? trash
 			up_to? numbered
-	    ( card / event or_clause? / stage or_clause? / character )+
+	    ( event / stage / character / or_clause )+
 	    ( hand / top_deck )?
 			space? dot?
 	  end
@@ -69,7 +69,7 @@ module Card::Stage
 
 		rule reveal_sentence
 			reveal ( this / up_to? numbered )
-			( card / of_type character / of_type card? / character or_clause? / event or_clause? / stage or_clause? )+
+			( of_type? character / of_type? event / stage / of_type card? / or_clause )+
 			( cost numbered or_less? )?
 			( other_than has_name )?
 			( and_clause 'add it ' hand )+
@@ -89,7 +89,7 @@ module Card::Stage
 
 		rule return_sentence
 			( return / place ) ( this / up_to? numbered / them / 'the rest ' )
-			( card / opponent? character or_clause? / event or_clause? / stage or_clause? )*
+			( opponent? character / event / stage / or_clause )*
 			( cost numbered or_less? )?
 			( hand / top_or_bottom_deck / top_deck / bottom_deck )+ any_order?
 			space? dot? # <ReturnEffect>
@@ -101,7 +101,7 @@ module Card::Stage
 
 		rule power_gain_sentence
 			( up_to? numbered of_type or_clause? / up_to? numbered opponent / up_to? numbered / of_type )+
-			( character / leader or_clause character / leader and_clause character / leader / card ) card?
+			( character / leader / or_clause / and_clause / card )+
 			( 'on your field ')?
 			gain numbered power
 			( battle / turn )?
@@ -165,13 +165,13 @@ module Card::Stage
 
 		rule trash_investment
 			may_clause? trash ( this / up_to? numbered )
-			( card / character or_clause? / event or_clause? / stage or_clause? / of_type )+
+			( character / event / stage / of_type / or_clause / card )+
 			hand?
 			space?
 		end
 
 		rule add_don_sentence
-			add_clause up_to? numbered ( rested / active )? don card
+			add_clause up_to? numbered ( rested / active )? don
 			don_deck space?
 			( active / rested )
 			dot? space?

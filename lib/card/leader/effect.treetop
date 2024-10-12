@@ -26,6 +26,7 @@ module Card::Leader
 				investment divider? /
 				and_clause space?
 			)*
+			( condition / and_clause )*
 			(
 				sentence /
 				space? then_clause /
@@ -41,8 +42,15 @@ module Card::Leader
 			power_investment
 		end
 
+		rule condition
+			ko_effect_condition /
+			power_condition /
+			don_in_play_condition
+		end
+
 		rule sentence
-			draw_sentence and_clause? trash_sentence? /
+			draw_sentence /
+			trash_sentence /
 			power_gain_sentence /
 			power_give_sentence /
 			prevent_ko_sentence /
@@ -50,30 +58,41 @@ module Card::Leader
 			return_sentence /
 			restand_sentence /
 			apply_don_sentence /
-			add_don_sentence
+			add_don_sentence /
+			reactivate_don_sentence
 		end
 
 		rule draw_sentence
 			draw up_to? numbered card
-			space? # <DrawEffect>
+			space? dot? # <DrawEffect>
 		end
 
 		rule trash_sentence
-			trash ( up_to? numbered / this ) ( card / event or_clause? / stage or_clause? / character )+ hand?
-			space? # <TrashEffect>
+	    trash
+	    ( up_to? numbered )
+	    your_opponent?
+	    ( event / stage / character / life / card )+
+	    ( hand / end_turn / top_deck )?
+	    space? dot? # <TrashEffect>
 		end
 
 		rule power_gain_sentence
-			( this / up_to? numbered your colored? / up_to? numbered opponent / up_to? numbered )
-			( character / leader / leader or_clause character) ( cost numbered )?
-			gain numbered power ( every numbered your rested don card )? ( battle / turn )?
+			( this / up_to? numbered / up_to? numbered / up_to? numbered / all )
+			( your? colored? character / leader / or_clause )+ ( cost numbered )?
+			gain numbered power ( every numbered your rested don )? ( battle / turn )?
+			space? dot?
 		end
 
 		rule power_give_sentence
 			give
-			( this / up_to? numbered opponent / up_to? numbered your colored? / up_to? numbered )
-			( character / leader or_clause up_to? numbered character / leader ) ( cost numbered )?
+			(
+				( this / up_to? numbered / all )
+				( opponent / your )?
+				( colored? character / leader )+ ( cost numbered )? /
+				or_clause
+			)+
 			numbered power ( battle / turn )?
+			space? dot?
 		end
 
 		rule prevent_ko_sentence
@@ -89,7 +108,7 @@ module Card::Leader
 		rule return_sentence
 			( return / place ) ( this / up_to? numbered / them / 'the rest ' )
 			active?
-			( card / opponent? character or_clause? / event or_clause? / stage or_clause? )*
+			( opponent? character / event / stage / card / or_clause )*
 			( cost numbered or_less? )?
 			( hand / top_or_bottom_deck / top_deck / bottom_deck )+
 			any_order?
@@ -97,19 +116,30 @@ module Card::Leader
 		end
 
 		rule restand_sentence
-			'Set ' this leader 'as ' active space?
+			set_clause this leader active space?
+		end
+
+		rule reactivate_don_sentence
+			set_clause up_to? numbered
+			your ( rested? don )
+			active
+			space? dot?
 		end
 
 		rule apply_don_sentence
 			give ( this leader or_clause? / up_to? numbered your character )+
-			up_to? numbered ( rested don card )
+			up_to? numbered ( rested don )
+			('to ')?
+			( leader or_clause? / numbered your character / each_of your of_type character or_clause? )*
 			space? dot?
 		end
 
 		rule add_don_sentence
-			add_clause up_to? numbered ( rested / active )
-			don card don_deck
+			add_clause up_to? numbered ( rested / active )?
+			don don_deck space?
+			and_clause? set_clause?
 			( active / rested )
+			space? dot?
 		end
 
 		rule activation_cost
@@ -117,12 +147,35 @@ module Card::Leader
 		end
 
 		rule trash_investment
-			may_clause? trash ( this / up_to? numbered ) ( card / character or_clause? / event or_clause? / stage or_clause? )+ hand?
-			space?
+			may_clause? trash ( this / up_to? numbered )
+			( your? of_type / sub_type / your? character / event / stage / or_clause / card )+
+			( cost numbered or_less? / numbered power or_less? or_more? / with_trigger )?
+			( other_than this character )?
+			hand?
+			divider? space?
 		end
 
 		rule power_investment
-			may_clause? give ( 'your ' numbered 'active Leader' space? ) numbered power turn
+			may_clause? give ( your numbered active leader space? ) numbered power turn
+		end
+
+		rule ko_effect_condition
+			( if_clause / when_clause ) your_opponent character would_clause ko ( effect / battle )?
+			divider? space? dot? # <KOCondition>
+		end
+
+		rule power_condition
+			if_clause ( this / you_have / your_opponent_has )
+			( character )
+			('has ')? numbered power (or_less / or_more)?
+			divider? space? dot?
+		end
+
+		rule don_in_play_condition
+			if_clause ( opponent 'has more ' / you_have )
+			( numbered or_more? ) don
+			( 'on their field than you' / 'on your field' )?
+			divider? space? dot?
 		end
 	end
 end

@@ -69,7 +69,7 @@ module Card::Event
 
 		rule rest_card_investment
 			may_clause? rest up_to? numbered
-			your ( card / character or_clause? / event or_clause? / stage or_clause? )+
+			your ( character / event / stage / card / or_clause )+
 			space?
 		end
 
@@ -91,19 +91,19 @@ module Card::Event
 
 		rule trash_investment
 			may_clause? trash ( this / up_to? numbered )
-			( card with_trigger? / character or_clause? / event or_clause? / stage or_clause? / of_type )+
+			( with_trigger / character / event / stage / of_type / card / or_clause )+
 			hand?
 			space?
 		end
 
 		rule add_life_sentence
 			add_clause up_to? numbered card
-			'from ' ('the top or bottom of ')? your life_area hand
+			top_or_bottom_clause? your ( life_area / life ) hand
 			space? dot?
 		end
 
 		rule add_don_sentence
-			add_clause up_to? numbered ( rested / active )? don card
+			add_clause up_to? numbered ( rested / active )? don
 			don_deck space?
 			and_clause? set_clause?
 			( active / rested )
@@ -116,15 +116,16 @@ module Card::Event
 		end
 
 		rule trash_sentence
-	  	( may_clause / your_opponent )? trash
-			up_to? numbered
-	    ( card / event or_clause? / stage or_clause? / character )+
-	    ( hand / top_deck )?
-			space? dot?
+	  	your_opponent?
+	    trash
+	    ( up_to? numbered / this / that )
+	    ( event / stage / character / life / card )+
+	    ( hand / end_turn / top_deck )?
+	    space? dot? # <TrashEffect>
 		end
 
 	  rule look_up_sentence
-	  	('Look at' / 'look at') space? up_to? numbered card top_deck
+	  	look_at space? up_to? numbered card top_deck
 	  	divider?
 	  end
 
@@ -153,10 +154,10 @@ module Card::Event
 
 		rule power_gain_sentence
 			( this / 'that ' / up_to? numbered your colored? / up_to? numbered opponent / up_to? numbered / your of_type or_clause? / of_type )+
-			( character / leader or_clause character / leader and_clause character / leader / card ) card? ( cost numbered )?
+			( character / leader / character / card / or_clause / and_clause )+ ( cost numbered )?
 			( 'other than this ' card space?)?
 			gain ('an additional ')? numbered power
-			( every numbered your rested don card )?
+			( every numbered your rested don )?
 			( battle / turn )?
 			space? dot?
 		end
@@ -189,7 +190,7 @@ module Card::Event
 			( return / place )
 			( this / up_to? numbered / them / 'the rest ' )
 			active?
-			( card / character or_clause? / event or_clause? / stage or_clause? )*
+			( character / event / stage / card / or_clause )*
 			( cost numbered or_less? )?
 			( hand / top_or_bottom_deck / top_deck / bottom_deck )+
 			any_order?
@@ -198,14 +199,14 @@ module Card::Event
 
 		rule restand_sentence
 			set_clause ( up_to? numbered )
-			your ( character / of_type character card )
+			your ( of_type? character )
 			( cost numbered or_less? )?
 			active
 			space? dot?
 		end
 
 		rule add_don_sentence
-			add_clause up_to? numbered ( rested / active )? don card
+			add_clause up_to? numbered ( rested / active )? don
 			don_deck space?
 			and_clause? set_clause?
 			( active / rested )
@@ -214,14 +215,14 @@ module Card::Event
 
 		rule reactivate_don_sentence
 			set_clause up_to? numbered
-			your ( rested? don card )
+			your ( rested? don )
 			active
 			space? dot?
 		end
 
 		rule reveal_sentence
 			reveal ( this / up_to? numbered )
-			( card / of_type character / of_type card / sub_type / character or_clause? / event or_clause? / stage or_clause? )+
+			( of_type? character / event / stage / sub_type / of_type? card / or_clause )+
 			( 'other than ' has_name )?
 			( cost numbered or_less? )?
 			( and_clause 'add it ' hand )+
