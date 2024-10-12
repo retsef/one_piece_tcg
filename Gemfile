@@ -14,7 +14,7 @@ gem 'pg', '~> 1.5'
 gem 'redis', '~> 5.3'
 
 gem 'solid_cache', '~> 0.6'
-gem 'solid_queue', '~> 0.3'
+gem 'solid_queue', '~> 1.0'
 
 # Use the Puma web server [https://github.com/puma/puma]
 gem 'puma', '~> 6.4'
