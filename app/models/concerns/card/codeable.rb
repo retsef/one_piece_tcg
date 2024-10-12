@@ -37,6 +37,21 @@ module Card::Codeable
     delegate :prefix, :prefix=, :number, :number=, to: :code, prefix: true
 
     scope :from_series, ->(series) { where('code LIKE ?', "#{series}-%") }
+    scope :available_series, -> {
+      result = current_scope
+
+      return result unless available_series_codes.any?
+
+      result = result.from_series(available_series_codes.first)
+      available_series_codes.slice(1..).each { |code| result = result.or(from_series(code)) }
+
+      result
+    }
+
+    def self.available_series_codes
+      SERIES.keys
+            .select { |series| Rails.features.enabled?(series) }
+    end
   end
 
   class Code

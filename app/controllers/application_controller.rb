@@ -10,7 +10,7 @@ class ApplicationController < ActionController::Base
   private
 
     def current_features
-      Rails.features.for(user: current_user)
+      Rails.features # .for(user: current_user)
     end
 
     # This is a hack to avoid the missing method
