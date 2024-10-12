@@ -16,6 +16,7 @@ module Administrate::Field
     end
 
     private
+
       def resource
         SampleModel.new(attribute_name: 'id')
       end
@@ -31,11 +32,11 @@ module Administrate::Field
           to_a: array,
           klass: SampleModel
         ).tap do |struct|
-          struct.define_singleton_method(:count) { |method = :all| array.size }
+          struct.define_singleton_method(:count) { |_method = :all| array.size }
           struct.define_singleton_method(:none) { [] }
 
-          struct.define_singleton_method(:offset) { |offset| self }
-          struct.define_singleton_method(:limit) { |limit| self }
+          struct.define_singleton_method(:offset) { |_offset| self }
+          struct.define_singleton_method(:limit) { |_limit| self }
 
           struct.define_singleton_method(:map) { |&block| array.map(&block) }
           struct.define_singleton_method(:each) { |&block| array.each(&block) }

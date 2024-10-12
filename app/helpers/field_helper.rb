@@ -34,9 +34,9 @@ module FieldHelper
       resource = locals.fetch(:resource) { resource_class.new }
       page = locals.fetch(:page, action_name)
 
-      [resource, 'fields', field, page]
+      [ resource, 'fields', field, page ]
     when Administrate::Field::Base
-      [field.resource, 'fields', field.name, field.page]
+      [ field.resource, 'fields', field.name, field.page ]
     else
       raise ArgumentError, "Invalid field: #{field.inspect}. Must be a symbol, string, or Administrate::Field::Base instance."
     end

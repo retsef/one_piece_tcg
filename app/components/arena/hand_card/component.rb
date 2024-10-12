@@ -3,6 +3,8 @@ module Arena
     attr_accessor :card, :artwork, :rotation, :offset
 
     def initialize(card, artwork = nil, rotation: 0, offset: 0)
+      super
+
       @card = card
       @artwork = artwork || card.artworks.first
 

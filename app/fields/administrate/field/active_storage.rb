@@ -8,7 +8,7 @@ class Administrate::Field::ActiveStorage < Administrate::Field::Base
   end
 
   def associated_class_name
-    "ActiveStorage::Attachment"
+    'ActiveStorage::Attachment'
   end
 
   def index_display_preview?
@@ -16,7 +16,7 @@ class Administrate::Field::ActiveStorage < Administrate::Field::Base
   end
 
   def index_preview_options
-    options.fetch(:index_preview_options, { resize_to_fill: [150, 150] })
+    options.fetch(:index_preview_options, { resize_to_fill: [ 150, 150 ] })
   end
 
   def index_display_count?
@@ -28,7 +28,7 @@ class Administrate::Field::ActiveStorage < Administrate::Field::Base
   end
 
   def show_preview_options
-    options.fetch(:show_preview_options, { resize_to_fill: [800, 800] })
+    options.fetch(:show_preview_options, { resize_to_fill: [ 800, 800 ] })
   end
 
   def many?
@@ -75,7 +75,7 @@ class Administrate::Field::ActiveStorage < Administrate::Field::Base
 
   def attachments
     return data.attachments if many?
-    return [data.attachment] if attached?
+    return [ data.attachment ] if attached?
 
     []
   end

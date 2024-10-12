@@ -16,6 +16,7 @@ module Administrate::Field
     end
 
     private
+
       def resource
         SampleModel.new(attribute_name: 'id')
       end

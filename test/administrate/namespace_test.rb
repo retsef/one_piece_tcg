@@ -13,7 +13,7 @@ class Administrate::NamespaceTest < ActiveSupport::TestCase
       resources :administrators
     end
 
-    assert_equal [:customers], namespace.resources.map(&:to_sym)
+    assert_equal [ :customers ], namespace.resources.map(&:to_sym)
   end
 
   test 'returns only resources with the index route' do
@@ -22,11 +22,11 @@ class Administrate::NamespaceTest < ActiveSupport::TestCase
     Rails.application.routes.draw do
       namespace(:admin) do
         resources :customers
-        resources :products, only: [:show]
+        resources :products, only: [ :show ]
       end
     end
 
-    assert_equal ['customers'], namespace.resources_with_index_route
+    assert_equal [ 'customers' ], namespace.resources_with_index_route
   end
 
   test 'returns a list of unique resources' do
@@ -35,12 +35,12 @@ class Administrate::NamespaceTest < ActiveSupport::TestCase
     Rails.application.routes.draw do
       namespace(:admin) do
         resources :customers
-        resources :products, only: [:show]
+        resources :products, only: [ :show ]
 
         root to: 'customers#index'
       end
     end
 
-    assert_equal ['customers'], namespace.resources_with_index_route
+    assert_equal [ 'customers' ], namespace.resources_with_index_route
   end
 end

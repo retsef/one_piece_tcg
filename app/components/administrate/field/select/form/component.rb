@@ -1,7 +1,7 @@
 module Administrate::Field
   class Select::Form::Component < FormComponent
     def collection
-      [[t('helpers.select.prompt'), nil]] + field.selectable_options
+      [ [ t('helpers.select.prompt'), nil ] ] + field.selectable_options
     end
 
     def option_index

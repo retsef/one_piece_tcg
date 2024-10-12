@@ -45,7 +45,7 @@ module LocalTimeHelper
 
     def find_time_format(format)
       if format.is_a?(Symbol)
-        if (i18n_format = I18n.t("time.formats.#{format}", default: [:"date.formats.#{format}", ''])).present?
+        if (i18n_format = I18n.t("time.formats.#{format}", default: [ :"date.formats.#{format}", '' ])).present?
           i18n_format
         elsif (date_format = Time::DATE_FORMATS[format] || Date::DATE_FORMATS[format])
           date_format.is_a?(Proc) ? LocalTime.default_time_format : date_format
@@ -61,11 +61,11 @@ module LocalTimeHelper
       case options
       when Hash
         value = options.delete(value_key)
-        [options, value]
+        [ options, value ]
       when NilClass
-        [{}]
+        [ {} ]
       else
-        [{}, options]
+        [ {}, options ]
       end
     end
 end

@@ -15,11 +15,11 @@ module Administrate
       end
 
       def name
-        resource.to_s.gsub(%r{^#{namespace}/}, "").to_sym
+        resource.to_s.gsub(%r{^#{namespace}/}, '').to_sym
       end
 
       def path
-        name.to_s.tr("/", "_")
+        name.to_s.tr('/', '_')
       end
     end
   end

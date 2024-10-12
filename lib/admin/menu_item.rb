@@ -58,7 +58,7 @@ class Admin::MenuItem
   def resource_url
     return nil unless @resource_class
 
-    url_helpers.polymorphic_path([namespace, @resource_class])
+    url_helpers.polymorphic_path([ namespace, @resource_class ])
   end
 
   def url

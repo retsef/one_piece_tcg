@@ -26,5 +26,4 @@ module Card::Stage::Trigger
 
     tree
   end
-
 end

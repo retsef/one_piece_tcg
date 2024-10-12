@@ -23,7 +23,7 @@ module Administrate
         end
 
         def timezone
-          options.fetch(:timezone, ::Time.zone.name || "UTC")
+          options.fetch(:timezone, ::Time.zone.name || 'UTC')
         end
     end
   end

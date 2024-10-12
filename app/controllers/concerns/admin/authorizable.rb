@@ -30,7 +30,7 @@ module Admin
       end
 
       def existing_action?(resource, action_name)
-        routes.include?([resource.to_s.underscore.pluralize, action_name.to_s])
+        routes.include?([ resource.to_s.underscore.pluralize, action_name.to_s ])
       end
 
       helper_method :existing_action?, :authorized_action?, :accessible_action?

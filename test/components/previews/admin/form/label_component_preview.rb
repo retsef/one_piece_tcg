@@ -5,7 +5,7 @@ class Admin::Form::LabelComponentPreview < ViewComponent::Preview
   end
 
   # @param label text
-  def default(label: "Name")
+  def default(label: 'Name')
     render Admin::Form::LabelComponent.new(
       form, :sample, label
     )

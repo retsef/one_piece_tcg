@@ -10,7 +10,7 @@ module Administrate
           [
             klass.to_s,
             candidate_resources_for(klass).map do |resource|
-              [display_candidate_resource(resource), resource.to_global_id]
+              [ display_candidate_resource(resource), resource.to_global_id ]
             end
           ]
         end

@@ -9,7 +9,7 @@ module Card::Colored
     def color=(value)
       raise ArgumentError unless COLORS.include?(value)
 
-      self.colors = [value]
+      self.colors = [ value ]
     end
 
     def color

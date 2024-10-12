@@ -1,5 +1,5 @@
-require "active_support/core_ext/module/delegation"
-require "active_support/core_ext/object/blank"
+require 'active_support/core_ext/module/delegation'
+require 'active_support/core_ext/object/blank'
 
 module Administrate
   class Search
@@ -21,7 +21,7 @@ module Administrate
       end
 
       def terms
-        @terms.join(" ")
+        @terms.join(' ')
       end
 
       def to_s
@@ -44,7 +44,7 @@ module Administrate
               terms << word
             end
           end
-          [filters, terms]
+          [ filters, terms ]
         end
     end
 
@@ -78,7 +78,7 @@ module Administrate
 
       def filter_results(resources)
         query.filters.each do |filter_query|
-          filter_name, filter_param = filter_query.split(":")
+          filter_name, filter_param = filter_query.split(':')
           filter = valid_filters[filter_name]
           resources = apply_filter(filter, filter_param, resources)
         end
@@ -91,12 +91,12 @@ module Administrate
           searchable_fields(attr).map do |field|
             column_name = column_to_query(field)
             "LOWER(CAST(#{table_name}.#{column_name} AS CHAR(256))) LIKE ?"
-          end.join(" OR ")
-        end.join(" OR ")
+          end.join(' OR ')
+        end.join(' OR ')
       end
 
       def searchable_fields(attr)
-        return [attr] unless association_search?(attr)
+        return [ attr ] unless association_search?(attr)
 
         attribute_types[attr].searchable_fields
       end
@@ -105,7 +105,7 @@ module Administrate
         fields_count = search_attributes.sum do |attr|
           searchable_fields(attr).count
         end
-        ["%#{term.mb_chars.downcase}%"] * fields_count
+        [ "%#{term.mb_chars.downcase}%" ] * fields_count
       end
 
       def search_attributes

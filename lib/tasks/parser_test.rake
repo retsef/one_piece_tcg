@@ -1,13 +1,13 @@
 namespace :parser do
-  desc "Generate all test for Card::Parser from database"
+  desc 'Generate all test for Card::Parser from database'
   task all: :environment do
-    Rake::Task["parser:character"].invoke
-    Rake::Task["parser:event"].invoke
-    Rake::Task["parser:stage"].invoke
-    Rake::Task["parser:leader"].invoke
+    Rake::Task['parser:character'].invoke
+    Rake::Task['parser:event'].invoke
+    Rake::Task['parser:stage'].invoke
+    Rake::Task['parser:leader'].invoke
   end
 
-  desc "Generate test for Character::Parser from database"
+  desc 'Generate test for Character::Parser from database'
   task character: :environment do
     Rails.root.glob('test/models/card/character/*_test.{rb}').each do |file|
       File.delete(file)
@@ -18,7 +18,7 @@ namespace :parser do
       next if characters.empty?
 
       test_file = "#{Rails.root}/test/models/card/character/#{series.underscore}_test.rb"
-      File.open(test_file, "a+") do |f|
+      File.open(test_file, 'a+') do |f|
         f.puts <<~RUBY
           require 'test_helper'
 
@@ -54,7 +54,7 @@ namespace :parser do
     end
   end
 
-  desc "Generate test for Event::Parser from database"
+  desc 'Generate test for Event::Parser from database'
   task event: :environment do
     Rails.root.glob('test/models/card/event/*_test.{rb}').each do |file|
       File.delete(file)
@@ -65,7 +65,7 @@ namespace :parser do
       next if events.empty?
 
       test_file = "#{Rails.root}/test/models/card/event/#{series.underscore}_test.rb"
-      File.open(test_file, "a+") do |f|
+      File.open(test_file, 'a+') do |f|
         f.puts <<~RUBY
           require 'test_helper'
 
@@ -101,7 +101,7 @@ namespace :parser do
     end
   end
 
-  desc "Generate test for Stage::Parser from database"
+  desc 'Generate test for Stage::Parser from database'
   task stage: :environment do
     Rails.root.glob('test/models/card/stage/*_test.{rb}').each do |file|
       File.delete(file)
@@ -112,7 +112,7 @@ namespace :parser do
       next if stages.empty?
 
       test_file = "#{Rails.root}/test/models/card/stage/#{series.underscore}_test.rb"
-      File.open(test_file, "a+") do |f|
+      File.open(test_file, 'a+') do |f|
         f.puts <<~RUBY
           require 'test_helper'
 
@@ -148,7 +148,7 @@ namespace :parser do
     end
   end
 
-  desc "Generate test for Leader::Parser from database"
+  desc 'Generate test for Leader::Parser from database'
   task leader: :environment do
     Rails.root.glob('test/models/card/leader/*_test.{rb}').each do |file|
       File.delete(file)
@@ -159,7 +159,7 @@ namespace :parser do
       next if leaders.empty?
 
       test_file = "#{Rails.root}/test/models/card/leader/#{series.underscore}_test.rb"
-      File.open(test_file, "a+") do |f|
+      File.open(test_file, 'a+') do |f|
         f.puts <<~RUBY
           require 'test_helper'
 

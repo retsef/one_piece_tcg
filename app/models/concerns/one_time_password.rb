@@ -30,7 +30,7 @@ module OneTimePassword # rubocop:disable Metrics/ModuleLength
       return unless respond_to?(:attributes_protected_by_default)
 
       define_singleton_method :attributes_protected_by_default do
-        super + [otp_column_name, otp_counter_column_name]
+        super + [ otp_column_name, otp_counter_column_name ]
       end
     end
 
@@ -71,7 +71,7 @@ module OneTimePassword # rubocop:disable Metrics/ModuleLength
 
     def provisioning_uri(account = nil, options = {})
       account ||= email if respond_to?(:email)
-      account ||= ""
+      account ||= ''
 
       if otp_counter_based
         ROTP::HOTP
@@ -93,7 +93,7 @@ module OneTimePassword # rubocop:disable Metrics/ModuleLength
     end
 
     def otp_counter
-      if self.class.otp_counter_column_name == "otp_counter"
+      if self.class.otp_counter_column_name == 'otp_counter'
         super
       else
         public_send(self.class.otp_counter_column_name)
@@ -101,7 +101,7 @@ module OneTimePassword # rubocop:disable Metrics/ModuleLength
     end
 
     def otp_counter=(attr)
-      if self.class.otp_counter_column_name == "otp_counter"
+      if self.class.otp_counter_column_name == 'otp_counter'
         super
       else
         public_send(:"#{self.class.otp_counter_column_name}=", attr)
@@ -112,7 +112,8 @@ module OneTimePassword # rubocop:disable Metrics/ModuleLength
       options ||= {}
       options[:except] = Array(options[:except])
       options[:except] << self.class.otp_column_name
-      super(options)
+
+      super
     end
 
     def otp_regenerate_backup_codes
@@ -169,9 +170,9 @@ module OneTimePassword # rubocop:disable Metrics/ModuleLength
       def totp_code(options = {})
         time = if options.is_a?(Hash)
                  options.fetch(:time, Time.current)
-               else
+        else
                  options
-               end
+        end
         ROTP::TOTP.new(
           otp_column,
           digits: otp_digits,

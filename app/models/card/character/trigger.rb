@@ -26,5 +26,4 @@ module Card::Character::Trigger
 
     tree
   end
-
 end

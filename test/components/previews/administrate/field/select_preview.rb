@@ -19,8 +19,8 @@ module Administrate::Field
 
       def collection
         [
-          ['Option 1', 'option1'],
-          ['Option 2', 'option2']
+          [ 'Option 1', 'option1' ],
+          [ 'Option 2', 'option2' ]
         ]
       end
 

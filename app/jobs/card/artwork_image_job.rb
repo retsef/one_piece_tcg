@@ -10,7 +10,8 @@ class Card::ArtworkImageJob < ApplicationJob
     return unless valid_image_format
 
     image_name = File.basename(image_url)
-    artwork.image.attach(io: URI.open(image_url), filename: image_name, content_type: valid_image_format)
+    image_io = URI.open(image_url) # rubocop:disable Security/Open
+    artwork.image.attach(io: image_io, filename: image_name, content_type: valid_image_format)
   end
 
   private

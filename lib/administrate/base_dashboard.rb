@@ -2,7 +2,7 @@ module Administrate
   class BaseDashboard
     include Administrate
 
-    DASHBOARD_SUFFIX = "Dashboard".freeze
+    DASHBOARD_SUFFIX = 'Dashboard'.freeze
 
     cattr_accessor :model
 
@@ -43,8 +43,8 @@ module Administrate
     def form_attributes(action = nil)
       action =
         case action
-        when "update" then "edit"
-        when "create" then "new"
+        when 'update' then 'edit'
+        when 'create' then 'new'
         else action
         end
       specific_form_attributes_for(action) || self.class::FORM_ATTRIBUTES

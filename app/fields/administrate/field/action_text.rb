@@ -8,7 +8,7 @@ class Administrate::Field::ActionText < Administrate::Field::Text
   end
 
   def associated_class_name
-    "ActionText::RichText"
+    'ActionText::RichText'
   end
 
   def self.associative?

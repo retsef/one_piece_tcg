@@ -2,18 +2,18 @@ require 'test_helper'
 
 class Card::Stage::EB01Test < ActiveSupport::TestCase
   EFFECT = [
-    "[Activate: Main] You may rest this card and place 1 of your Characters with 1000 base power at the bottom of your deck: Draw 1 card.",
-    "[Activate: Main] You may place this card and 1 card from your hand at the bottom of your deck in any order: Draw 2 cards."
+    '[Activate: Main] You may rest this card and place 1 of your Characters with 1000 base power at the bottom of your deck: Draw 1 card.',
+    '[Activate: Main] You may place this card and 1 card from your hand at the bottom of your deck in any order: Draw 2 cards.'
   ].freeze
 
   TRIGGER = [
-    "",
-    "Play this card."
+    '',
+    'Play this card.'
   ].freeze
 
   EFFECT.each do |effect|
     test "parse effect: #{effect}" do
-      skip("Structure/Expansion set not yet available") unless expansion_set_enabled?("EB01")
+      skip('Structure/Expansion set not yet available') unless expansion_set_enabled?('EB01')
       parsed = Card::Stage::Effect.parse(effect)
 
       assert_not_nil parsed
@@ -22,7 +22,7 @@ class Card::Stage::EB01Test < ActiveSupport::TestCase
 
   TRIGGER.each do |trigger|
     test "parse trigger: #{trigger}" do
-      skip("Structure/Expansion set not yet available") unless expansion_set_enabled?("EB01")
+      skip('Structure/Expansion set not yet available') unless expansion_set_enabled?('EB01')
       parsed = Card::Stage::Trigger.parse(trigger)
 
       assert_not_nil parsed

@@ -8,14 +8,14 @@ class Card::Event::ST10Test < ActiveSupport::TestCase
   ].freeze
 
   TRIGGER = [
-    "",
-    "Up to 1 of your Leader gains +1000 power until the end of your next turn.",
-    "Add up to 1 DON!! card from your DON!! deck and set it as active."
+    '',
+    'Up to 1 of your Leader gains +1000 power until the end of your next turn.',
+    'Add up to 1 DON!! card from your DON!! deck and set it as active.'
   ].freeze
 
   EFFECT.each do |effect|
     test "parse effect: #{effect}" do
-      skip("Structure/Expansion set not yet available") unless expansion_set_enabled?("ST10")
+      skip('Structure/Expansion set not yet available') unless expansion_set_enabled?('ST10')
       parsed = Card::Event::Effect.parse(effect)
 
       assert_not_nil parsed
@@ -24,7 +24,7 @@ class Card::Event::ST10Test < ActiveSupport::TestCase
 
   TRIGGER.each do |trigger|
     test "parse trigger: #{trigger}" do
-      skip("Structure/Expansion set not yet available") unless expansion_set_enabled?("ST10")
+      skip('Structure/Expansion set not yet available') unless expansion_set_enabled?('ST10')
       parsed = Card::Event::Trigger.parse(trigger)
 
       assert_not_nil parsed

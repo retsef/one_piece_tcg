@@ -16,7 +16,7 @@ module Administrate
         end
 
         def character
-          options.fetch(:character, "•")
+          options.fetch(:character, '•')
         end
     end
   end

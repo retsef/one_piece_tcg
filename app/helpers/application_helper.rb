@@ -13,8 +13,8 @@ module ApplicationHelper
 
   def sort_order(order)
     case order
-    when "asc" then I18n.t('order.asc')
-    when "desc" then I18n.t('order.desc')
+    when 'asc' then I18n.t('order.asc')
+    when 'desc' then I18n.t('order.desc')
     else I18n.t('order.none')
     end
   end

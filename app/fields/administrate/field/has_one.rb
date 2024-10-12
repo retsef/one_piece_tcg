@@ -20,7 +20,7 @@ module Administrate
         related_dashboard_attributes =
           Administrate::ResourceResolver
           .new("admin/#{final_associated_class_name}")
-          .dashboard_class.new.permitted_attributes + [:id]
+          .dashboard_class.new.permitted_attributes + [ :id ]
         { "#{attr}_attributes": related_dashboard_attributes }
       end
 

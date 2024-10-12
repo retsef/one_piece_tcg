@@ -25,7 +25,7 @@ module Friendly
     end
 
     def default_scoped(scope = relation, all_queries: nil)
-      super(scope, all_queries:).extending(FinderMethods)
+      super.extending(FinderMethods)
     end
 
     def setup(model_class)
@@ -36,11 +36,11 @@ module Friendly
       end
 
       # Support for friendly finds on associations for Rails 4.0.1 and above.
-      if ::ActiveRecord.const_defined?('AssociationRelation')
-        model_class.include(Friendly)
-        association_relation_delegate_class = model_class.relation_delegate_class(::ActiveRecord::AssociationRelation)
-        association_relation_delegate_class.send(:include, FinderMethods)
-      end
+      return unless ::ActiveRecord.const_defined?(:AssociationRelation)
+
+      model_class.include(Friendly)
+      association_relation_delegate_class = model_class.relation_delegate_class(::ActiveRecord::AssociationRelation)
+      association_relation_delegate_class.send(:include, FinderMethods)
     end
   end
 
@@ -80,8 +80,8 @@ module Friendly
       return super(*args) if potential_primary_key?(id)
 
       raise_not_found_exception(id) unless allow_nil
-    rescue ActiveRecord::RecordNotFound => exception
-      raise exception unless allow_nil
+    rescue ActiveRecord::RecordNotFound => e
+      raise e unless allow_nil
     end
 
     def raise_not_found_exception(id)
@@ -110,7 +110,7 @@ module Friendly
       value.respond_to?(:to_i) && value.to_i.to_s != value.to_s
     end
 
-    UUID_RULE = /\A[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}\z/.freeze
+    UUID_RULE = /\A[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}\z/
     def potential_primary_key?(id)
       key_type = primary_key_type
       # Hook for "ActiveModel::Type::Integer" instance.
@@ -120,7 +120,7 @@ module Friendly
       when :uuid then id.match(UUID_RULE)
       else true
       end
-    rescue
+    rescue StandardError
       false
     end
   end

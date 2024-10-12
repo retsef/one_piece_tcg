@@ -60,7 +60,7 @@ class ErrorsController < ApplicationController
     end
 
     def fetch_exception
-      @exception = request.env["action_dispatch.exception"]
+      @exception = request.env['action_dispatch.exception']
 
       Sentry.capture_exception(@exception, **request.env) if @exception
     end

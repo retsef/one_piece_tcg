@@ -25,5 +25,4 @@ module Card::Event::Effect
 
     tree
   end
-
 end

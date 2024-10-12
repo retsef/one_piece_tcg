@@ -4,7 +4,7 @@ module Administrate
       def time
         return I18n.l(data, format: format) if options[:format]
 
-        data.strftime("%I:%M%p")
+        data.strftime('%I:%M%p')
       end
 
       private

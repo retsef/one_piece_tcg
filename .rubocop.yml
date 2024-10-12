@@ -1,3 +1,6 @@
+inherit_gem:
+  rubocop-rails-omakase: rubocop.yml
+
 require:
   - rubocop-rails
   - rubocop-performance
@@ -17,42 +20,18 @@ Style/ArgumentsForwarding:
 
 Style/Documentation:
   Enabled: false
+  Exclude:
+    - 'test/**/*'
+    - 'spec/**/*'
+    - 'db/**/*'
+    - 'config/**/*'
+    - 'previews/**/*'
 
 Style/FrozenStringLiteralComment:
   Enabled: false
 
-Style/ClassAndModuleChildren:
-  Enabled: false
-
-Style/MixinGrouping:
-  Enabled: false
-
-Style/GlobalStdStream:
-  Enabled: false
-
-Style/HashSyntax:
-  Enabled: false
-
-Style/Alias:
-  Enabled: false
-
 Style/StringLiterals:
-  Enabled: false
-
-Style/TrailingCommaInHashLiteral:
-  Enabled: false
-
-Style/TrailingCommaInArrayLiteral:
-  Enabled: false
-
-Style/Lambda:
-  Enabled: false
-
-Style/RescueModifier:
-  Enabled: false
-
-Metrics/AbcSize:
-  Enabled: false
+  EnforcedStyle: single_quotes
 
 Metrics/ParameterLists:
   Exclude:
@@ -67,40 +46,7 @@ Metrics/BlockLength:
     - 'lib/tasks/**/*.rake'
     - 'app/**/concerns/*'
 
-Metrics/ClassLength:
-  Max: 180
-
-Metrics/CyclomaticComplexity:
-  Max: 25
-
-Metrics/PerceivedComplexity:
-  Max: 25
-
 Layout/LineLength:
   Max: 180
   Exclude:
     - 'test/models/card/**/*_test.rb'
-
-Layout/IndentationConsistency:
-  EnforcedStyle: indented_internal_methods
-
-Layout/HashAlignment:
-  Enabled: false
-
-Naming/BlockForwarding:
-  Enabled: false
-
-Rails/FilePath:
-  Enabled: false
-
-Rails/RakeEnvironment:
-  Enabled: false
-
-Rails/ActionOrder:
-  Enabled: false
-
-Rails/UniqueValidationWithoutIndex:
-  Enabled: false
-
-Bundler/OrderedGems:
-  Enabled: false

@@ -5,7 +5,7 @@ module Card::Effect
   class ParsingError < StandardError
     def initialize(data = '', parser = nil, chunk_offset = 5)
       error_index = parser&.failure_index || 0 # parser.index
-      sliced_data = data.slice([0, error_index - chunk_offset].max, [data.size, chunk_offset * 2].min)
+      sliced_data = data.slice([ 0, error_index - chunk_offset ].max, [ data.size, chunk_offset * 2 ].min)
       message = "Parse error at index #{error_index} on \"#{data[error_index]}\" near: \"#{sliced_data}\""
 
       super(message)
@@ -208,7 +208,7 @@ module Card::Effect
   def self.clean_tree(root_node)
     return if root_node.elements.nil?
 
-    root_node.elements.delete_if { |node| node.class.name == "Treetop::Runtime::SyntaxNode" }
+    root_node.elements.delete_if { |node| node.class.name == 'Treetop::Runtime::SyntaxNode' }
     root_node.elements.each { |node| clean_tree(node) }
   end
 end

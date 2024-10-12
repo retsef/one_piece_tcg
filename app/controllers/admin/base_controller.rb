@@ -62,7 +62,7 @@ class Admin::BaseController < Administrate::ApplicationController
     # return unless stale? requested_resource
 
     render locals: {
-      page: Administrate::Page::Show.new(dashboard, requested_resource),
+      page: Administrate::Page::Show.new(dashboard, requested_resource)
     }
   end
 

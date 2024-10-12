@@ -20,11 +20,11 @@ module Request::Variant
 
       def device_format
         @device_format ||= case request.user_agent
-                           when /Electron/i then :electron
-                           when /Turbo Native|Strada/i then :native
-                           when /iPhone|Android.*mobile|Windows Phone/i then :phone
-                           when /iPad|Android/i then :tablet
-                           end
+        when /Electron/i then :electron
+        when /Turbo Native|Strada/i then :native
+        when /iPhone|Android.*mobile|Windows Phone/i then :phone
+        when /iPad|Android/i then :tablet
+        end
       end
   end
 end

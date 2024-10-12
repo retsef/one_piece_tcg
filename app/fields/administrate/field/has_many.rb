@@ -99,9 +99,9 @@ module Administrate
         def candidate_resources
           scope = if (option_scope = options[:scope])
                     option_scope.arity == 1 ? option_scope.call(self) : option_scope.call
-                  else
+          else
                     associated_class.all
-                  end
+          end
           scope = scope.includes(*options.fetch(:includes)) if options.key?(:includes)
 
           order = options.delete(:order)

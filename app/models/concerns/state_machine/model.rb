@@ -54,10 +54,10 @@ module StateMachine
 
       def transition(name, from:, to:)
         events = case from
-                 when Array then from.map { { from: _1, to: to } }
-                 when :all then states.map { { from: _1, to: to } }
-                 else [{ from: from, to: to }]
-                 end
+        when Array then from.map { { from: _1, to: to } }
+        when :all then states.map { { from: _1, to: to } }
+        else [ { from: from, to: to } ]
+        end
 
         transitions[name] ||= []
         transitions[name].push(*events)
@@ -107,7 +107,7 @@ module StateMachine
         end
 
         state_events.build(state: next_state, previous_state: current_state, transition: transition_event) # audit
-        super(next_state)
+        super
       rescue UnableTransition => e
         Rails.logger.error(e)
         errors.add :current_state, "Cannot go to state #{next_state} from #{current_state}"

@@ -26,5 +26,4 @@ module Card::Event::Trigger
 
     tree
   end
-
 end

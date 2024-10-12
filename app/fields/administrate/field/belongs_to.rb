@@ -23,7 +23,7 @@ module Administrate
         candidate_resources.map do |resource|
           [
             display_candidate_resource(resource),
-            resource.send(association_primary_key),
+            resource.send(association_primary_key)
           ]
         end
       end
@@ -57,9 +57,9 @@ module Administrate
         def candidate_resources
           scope = if (option_scope = options[:scope])
                     option_scope.arity == 1 ? option_scope.call(self) : option_scope.call
-                  else
+          else
                     associated_class.all
-                  end
+          end
 
           order = options.delete(:order)
           order ? scope.reorder(order) : scope

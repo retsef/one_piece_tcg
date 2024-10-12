@@ -13,7 +13,7 @@ module Administrate::Field
     end
 
     def collection
-      [[t('helpers.select.prompt'), nil]] + field.associated_resource_options
+      [ [ t('helpers.select.prompt'), nil ] ] + field.associated_resource_options
     end
 
     def option_index

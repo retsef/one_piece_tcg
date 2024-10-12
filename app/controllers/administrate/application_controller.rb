@@ -1,3 +1,4 @@
+# rubocop:disable Metrics/ClassLength
 class Administrate::ApplicationController < ApplicationController
   protect_from_forgery with: :exception
 
@@ -45,7 +46,7 @@ class Administrate::ApplicationController < ApplicationController
     if resource.save
       redirect_to(
         after_resource_created_path(resource),
-        notice: translate_with_resource("create.success")
+        notice: translate_with_resource('create.success')
       )
     else
       render :new, locals: {
@@ -58,7 +59,7 @@ class Administrate::ApplicationController < ApplicationController
     if requested_resource.update(resource_params)
       redirect_to(
         after_resource_updated_path(requested_resource),
-        notice: translate_with_resource("update.success")
+        notice: translate_with_resource('update.success')
       )
     else
       render :edit, locals: {
@@ -69,9 +70,9 @@ class Administrate::ApplicationController < ApplicationController
 
   def destroy
     if requested_resource.destroy
-      flash[:notice] = translate_with_resource("destroy.success")
+      flash[:notice] = translate_with_resource('destroy.success')
     else
-      flash[:error] = requested_resource.errors.full_messages.join("<br/>")
+      flash[:error] = requested_resource.errors.full_messages.join('<br/>')
     end
     redirect_to after_resource_destroyed_path(requested_resource)
   end
@@ -91,16 +92,16 @@ class Administrate::ApplicationController < ApplicationController
     end
 
     def after_resource_created_path(requested_resource)
-      [namespace, requested_resource]
+      [ namespace, requested_resource ]
     end
 
     def after_resource_updated_path(requested_resource)
-      [namespace, requested_resource]
+      [ namespace, requested_resource ]
     end
 
     helper_method :nav_link_state
     def nav_link_state(resource)
-      underscore_resource = resource.to_s.split("/").join("__")
+      underscore_resource = resource.to_s.split('/').join('__')
       resource_name.to_s.pluralize == underscore_resource ? :active : :inactive
     end
 
@@ -113,7 +114,7 @@ class Administrate::ApplicationController < ApplicationController
     # @return [Boolean] `true` if a route exists for the resource class and the
     #   action. `false` otherwise.
     def existing_action?(resource, action_name)
-      routes.include?([resource.to_s.underscore.pluralize, action_name.to_s])
+      routes.include?([ resource.to_s.underscore.pluralize, action_name.to_s ])
     end
     helper_method :existing_action?
 
@@ -283,3 +284,4 @@ class Administrate::ApplicationController < ApplicationController
       resources.page(params[:_page]).per(records_per_page)
     end
 end
+# rubocop:enable Metrics/ClassLength

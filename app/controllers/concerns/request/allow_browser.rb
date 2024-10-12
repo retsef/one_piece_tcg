@@ -48,7 +48,7 @@ module Request
 
         return unless BrowserBlocker.new(request, versions: versions).blocked?
 
-        ActiveSupport::Notifications.instrument("browser_block.action_controller", request: request, versions: versions) do
+        ActiveSupport::Notifications.instrument('browser_block.action_controller', request: request, versions: versions) do
           instance_exec(&block)
         end
       end
@@ -105,7 +105,7 @@ module Request
 
           def normalized_browser_name
             case name = parsed_user_agent.browser.downcase
-            when "internet explorer" then "ie"
+            when 'internet explorer' then 'ie'
             else name
             end
           end

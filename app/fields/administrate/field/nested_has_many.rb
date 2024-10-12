@@ -44,8 +44,7 @@ class Administrate::Field::NestedHasMany < Administrate::Field::HasMany
       end
 
     {
-      :"#{attr}_attributes" =>
-        associated_attributes(perm_resource_class, attr)
+      "#{attr}_attributes":         associated_attributes(perm_resource_class, attr)
     }
   end
 

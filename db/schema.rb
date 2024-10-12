@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_04_14_194735) do
+ActiveRecord::Schema[7.2].define(version: 2024_10_12_134619) do
   create_table "action_text_rich_texts", force: :cascade do |t|
     t.string "name", null: false
     t.text "body"
@@ -60,7 +60,6 @@ ActiveRecord::Schema[7.1].define(version: 2024_04_14_194735) do
   create_table "card_decks", force: :cascade do |t|
     t.integer "card_id", null: false
     t.integer "deck_id", null: false
-    t.integer "quantity", default: 1, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["card_id"], name: "index_card_decks_on_card_id"

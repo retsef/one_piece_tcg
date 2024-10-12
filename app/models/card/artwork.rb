@@ -1,3 +1,21 @@
+# == Schema Information
+#
+# Table name: card_artworks
+#
+#  id         :integer          not null, primary key
+#  rarity     :string
+#  created_at :datetime         not null
+#  updated_at :datetime         not null
+#  card_id    :integer          not null
+#
+# Indexes
+#
+#  index_card_artworks_on_card_id  (card_id)
+#
+# Foreign Keys
+#
+#  card_id  (card_id => cards.id)
+#
 class Card::Artwork < ApplicationRecord
   self.table_name = 'card_artworks'
 

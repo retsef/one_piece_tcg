@@ -8,16 +8,16 @@ namespace :producer do
   desc 'Fetch all SERIES from official website'
   task series: :environment do
     # Fetch all series description directly from official website
-    PROMO_SERIES = 569901
+    PROMO_SERIES = 569_901
     uri = URI.parse("#{PRODUCER_URL}/cardlist/?series=#{PROMO_SERIES}")
 
     http = Net::HTTP.new(uri.host, uri.port).tap { |http| http.use_ssl = true }
     response = http.get(uri.request_uri, {
-      'User-Agent' => 'Mozilla/5.0',
+                          'User-Agent' => 'Mozilla/5.0',
       'Accept' => 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
       'Accept-Language' => 'en-us',
-      'Host' => uri.host,
-    })
+      'Host' => uri.host
+                        })
 
     html = response.body
     doc = Nokogiri::HTML(html)
@@ -26,7 +26,7 @@ namespace :producer do
 
     doc.css('.seriesCol option').each do |option|
       id = option.attribute('value').text
-      label = option.text.rm("<br class=\"spInline\">", '')
+      label = option.text.rm('<br class="spInline">', '')
 
       next if id.blank?
 
@@ -54,11 +54,11 @@ namespace :producer do
 
         http = Net::HTTP.new(uri.host, uri.port).tap { |http| http.use_ssl = true }
         response = http.get(uri.request_uri, {
-          'User-Agent' => 'Mozilla/5.0',
+                              'User-Agent' => 'Mozilla/5.0',
           'Accept' => 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
           'Accept-Language' => 'en-us',
-          'Host' => uri.host,
-        })
+          'Host' => uri.host
+                            })
 
         html = response.body
         doc = Nokogiri::HTML(html)
@@ -86,16 +86,16 @@ namespace :producer do
             card = Card.find_by(code: code)
 
             rarity = case rarity_code
-                     when 'SP CARD' then :special_rare
-                     when 'TR' then :treasure_rare
-                     else :alternative
-                     end
+            when 'SP CARD' then :special_rare
+            when 'TR' then :treasure_rare
+            else :alternative
+            end
 
             card.artworks.create!(rarity: rarity).attach_image(image_url)
 
             next
           end
-          next if ['SP CARD', 'TR'].include? rarity_code # Skip special rare and treasure rare cards
+          next if [ 'SP CARD', 'TR' ].include? rarity_code # Skip special rare and treasure rare cards
 
           Card.create!(
             type: type.downcase.camelcase,
@@ -111,13 +111,12 @@ namespace :producer do
             families: features.collect { |family| Family.find_or_create_by(name: family) },
 
             effect: effect,
-            trigger: trigger,
-            ).artworks.create!.attach_image(image_url)
+            trigger: trigger
+          ).artworks.create!.attach_image(image_url)
         end
 
         puts "Imported #{series[:name]} series"
       end
     end
-
   end
 end

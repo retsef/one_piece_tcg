@@ -24,9 +24,9 @@ module DurationHelper
       format = options.fetch(:format, :full)
       locale = options.fetch(:locale, I18n.locale)
 
-      scope = format.to_s == "full" ? I18N_SCOPE_FULL : DEFAULT_I18N_SCOPE
+      scope = format.to_s == 'full' ? I18N_SCOPE_FULL : DEFAULT_I18N_SCOPE
 
-      [locale, scope]
+      [ locale, scope ]
     end
 
     def sentencify(parts, scope, locale)

@@ -7,13 +7,13 @@ class Card::Event::ST09Test < ActiveSupport::TestCase
   ].freeze
 
   TRIGGER = [
-    "You may trash 2 cards from your hand: Add up to 1 card from the top of your deck to the top of your Life cards.",
-    "Draw 1 card."
+    'You may trash 2 cards from your hand: Add up to 1 card from the top of your deck to the top of your Life cards.',
+    'Draw 1 card.'
   ].freeze
 
   EFFECT.each do |effect|
     test "parse effect: #{effect}" do
-      skip("Structure/Expansion set not yet available") unless expansion_set_enabled?("ST09")
+      skip('Structure/Expansion set not yet available') unless expansion_set_enabled?('ST09')
       parsed = Card::Event::Effect.parse(effect)
 
       assert_not_nil parsed
@@ -22,7 +22,7 @@ class Card::Event::ST09Test < ActiveSupport::TestCase
 
   TRIGGER.each do |trigger|
     test "parse trigger: #{trigger}" do
-      skip("Structure/Expansion set not yet available") unless expansion_set_enabled?("ST09")
+      skip('Structure/Expansion set not yet available') unless expansion_set_enabled?('ST09')
       parsed = Card::Event::Trigger.parse(trigger)
 
       assert_not_nil parsed

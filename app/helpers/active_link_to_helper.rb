@@ -44,9 +44,9 @@ module ActiveLinkToHelper
 
     link = if active_options[:active_disable] == true && active_link?(url, active_options[:active])
              content_tag(:span, name, link_options)
-           else
+    else
              link_to(name, url, link_options)
-           end
+    end
 
     wrap_tag ? content_tag(wrap_tag, link, class: wrap_class.presence) : link
   end
@@ -93,8 +93,8 @@ module ActiveLinkToHelper
     when Regexp
       path.match(condition).present?
     when Array
-      controllers = [*condition[0]]
-      actions     = [*condition[1]]
+      controllers = [ *condition[0] ]
+      actions     = [ *condition[1] ]
 
       controller_exist = controllers.blank? || controllers.member?(params[:controller])
       action_exist = actions.blank? || actions.member?(params[:action])

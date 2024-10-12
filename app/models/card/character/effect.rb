@@ -106,5 +106,4 @@ module Card::Character::Effect
 
     tree
   end
-
 end

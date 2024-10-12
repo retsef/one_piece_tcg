@@ -26,7 +26,7 @@ class Administrate::Field::BasePreview < ViewComponent::Preview
 
   class SampleModelDashboard < ApplicationDashboard
     ATTRIBUTE_TYPES = {
-      attribute_name: Field::String,
+      attribute_name: Field::String
     }.freeze
     COLLECTION_ATTRIBUTES = %i[attribute_name].freeze
   end

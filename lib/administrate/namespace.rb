@@ -14,12 +14,12 @@ module Administrate
       @routes ||= all_routes.select do |controller, _action|
         controller.starts_with?("#{namespace}/")
       end.map do |controller, action|
-        [controller.gsub(%r{^#{namespace}/}, ""), action]
+        [ controller.gsub(%r{^#{namespace}/}, ''), action ]
       end
     end
 
     def resources_with_index_route
-      routes.select { |_resource, route| route == "index" }.map(&:first).uniq
+      routes.select { |_resource, route| route == 'index' }.map(&:first).uniq
     end
 
     private

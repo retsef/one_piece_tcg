@@ -21,7 +21,7 @@ module Admin::Searchable
 
     # ref => https://github.com/thoughtbot/administrate/blob/v0.15.0/app/helpers/administrate/application_helper.rb#L54-L60
     def sanitized_order_params(page, current_field_name)
-      collection_names = page.item_associations + [current_field_name]
+      collection_names = page.item_associations + [ current_field_name ]
       association_params = collection_names.map do |assoc_name|
         { assoc_name => %i[order direction page per_page] }
       end

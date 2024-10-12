@@ -25,5 +25,4 @@ module Card::Leader::Effect
 
     tree
   end
-
 end

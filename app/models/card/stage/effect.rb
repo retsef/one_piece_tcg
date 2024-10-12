@@ -25,5 +25,4 @@ module Card::Stage::Effect
 
     tree
   end
-
 end

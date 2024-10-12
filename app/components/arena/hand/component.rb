@@ -5,13 +5,13 @@ module Arena
     def rotation_for(index = 0)
       return 0 if total <= 2
 
-      (index - (total - 1).to_f / 2) / (total - 2) * rotation_range
+      (index - ((total - 1).to_f / 2)) / (total - 2) * rotation_range
     end
 
     def offset_for(index = 0)
       return 0 if total <= 2
 
-      ((index - (total - 1).to_f / 2) / (total - 2) * offset_range).abs
+      ((index - ((total - 1).to_f / 2)) / (total - 2) * offset_range).abs
     end
 
     private

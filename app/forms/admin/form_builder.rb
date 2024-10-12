@@ -4,7 +4,7 @@ class Admin::FormBuilder < ViewComponent::Form::Builder
 
   def translation(method_name)
     content ||= ActionView::Helpers::Tags::Translator
-                .new(object, @object_name, method_name, scope: "helpers.label")
+                .new(object, @object_name, method_name, scope: 'helpers.label')
                 .translate
     content || attribute_name.humanize
   end

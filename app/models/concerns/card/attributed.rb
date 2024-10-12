@@ -7,7 +7,7 @@ module Card::Attributed
     serialize :elements # , coder: Attribute
 
     def element=(value)
-      self.elements = [value]
+      self.elements = [ value ]
     end
 
     def element
