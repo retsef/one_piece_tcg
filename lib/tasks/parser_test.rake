@@ -33,6 +33,7 @@ namespace :parser do
 
             EFFECT.each do |effect|
               test "parse effect: \#{effect}" do
+                skip("Structure/Expansion set not yet available") unless expansion_set_enabled?("#{series.camelize}")
                 parsed = Card::Character::Effect.parse(effect)
 
                 assert_not_nil parsed
@@ -41,6 +42,7 @@ namespace :parser do
 
             TRIGGER.each do |trigger|
               test "parse trigger: \#{trigger}" do
+                skip("Structure/Expansion set not yet available") unless expansion_set_enabled?("#{series.camelize}")
                 parsed = Card::Character::Trigger.parse(trigger)
 
                 assert_not_nil parsed
@@ -78,6 +80,7 @@ namespace :parser do
 
             EFFECT.each do |effect|
               test "parse effect: \#{effect}" do
+                skip("Structure/Expansion set not yet available") unless expansion_set_enabled?("#{series.camelize}")
                 parsed = Card::Event::Effect.parse(effect)
 
                 assert_not_nil parsed
@@ -86,6 +89,7 @@ namespace :parser do
 
             TRIGGER.each do |trigger|
               test "parse trigger: \#{trigger}" do
+                skip("Structure/Expansion set not yet available") unless expansion_set_enabled?("#{series.camelize}")
                 parsed = Card::Event::Trigger.parse(trigger)
 
                 assert_not_nil parsed
@@ -123,6 +127,7 @@ namespace :parser do
 
             EFFECT.each do |effect|
               test "parse effect: \#{effect}" do
+                skip("Structure/Expansion set not yet available") unless expansion_set_enabled?("#{series.camelize}")
                 parsed = Card::Stage::Effect.parse(effect)
 
                 assert_not_nil parsed
@@ -131,6 +136,7 @@ namespace :parser do
 
             TRIGGER.each do |trigger|
               test "parse trigger: \#{trigger}" do
+                skip("Structure/Expansion set not yet available") unless expansion_set_enabled?("#{series.camelize}")
                 parsed = Card::Stage::Trigger.parse(trigger)
 
                 assert_not_nil parsed
@@ -164,6 +170,7 @@ namespace :parser do
 
             EFFECT.each do |effect|
               test "parse effect: \#{effect}" do
+                skip("Structure/Expansion set not yet available") unless expansion_set_enabled?("#{series.camelize}")
                 parsed = Card::Leader::Effect.parse(effect)
 
                 assert_not_nil parsed

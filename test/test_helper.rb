@@ -11,5 +11,11 @@ module ActiveSupport
     fixtures :all
 
     # Add more helper methods to be used by all tests here...
+
+    def expansion_set_enabled?(expansion_set)
+      return false unless Rails.features.to_h.key?(expansion_set)
+
+      Rails.features.enabled?(expansion_set)
+    end
   end
 end

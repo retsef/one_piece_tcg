@@ -12,6 +12,7 @@ class Card::Leader::OP06Test < ActiveSupport::TestCase
 
   EFFECT.each do |effect|
     test "parse effect: #{effect}" do
+      skip("Structure/Expansion set not yet available") unless expansion_set_enabled?("OP06")
       parsed = Card::Leader::Effect.parse(effect)
 
       assert_not_nil parsed

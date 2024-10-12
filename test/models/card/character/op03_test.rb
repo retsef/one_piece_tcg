@@ -84,6 +84,7 @@ class Card::Character::OP03Test < ActiveSupport::TestCase
 
   EFFECT.each do |effect|
     test "parse effect: #{effect}" do
+      skip("Structure/Expansion set not yet available") unless expansion_set_enabled?("OP03")
       parsed = Card::Character::Effect.parse(effect)
 
       assert_not_nil parsed
@@ -92,6 +93,7 @@ class Card::Character::OP03Test < ActiveSupport::TestCase
 
   TRIGGER.each do |trigger|
     test "parse trigger: #{trigger}" do
+      skip("Structure/Expansion set not yet available") unless expansion_set_enabled?("OP03")
       parsed = Card::Character::Trigger.parse(trigger)
 
       assert_not_nil parsed

@@ -15,6 +15,7 @@ class Card::Event::ST01Test < ActiveSupport::TestCase
 
   EFFECT.each do |effect|
     test "parse effect: #{effect}" do
+      skip("Structure/Expansion set not yet available") unless expansion_set_enabled?("ST01")
       parsed = Card::Event::Effect.parse(effect)
 
       assert_not_nil parsed
@@ -23,6 +24,7 @@ class Card::Event::ST01Test < ActiveSupport::TestCase
 
   TRIGGER.each do |trigger|
     test "parse trigger: #{trigger}" do
+      skip("Structure/Expansion set not yet available") unless expansion_set_enabled?("ST01")
       parsed = Card::Event::Trigger.parse(trigger)
 
       assert_not_nil parsed

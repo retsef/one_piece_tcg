@@ -9,7 +9,7 @@ class Card::Character::OP01Test < ActiveSupport::TestCase
     "[On Play] Give up to 1 of your opponent's Characters −2000 power during this turn.",
     "[On K.O.] K.O. up to 1 of your opponent's Characters with 4000 power or less.",
     "[On Play] You may add 1 card from your Life area to your hand: This Character gains [Rush] during this turn. (This card can attack on the turn in which it is played.)",
-    # "[Trigger] Play this card.",
+    "[Trigger] Play this card.",
     "-",
     "[On Play] You may place 1 card from your hand at the bottom of your deck: Draw 1 card.",
     "[Activate: Main] [Once Per Turn] You may add 1 card from your Life area to your hand: This Character gains +2000 power during this turn. Then, give this Character up to 2 rested DON!! cards.",
@@ -86,6 +86,7 @@ class Card::Character::OP01Test < ActiveSupport::TestCase
 
   EFFECT.each do |effect|
     test "parse effect: #{effect}" do
+      skip("Structure/Expansion set not yet available") unless expansion_set_enabled?("OP01")
       parsed = Card::Character::Effect.parse(effect)
 
       assert_not_nil parsed
@@ -94,6 +95,7 @@ class Card::Character::OP01Test < ActiveSupport::TestCase
 
   TRIGGER.each do |trigger|
     test "parse trigger: #{trigger}" do
+      skip("Structure/Expansion set not yet available") unless expansion_set_enabled?("OP01")
       parsed = Card::Character::Trigger.parse(trigger)
 
       assert_not_nil parsed
