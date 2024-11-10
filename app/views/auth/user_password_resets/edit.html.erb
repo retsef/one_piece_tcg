@@ -4,7 +4,7 @@
 </div>
 
 <div class="mt-8">
-  <%= form_for @user, url: password_reset_path(@token), method: :put, html: { class: 'space-y-6', 'data-turbo-action': "replace" } do |f| %>
+  <%= form_for @user, url: password_reset_path(@token), method: :put, html: { class: 'space-y-6', 'data-turbo-action': 'replace' } do |f| %>
     <%= render Auth::Form::ErrorsSummary::Component.new(resource: @user) %>
 
     <div class="mt-1">

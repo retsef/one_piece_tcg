@@ -12,7 +12,7 @@ class Admin::BaseController < Administrate::ApplicationController
   include Admin::Namespaced
   include Admin::Resourced
   include Admin::Authorizable
-  # include Admin::Authenticated
+  include Admin::Authenticated
 
   include Admin::FeatureSet
 
@@ -21,8 +21,7 @@ class Admin::BaseController < Administrate::ApplicationController
   include Admin::Pageable
   include Admin::DefaultOrder
 
-  include Request::Locale
-  include Request::Variant
+  # rescue_from Administrate::NotAuthorizedError, with: :not_allowed
 
   default_namespace :admin
   default_form_builder Admin::FormBuilder
@@ -185,6 +184,6 @@ class Admin::BaseController < Administrate::ApplicationController
     end
 
     def current_features
-      Rails.features.for(store: current_store, user: current_user)
+      Rails.features.for(store: Current.store)
     end
 end

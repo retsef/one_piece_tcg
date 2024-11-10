@@ -7,11 +7,11 @@
 </div>
 
 <div class="mt-8">
-  <%= form_with url: password_resets_path, method: :post, html: { class: 'space-y-6', 'data-turbo-action': "replace" } do |f| %>
+  <%= form_with url: password_resets_path, method: :post, html: { class: 'space-y-6', 'data-turbo-action': 'replace' } do |f| %>
     <div>
       <%= f.label :email %>
       <div class="mt-1">
-        <%= f.text_field :email, type: "email", required: true %>
+        <%= f.text_field :email, type: 'email', required: true %>
       </div>
     </div>
 
