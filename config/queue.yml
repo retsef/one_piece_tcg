@@ -9,10 +9,7 @@ default: &default
     - queues: storage_analysis,storage_purge
       threads: 10
       polling_interval: 2
-    - queues: documents
-      threads: 5
-      polling_interval: 2
-    - queues: imports
+    - queues: images
       threads: 5
       polling_interval: 2
     - queues: real_time,background

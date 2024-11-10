@@ -30,5 +30,9 @@ Rails.application.routes.draw do
 
   direct(:producer) { 'https://en.onepiece-cardgame.com' }
 
-  mount Lookbook::Engine, at: '/lookbook' if Rails.env.development?
+  if Rails.env.development?
+    mount Lookbook::Engine, at: '/lookbook'
+    mount MissionControl::Jobs::Engine, at: '/jobs'
+    mount SolidErrors::Engine, at: '/errors'
+  end
 end

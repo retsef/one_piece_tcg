@@ -8,14 +8,14 @@
          src="<%= image_url %>" alt="<%= card_name %>"
          data-card-target="artwork">
 
-    <div class="absolute top-0 right-0 mt-2 mr-10 p-1 bg-white rounded-lg justify-center items-center flex"
+    <div class="hidden absolute top-0 right-0 mt-2 mr-10 p-1 bg-white rounded-lg justify-center items-center"
          data-card-target="power">
       <p class="text-black text-3xl font-bold font-roboto text-center leading-[1.5rem]">
         <%= card_power %>
       </p>
     </div>
 
-    <div class="absolute top-0 left-0 mt-2 ml-2 h-11 w-11 rounded-full bg-<%= card_color %>-600 justify-center items-center flex"
+    <div class="hidden absolute top-0 left-0 mt-2 ml-2 h-11 w-11 rounded-full bg-<%= card_color %>-600 justify-center items-center"
          data-card-target="power">
       <p class="text-white text-4xl font-bold font-roboto text-center">
         <%= card_cost %>

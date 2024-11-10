@@ -7,66 +7,7 @@ for all resources in the admin dashboard,
 as defined by the routes in the `admin/` namespace
 %>
 
-<!-- Off-canvas menu for mobile, show/hide based on off-canvas menu state. -->
-<div class="relative z-40 md:hidden hidden print:hidden" role="dialog" aria-modal="true"
-     data-navigation-sidebar-target="container">
-  <!-- Off-canvas menu backdrop -->
-  <div class="hidden fixed inset-0 bg-gray-600 bg-opacity-75"
-      data-controller="transition"
-      data-transition-enter-active="transition-opacity ease-linear duration-300"
-      data-transition-enter-from="opacity-0"
-      data-transition-enter-to="opacity-100"
-      data-transition-leave-active="transition-opacity ease-linear duration-300"
-      data-transition-leave-from="opacity-100"
-      data-transition-leave-to="opacity-0"
-      data-navigation-sidebar-target="backdrop"
-      data-action="transition:end-leave->navigation-sidebar#hide_container click->navigation-sidebar#close:stop:prevent"></div>
-
-  <div class="fixed inset-0 z-40 flex"
-       data-action="transition:end-leave->navigation-sidebar#hide_container click->navigation-sidebar#close:stop:prevent">
-    <!-- Off-canvas menu -->
-    <div class="hidden relative flex w-full max-w-xs flex-1 flex-col bg-white"
-        data-navigation-sidebar-target="panel"
-        data-controller="transition"
-        data-transition-enter-active="transition ease-in-out duration-300 transform"
-        data-transition-enter-from="-translate-x-full"
-        data-transition-enter-to="translate-x-0"
-        data-transition-leave-active="transition ease-in-out duration-300 transform"
-        data-transition-leave-from="translate-x-0"
-        data-transition-leave-to="-translate-x-full"
-        data-action="click->navigation-sidebar#focus:stop">
-
-      <!-- Close button -->
-      <div class="hidden absolute top-0 right-0 -mr-12 pt-2 electron:pt-6"
-          data-navigation-sidebar-target="close"
-          data-controller="transition"
-          data-transition-enter-active="ease-in-out duration-300"
-          data-transition-enter-from="opacity-0"
-          data-transition-enter-to="opacity-100"
-          data-transition-leave-active="ease-in-out duration-300"
-          data-transition-leave-from="opacity-100"
-          data-transition-leave-to="opacity-0">
-        <button type="button"
-                data-action="navigation-sidebar#close:prevent:stop"
-                class="ml-1 flex h-10 w-10 items-center justify-center rounded-full focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white">
-          <%= inline_svg_tag 'heroicons/24/outline/x-mark.svg', class: 'h-6 w-6 text-white' %>
-          <span class="sr-only">Close sidebar</span>
-        </button>
-      </div>
-
-      <!-- Sidebar -->
-      <% render Admin::Navigation::Mobile::Main::Component.new %>
-
-    </div>
-
-    <div class="w-14 flex-shrink-0">
-      <!-- Dummy element to force sidebar to shrink to fit close icon -->
-    </div>
-  </div>
-</div>
-
-<!-- Static sidebar for desktop -->
-<div class="hidden md:fixed md:inset-y-0 md:flex md:w-64 md:flex-col print:hidden">
-
+<nav class="bg-white shadow-sm">
   <%= render Admin::Navigation::Desktop::Main::Component.new %>
-</div>
+  <%# render Admin::Navigation::Mobile::Main::Component.new %>
+</nav>

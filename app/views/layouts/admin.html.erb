@@ -36,13 +36,10 @@ By default, it renders:
   <%= csrf_meta_tags %>
   <%= csp_meta_tag if defined?(csp_meta_tag) %>
 </head>
-<body class="h-full" data-controller="navigation-sidebar command-palette filters">
-  <!-- Electron titlebar -->
-  <div class="titlebar h-8 z-8 sticky hidden electron:block bg-gray-100 md:bg-transparent"></div>
+<body class="min-h-full" data-controller="navigation-sidebar filters">
+  <%= render 'navigation' %>
 
-  <%# render 'navigation' %>
-
-  <div class="flex flex-1 flex-col md:pl-64 print:pl-0">
+  <div class="py-10 flex flex-1 flex-col">
     <!-- Mobile toolbar -->
     <%= render 'navbar' %>
 

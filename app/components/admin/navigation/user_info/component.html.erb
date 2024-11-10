@@ -1,0 +1,46 @@
+<div class="relative flex-1"
+     data-controller="dropdown"
+     data-dropdown-hide-class="hidden">
+
+  <button class="group w-full flex-shrink-0 p-2 hover:bg-gray-100 rounded-md"
+          data-dropdown-target="button"
+          data-action="click->dropdown#toggle:stop:prevent click@window->dropdown#hide">
+    <div class="flex items-center">
+      <div>
+        <span class="inline-flex h-9 w-9 items-center justify-center rounded-full bg-gray-500">
+          <span class="text-xs font-medium leading-none text-white"><%= initials %></span>
+        </span>
+      </div>
+      <div class="ml-3 grow text-left">
+        <p class="text-sm font-medium text-gray-700 group-hover:text-gray-900"><%= full_name %></p>
+      </div>
+      <div class="ml-3">
+        <span class="sr-only">Open options</span>
+        <%= inline_svg_tag 'heroicons/24/solid/ellipsis-vertical.svg', class: 'h-5 w-5 text-gray-500' %>
+      </div>
+    </div>
+  </button>
+
+  <div class="hidden absolute right-0 z-10 w-56 -top-2 transform -translate-y-full origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
+       role="menu" aria-orientation="vertical" aria-labelledby="menu-button" tabindex="-1"
+       data-controller="transition"
+       data-dropdown-target="panel"
+       data-transition-enter-active="transition ease-out duration-100"
+       data-transition-enter-from="opacity-0 scale-95"
+       data-transition-enter-to="opacity-100 scale-100"
+       data-transition-leave-active="transition ease-in duration-75"
+       data-transition-leave-from="opacity-100 scale-100"
+       data-transition-leave-to="opacity-0 scale-95">
+    <div class="py-1" role="none">
+
+      <%# link_to t('admin.navigation.settings.account.title'), [namespace, :settings, :account], class: "block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900",
+                  role: 'menuitem', tabindex: -1 %>
+
+      <%# link_to t('admin.navigation.main.settings.title'), [ :settings ], class: 'block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900',
+                  role: 'menuitem', tabindex: -1 %>
+
+      <%= button_to 'Chiudi sessione', logout_path, class: 'text-gray-700 hover:bg-gray-100 hover:text-gray-900 block w-full px-4 py-2 text-left text-sm',
+                  role: 'menuitem', tabindex: -1, method: :post %>
+    </div>
+  </div>
+</div>

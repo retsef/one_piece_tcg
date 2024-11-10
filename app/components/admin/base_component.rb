@@ -3,10 +3,9 @@ class Admin::BaseComponent < ApplicationComponent
 
   include ActionPolicy::Behaviour
 
-  authorize :user, through: :current_user
-  authorize :store, through: :current_store
+  # authorize :user, through: :current_user
 
-  delegate :current_user, :current_store, to: :controller
+  # delegate :current_user, to: :controller
   delegate :accessible_action?, to: :controller
 
   def namespace

@@ -1,7 +1,7 @@
 require 'open-uri'
 
 class Card::ArtworkImageJob < ApplicationJob
-  queue_as :default
+  queue_as :images
 
   PERMIT_IMAGE_FORMAT = %w[png jpg jpeg].freeze
 

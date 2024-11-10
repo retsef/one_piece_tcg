@@ -1,0 +1,26 @@
+<div class="h-0 flex-1 overflow-y-auto pt-5 pb-4 electron:pt-8 z-10">
+  <div class="flex items-center px-4">
+    <%= inline_svg_tag 'brand_logo.svg', class: 'h-8 w-auto text-primary-500', alt: application_title %>
+    <h1 class="flex-1 text-primary-500 px-1 h-8 text-xl font-medium font-mono subpixel-antialiased"><%= application_title %></h1>
+  </div>
+
+  <nav class="mt-5 flex-1 space-y-1 px-2">
+    <% main_entries.each do |menu_item| %>
+      <%= render Admin::Navigation::Mobile::MenuEntry::Component.new(menu_item: menu_item) %>
+    <% end %>
+  </nav>
+
+  <div class="mt-8 align-baseline px-2 <%= 'hidden' if secondary_entries.empty? %>">
+    <h3 class="px-3 mb-2 text-sm font-medium text-gray-500" id="settings-headline">Support</h3>
+    <nav class="mt-1 space-y-1">
+      <% secondary_entries.each do |settings_item| %>
+        <%= render Admin::Navigation::Mobile::MenuEntry::Component.new(menu_item: settings_item) %>
+      <% end %>
+    </nav>
+  </div>
+</div>
+
+<!-- Account sidebar section -->
+<div class="flex flex-shrink-0 border-t border-gray-200 p-4">
+  <%= render Admin::Navigation::UserInfo::Component.new %>
+</div>
