@@ -13,14 +13,20 @@ gem 'pg', '~> 1.5'
 # Use Redis adapter to run Action Cable in production
 gem 'redis', '~> 5.3'
 
-gem 'solid_cache', '~> 0.6'
-gem 'solid_queue', '~> 0.3'
+gem 'solid_cache', '~> 1.0'
+gem 'solid_queue', '~> 1.0'
+gem 'solid_errors', '~> 0.6'
+gem 'solid_cable', '~> 3.0'
+
+gem 'mission_control-jobs'
 
 # Use the Puma web server [https://github.com/puma/puma]
 gem 'puma', '~> 6.4'
 
 # Build JSON APIs with ease [https://github.com/rails/jbuilder]
 gem 'jbuilder'
+
+gem 'useragent'
 
 # Use Kredis to get higher-level data types in Redis [https://github.com/rails/kredis]
 # gem "kredis"
@@ -38,11 +44,13 @@ group :assets, :default do
   # gem 'requestjs-rails'
 end
 
-gem 'view_component'
-gem 'view_component-contrib'
-gem 'view_component-form'
-# gem "merge_attributes", github: "Amba-Health/merge_attributes", branch: "main"
-# gem "view_component_attributes", github: "Amba-Health/view_component_attributes", branch: "main"
+group :view, :default do
+  gem 'view_component'
+  gem 'view_component-contrib'
+  gem 'view_component-form'
+  # gem 'merge_attributes', github: 'Amba-Health/merge_attributes', branch: 'main'
+  # gem 'view_component_attributes', github: 'Amba-Health/view_component_attributes', branch: 'main'
+end
 
 group :search, :default do
   gem 'pagy'
@@ -56,7 +64,7 @@ end
 
 group :auth, :default do
   # Use Active Model has_secure_password [https://guides.rubyonrails.org/active_model_basics.html#securepassword]
-  # gem "bcrypt", "~> 3.1.7"
+  gem 'bcrypt'
 
   gem 'pwned'
   gem 'rotp'
@@ -114,11 +122,18 @@ gem 'tzinfo-data', platforms: %i[mingw mswin x64_mingw jruby]
 # Reduces boot times through caching; required in config/boot.rb
 gem 'bootsnap', require: false
 
+gem 'kamal', require: false
+gem 'thruster', require: false
+
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
   gem 'debug', platforms: %i[mri mingw x64_mingw]
 
   gem 'faker', require: false
+  gem 'bullet'
+  gem 'stackprof', require: false
+
+  gem 'lookbook'
 end
 
 group :development do
@@ -126,14 +141,15 @@ group :development do
   gem 'web-console'
   gem 'listen'
 
-  gem 'kamal'
-
   gem 'rubocop', require: false
   gem 'rubocop-performance', require: false
   gem 'rubocop-rails', require: false
   gem 'rubocop-rails-omakase', require: false
   gem 'rubocop-minitest', require: false
   gem 'rubocop-capybara', require: false
+  gem 'rubocop-obsession', require: false
+
+  gem 'erb_lint', require: false
 
   gem 'annotaterb'
   gem 'cacheflow'
@@ -144,8 +160,6 @@ group :development do
   gem 'bundler-audit'
 
   gem 'i18n-tasks', '~> 1.0.14'
-
-  gem 'lookbook'
 
   # Add speed badges [https://github.com/MiniProfiler/rack-mini-profiler]
   # gem 'rack-mini-profiler'
