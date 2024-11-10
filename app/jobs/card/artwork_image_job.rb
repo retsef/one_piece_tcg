@@ -7,7 +7,7 @@ class Card::ArtworkImageJob < ApplicationJob
 
   def perform(artwork, image_url)
     valid_image_format = get_content_type(image_url)
-    return unless valid_image_format
+    raise 'Invalid image' unless valid_image_format
 
     image_name = File.basename(image_url)
     image_io = URI.open(image_url) # rubocop:disable Security/Open

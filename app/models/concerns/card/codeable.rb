@@ -2,6 +2,7 @@ module Card::Codeable
   extend ActiveSupport::Concern
 
   SERIES = {
+    PRB01: { id: '569301', name: 'PREMIUM BOOSTER -ONE PIECE CARD THE BEST- [PRB-01]' },
     EB01: { id: '569201', name: 'EXTRA BOOSTER -MEMORIAL COLLECTION- [EB-01]' },
     OP08: { id: '569108', name: 'BOOSTER PACK -TWO LEGENDS- [OP-08]' },
     OP07: { id: '569107', name: 'BOOSTER PACK -500 YEARS IN THE FUTURE- [OP-07]' },
@@ -11,6 +12,12 @@ module Card::Codeable
     OP03: { id: '569103', name: 'BOOSTER PACK -PILLARS OF STRENGTH- [OP-03]' },
     OP02: { id: '569102', name: 'BOOSTER PACK -PARAMOUNT WAR- [OP-02]' },
     OP01: { id: '569101', name: 'BOOSTER PACK -ROMANCE DAWN- [OP-01]' },
+    ST20: { id: '569020', name: 'STARTER DECK -Yellow Charlotte Katakuri- [ST-20]' },
+    ST19: { id: '569019', name: 'STARTER DECK -Black Smoker- [ST-19]' },
+    ST18: { id: '569018', name: 'STARTER DECK -Purple Monkey.D.Luffy- [ST-18]' },
+    ST17: { id: '569017', name: 'STARTER DECK -Blue Donquixote Doflamingo- [ST-17]' },
+    ST16: { id: '569016', name: 'STARTER DECK -Green Uta- [ST-16]' },
+    ST15: { id: '569015', name: 'STARTER DECK -Red Edward.Newgate- [ST-15]' },
     ST14: { id: '569014', name: 'STARTER DECK -3D2Y- [ST-14]' },
     ST13: { id: '569013', name: 'ULTRA DECK -The Three Brothers- [ST-13]' },
     ST12: { id: '569012', name: 'STARTER DECK -Zoro and Sanji- [ST-12]' },

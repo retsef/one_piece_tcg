@@ -2,6 +2,7 @@ require 'test_helper'
 
 class Card::Character::OP07Test < ActiveSupport::TestCase
   EFFECT = [
+    "[Activate: Main] You may trash this Character: If you have 2 or less Life cards, K.O. up to 1 of your opponent's Characters with a cost of 4 or less. Then, draw 1 card.",
     "[On Play] Set the power of up to 1 of your opponent's Characters to 0 during this turn.",
     "[Activate: Main] You may trash this Character: Give up to 2 of your opponent's Characters −2000 power during this turn.",
     '[On Play] You may trash 1 card from your hand: Look at 5 cards from the top of your deck; reveal up to 1 Character card with 2000 power or less and add it to your hand. Then, place the rest at the bottom of your deck in any order.',
@@ -75,7 +76,6 @@ class Card::Character::OP07Test < ActiveSupport::TestCase
     '[On Play] If you have 2 or less Life cards, draw 2 cards and trash 2 card from your hand.',
     '[On K.O.] If you have 2 or less Life cards, play up to 1 {Egghead} type Character card with a cost of 4 or less from your trash rested.',
     "[DON!! x1] [When Attacking] If you have 1 or less Life cards, K.O. up to 1 of your opponent's Characters with a cost of 3 or less.",
-    "[Activate: Main] You may trash this Character: If you have 2 or less Life cards, K.O. up to 1 of your opponent's Characters with a cost of 4 or less. Then, draw 1 card.",
     "[On Play] You may add 1 card from the top or bottom of your Life cards to your hand: K.O. up to 1 of your opponent's Characters with a cost of 2 or less.",
     '[On Play] Look at 5 cards from the top of your deck; reveal up to 1 {Egghead} type card other than [Lilith] and add it to your hand. Then, place the rest at the bottom of your deck in any order.',
     "[When Attacking] [Once Per Turn] You may add 1 card from the top or bottom of your Life cards to your hand: You may rest up to 1 of your opponent's Characters with a cost of 4 or less. Then, if you have 1 or less Life cards, add up to 1 card from the top of your deck to the top of your Life cards.",
@@ -84,6 +84,7 @@ class Card::Character::OP07Test < ActiveSupport::TestCase
   ].freeze
 
   TRIGGER = [
+    "K.O. up to 1 of your opponent's Characters with a cost of 4 or less.",
     '',
     'Play this card.',
     'If your Leader is [Vegapunk], play this card.',
@@ -92,7 +93,6 @@ class Card::Character::OP07Test < ActiveSupport::TestCase
     'Up to 1 of your {Egghead} type Characters gains [Blocker] during this turn. Then, add this card to your hand.',
     'If your Leader has the {Egghead} type, draw 2 cards.',
     'Draw 1 card. Then, if you have 1 or less Life cards, play this card.',
-    "K.O. up to 1 of your opponent's Characters with a cost of 4 or less.",
     "If your Leader has the {Egghead} type, rest up to 1 of your opponent's Leader or Character cards."
   ].freeze
 

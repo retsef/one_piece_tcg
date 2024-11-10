@@ -2,8 +2,6 @@ require 'test_helper'
 
 class Card::Character::OP01Test < ActiveSupport::TestCase
   EFFECT = [
-    '[On Play] Look at 5 cards from the top of your deck; reveal up to 1 {Straw Hat Crew} type card other than [Nami] and add it to your hand. Then, place the rest at the bottom of your deck in any order.',
-    '[Rush] (This card can attack on the turn in which it is played.)',
     '[DON!! x1] [Your Turn] [Once Per Turn] Draw 1 card when your opponent activates an Event.',
     '[On Play] Add up to 1 red Character card other than [Uta] with a cost of 3 or less from your trash to your hand.',
     "[On Play] Give up to 1 of your opponent's Characters −2000 power during this turn.",
@@ -15,12 +13,14 @@ class Card::Character::OP01Test < ActiveSupport::TestCase
     '[Activate: Main] [Once Per Turn] You may add 1 card from your Life area to your hand: This Character gains +2000 power during this turn. Then, give this Character up to 2 rested DON!! cards.',
     '[Blocker] (After your opponent declares an attack, you may rest this card to make it the new target of the attack.)[DON!! x1] [On Block] Play up to 1 red Character card with a cost of 2 or less from your hand.',
     '[DON!! x1] [When Attacking] You may trash 1 card from your hand: Add up to 1 {Straw Hat Crew} type Character card other than [Tony Tony.Chopper] with a cost of 4 or less from your trash to your hand.',
+    '[On Play] Look at 5 cards from the top of your deck; reveal up to 1 {Straw Hat Crew} type card other than [Nami] and add it to your hand. Then, place the rest at the bottom of your deck in any order.',
     "[DON!! x1] [When Attacking] K.O. up to 1 of your opponent's Characters with 3000 power or less.",
     "[Blocker] (After your opponent declares an attack, you may rest this card to make it the new target of the attack.)[DON!! x2] [Opponent's Turn] This Character gains +3000 power.",
     '[Activate: Main] You may rest this Character: Up to 1 of your Leader or Character cards gains +2000 power during this turn.',
     "[DON!! x1] This Character can also attack your opponent's active Characters.",
     "[DON!! x1] [When Attacking] Give up to 2 of your opponent's Characters −2000 power during this turn.",
     "[DON!! x2] This Character cannot be K.O.'d in battle by ＜Strike＞ attribute Characters.[Activate: Main] [Once Per Turn] Give this Character up to 2 rested DON!! cards.",
+    '[Rush] (This card can attack on the turn in which it is played.)',
     '[DON!! x1] If your opponent has 2 or more rested Characters, this Character gains +2000 power.',
     "[On Play] Rest up to 1 of your opponent's Characters with a cost of 4 or less.",
     '[DON!! x2] [When Attacking] Set up to 1 of your DON!! cards as active.',
