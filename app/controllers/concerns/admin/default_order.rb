@@ -4,7 +4,7 @@ module Admin::DefaultOrder
   DIRECTIONS = %i[asc desc ASC DESC].freeze
 
   class_methods do
-    def default_order(model = resource_class, options)
+    def default_order(model: resource_class, **options)
       param = (model.try(:name) || model).to_s.underscore.to_sym
       order = extract_sort_by_from_options(options)
 

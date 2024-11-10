@@ -35,7 +35,7 @@ class ErrorsController < ApplicationController
     piece = envelope.split("\n").first
     header = JSON.parse(piece)
     dsn = URI.parse(header['dsn'])
-    project_id = dsn.path.tr('/', '')
+    project_id = dsn.path&.tr('/', '')
 
     raise "Invalid sentry hostname: #{dsn.hostname}" if dsn.hostname != sentry_config.host
     raise "Invalid sentry project id: #{project_id}" unless sentry_config.project_ids.include?(project_id)
@@ -62,6 +62,6 @@ class ErrorsController < ApplicationController
     def fetch_exception
       @exception = request.env['action_dispatch.exception']
 
-      Sentry.capture_exception(@exception, **request.env) if @exception
+      Rails.error.report(@exception, **request.env) if @exception
     end
 end

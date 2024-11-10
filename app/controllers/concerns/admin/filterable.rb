@@ -28,7 +28,7 @@ module Admin
       def filter_count
         return 0 if params[:q].blank?
 
-        params[:q].compact_blank.keys.size
+        params[:q].select { |_k, v| v.present? }.keys.size
       end
 
       helper_method :filtered?, :filter_value, :filter_count

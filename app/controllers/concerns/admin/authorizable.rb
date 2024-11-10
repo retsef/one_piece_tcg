@@ -25,10 +25,27 @@ module Admin
           authorized_action?(target, action_name, options)
       end
 
+      # Whether the current user is authorized to perform the named action on the
+      # resource.
+      #
+      # @param _resource [ActiveRecord::Base, Class, String, Symbol] The
+      #   temptative target of the action, or the name of its class.
+      # @param _action_name [String, Symbol] The name of an action that might be
+      #   possible to perform on a resource or resource class.
+      # @return [Boolean] `true` if the current user is authorized to perform the
+      #   action on the resource. `false` otherwise.
       def authorized_action?(resource, action = action_name, options = {})
         allowed_to? :"#{action}?", resource, **options
       end
 
+      # Whether the named action route exists for the resource class.
+      #
+      # @param resource [Class, String, Symbol] A class of resources, or the name
+      #   of a class of resources.
+      # @param action_name [String, Symbol] The name of an action that might be
+      #   possible to perform on a resource or resource class.
+      # @return [Boolean] `true` if a route exists for the resource class and the
+      #   action. `false` otherwise.
       def existing_action?(resource, action_name)
         routes.include?([ resource.to_s.underscore.pluralize, action_name.to_s ])
       end
@@ -49,6 +66,10 @@ module Admin
         def scoped_resource
           resource = scoped_resource_without_authorization
           authorized_scope(resource)
+        end
+
+        def routes
+          @routes ||= Administrate::Namespace.new(namespace).routes.to_set
         end
     end
   end

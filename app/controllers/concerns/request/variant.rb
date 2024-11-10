@@ -11,20 +11,20 @@ module Request::Variant
 
       helper_method(:"request_#{variant}?")
     end
-
-    private
-
-      def detect_device_format
-        request.variant = device_format
-      end
-
-      def device_format
-        @device_format ||= case request.user_agent
-        when /Electron/i then :electron
-        when /Turbo Native|Strada/i then :native
-        when /iPhone|Android.*mobile|Windows Phone/i then :phone
-        when /iPad|Android/i then :tablet
-        end
-      end
   end
+
+  private
+
+    def detect_device_format
+      request.variant = device_format
+    end
+
+    def device_format
+      @device_format ||= case request.user_agent
+      when /Electron/i then :electron
+      when /Turbo Native|Strada/i then :native
+      when /iPhone|Android.*mobile|Windows Phone/i then :phone
+      when /iPad|Android/i then :tablet
+      end
+    end
 end
