@@ -14,9 +14,9 @@ namespace :producer do
     http = Net::HTTP.new(uri.host, uri.port).tap { |http| http.use_ssl = true }
     response = http.get(uri.request_uri, {
                           'User-Agent' => 'Mozilla/5.0',
-      'Accept' => 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
-      'Accept-Language' => 'en-us',
-      'Host' => uri.host
+                          'Accept' => 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+                          'Accept-Language' => 'en-us',
+                          'Host' => uri.host
                         })
 
     html = response.body
@@ -26,7 +26,7 @@ namespace :producer do
 
     doc.css('.seriesCol option').each do |option|
       id = option.attribute('value').text
-      label = option.text.rm('<br class="spInline">', '')
+      label = option.text.gsub('<br class="spInline">', '')
 
       next if id.blank?
 
@@ -53,11 +53,12 @@ namespace :producer do
         uri = URI.parse("#{PRODUCER_URL}/cardlist/?series=#{series[:id]}")
 
         http = Net::HTTP.new(uri.host, uri.port).tap { |http| http.use_ssl = true }
-        response = http.get(uri.request_uri, {
+        response = http.get(uri.request_uri,
+                            {
                               'User-Agent' => 'Mozilla/5.0',
-          'Accept' => 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
-          'Accept-Language' => 'en-us',
-          'Host' => uri.host
+                              'Accept' => 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+                              'Accept-Language' => 'en-us',
+                              'Host' => uri.host
                             })
 
         html = response.body
@@ -69,7 +70,9 @@ namespace :producer do
           code, rarity_code, type = card.css('.infoCol').text.split('|').collect(&:strip)
 
           name = card.css('.cardName').text
-          image_url = card.css('.frontCol img').attribute('src').text.gsub('..', PRODUCER_URL).split('?').first
+          image_url = card.css('.frontCol img')
+                          .then {|img| img.attr('class').text == 'lazy' ? img.attribute('data-src') : img.attribute('src') }
+                          .text.gsub('..', PRODUCER_URL).split('?').first
 
           cost = card.css('.cost').text.remove('Life', 'Cost').to_i
           elements = card.css('.attribute').text.remove('Attribute').strip.split(' ')
@@ -91,7 +94,9 @@ namespace :producer do
             else :alternative
             end
 
-            card.artworks.create!(rarity: rarity).attach_image(image_url)
+            card.artworks
+                .find_or_create_by(rarity: rarity)
+                .attach_image(image_url)
 
             next
           end
