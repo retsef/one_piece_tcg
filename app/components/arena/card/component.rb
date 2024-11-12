@@ -9,7 +9,8 @@ module Arena
       @artwork = artwork || card&.artworks&.first
     end
 
-    delegate :name, :code, :cost, :power, :counter, :type, :color, to: :card, prefix: true
+    delegate :name, :code, :cost, :power, :counter, :type, :color,
+             to: :card, prefix: true
 
     def image_url
       url_for(artwork.image) rescue nil

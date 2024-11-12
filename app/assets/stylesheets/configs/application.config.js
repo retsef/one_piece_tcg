@@ -59,6 +59,7 @@ export default {
   plugins: [
     require('@tailwindcss/forms'),
     require('@tailwindcss/typography'),
+    require("tailwindcss-animate"),
 
     plugin(function ({ addVariant }) {
       addVariant('highlight', ['&.highlight', '.highlight &'])

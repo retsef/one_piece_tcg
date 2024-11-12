@@ -1,0 +1,16 @@
+---
+en:
+  auth:
+    session:
+      already_authenticated: Already authenticated.
+      invalid: Credentials invalid.
+      logged_in: Login successfully.
+      logged_out: Logout successfully.
+      not_authenticated: Must be authenticated to access this page.
+      not_authorized: Not authorized to access this page.
+      timeout: Session expired. Please, login again.
+    user_password_resets:
+      create:
+        success: 'Instructions are been sended through email.'
+      update:
+        success: 'Password reset successfully.'

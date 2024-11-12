@@ -57,7 +57,7 @@
     @apply border-none mx-0 my-2;
   }
 
-  trix-toolbar .trix-button, 
+  trix-toolbar .trix-button,
   trix-toolbar .trix-button:not(:first-child) {
     @apply border-none border-l-0 border-r-0;
   }
@@ -143,10 +143,7 @@
     -webkit-animation: none;
   }
   .card:hover .card-face {
-    @apply rotate-0 duration-[0ms] z-[5] scale-[2] mb-[-150px] after:animate-[fade_250ms_ease-out_forwards];
-  }
-  .card:hover .card-face:after {
-    -webkit-animation: fade 250ms ease-out forwards;
+    @apply rotate-0 z-[5] scale-[2] mb-[-150px] animate-in zoom-in duration-100;
   }
 
   .card .card-face {
