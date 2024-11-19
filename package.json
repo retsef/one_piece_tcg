@@ -47,6 +47,6 @@
     "tailwindcss": "^3.4.15",
     "tailwindcss-animate": "^1.0.7",
     "tailwindcss-email-variants": "^3.0.2",
-    "tailwindcss-mso": "^1.4.3"
+    "tailwindcss-mso": "^2.0.0"
   }
 }
