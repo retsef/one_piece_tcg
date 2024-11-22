@@ -2,7 +2,7 @@ GEM
   remote: https://rubygems.org/
   specs:
     accept_language (2.0.7)
-    action_policy (0.7.1)
+    action_policy (0.7.2)
       ruby-next-core (>= 1.0)
     actioncable (7.2.2)
       actionpack (= 7.2.2)
