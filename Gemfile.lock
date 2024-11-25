@@ -328,7 +328,7 @@ GEM
     psych (5.2.0)
       stringio
     public_suffix (6.0.1)
-    puma (6.4.3)
+    puma (6.5.0)
       nio4r (~> 2.0)
     pwned (2.4.1)
     raabro (1.4.0)
@@ -595,7 +595,7 @@ DEPENDENCIES
   pg (~> 1.5)
   premailer-rails
   propshaft
-  puma (~> 6.4)
+  puma (~> 6.5)
   pwned
   rack-attack
   rack-cors
