@@ -21,7 +21,7 @@ gem 'solid_cable', '~> 3.0'
 gem 'mission_control-jobs'
 
 # Use the Puma web server [https://github.com/puma/puma]
-gem 'puma', '~> 6.4'
+gem 'puma', '~> 6.5'
 
 # Build JSON APIs with ease [https://github.com/rails/jbuilder]
 gem 'jbuilder'
