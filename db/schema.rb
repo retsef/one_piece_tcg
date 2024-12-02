@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2024_10_12_134619) do
+ActiveRecord::Schema[7.2].define(version: 2024_11_16_150946) do
   create_table "action_text_rich_texts", force: :cascade do |t|
     t.string "name", null: false
     t.text "body"
@@ -95,6 +95,8 @@ ActiveRecord::Schema[7.2].define(version: 2024_10_12_134619) do
     t.string "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "leader_id"
+    t.index ["leader_id"], name: "index_decks_on_leader_id"
   end
 
   create_table "families", force: :cascade do |t|
@@ -130,5 +132,6 @@ ActiveRecord::Schema[7.2].define(version: 2024_10_12_134619) do
   add_foreign_key "card_decks", "decks"
   add_foreign_key "card_families", "cards"
   add_foreign_key "card_families", "families"
+  add_foreign_key "decks", "cards", column: "leader_id"
   add_foreign_key "sessions", "users"
 end

@@ -19,7 +19,6 @@
 #
 class Session < ApplicationRecord
   belongs_to :user
-  belongs_to :store, optional: true
 
   encrypts :ip_address, :user_agent
 end

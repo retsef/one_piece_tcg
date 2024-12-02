@@ -18,7 +18,7 @@
 #  updated_at :datetime         not null
 #
 class Leader < Card
-  attribute :rarity, default: :leader
+  # attribute :rarity, default: :leader
 
   alias_attribute :life, :cost
 end

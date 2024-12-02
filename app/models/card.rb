@@ -36,15 +36,21 @@ class Card < ApplicationRecord
     super_rare: 'SR',
     secret_rare: 'SEC',
     promo: 'P'
-  }
+  }, scopes: false
 
-  validates :name, :rarity, :colors, :attributes, presence: true
+  scope :leader, -> { where(type: 'Leader') }
+  scope :not_leader, -> { where.not(type: 'Leader') }
+  scope :character, -> { where(type: 'Character') }
+  scope :event, -> { where(type: 'Event') }
+  scope :stage, -> { where(type: 'Stage') }
 
   scope :with_trigger, -> { where.not(trigger: [ nil, '' ]) }
   scope :with_effect, -> { where.not(effect: [ nil, '' ]) }
 
   # has_one_attached :front
   # has_one_attached :back
+
+  validates :name, :rarity, :colors, :attributes, presence: true
 
   # TODO: maybe download the images from the official website to optimize the load
   def image_url
